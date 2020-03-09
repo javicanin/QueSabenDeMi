@@ -1,0 +1,17 @@
+@charset "UTF-8";
+#map {
+    width: 800px;
+    height: 600px;
+}
+.leaflet-popup-content {
+    background: #E2D5D5;
+    color: #333;
+    text-align: center;
+    width: 180px;
+}
+.leaflet-popup-content-wrapper {
+    background: #962B2B;
+}
+.leaflet-popup-tip {
+    background: #962B2B;
+}
