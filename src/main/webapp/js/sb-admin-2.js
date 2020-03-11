@@ -59,4 +59,49 @@ $(document).ready(function() {
     });
 });
 
+$('#btnImagen').on({
+    'click': function(){
+        if(urlFileMultimedia !== ''){
+            $('#fileMultimedia').attr('src',urlFileMultimedia);
+            $('#tweetMultimedia').attr('href',urlTweetMultimedia);
+            $('#txtMultimedia').text('Esta es tu imagen más comentada en Twitter. Retweets: ' + numMultimTw + ' Me gusta: ' + numMultimFv);
+            $('#linkMultim').show()();
+        }else{
+            $('#txtMultimedia').text('Parece que tus imágenes no son muy populares.');
+            $('#linkMultim').hide();
+        }
+        
+    }
+}); 
+$('#btnGif').on({
+    'click': function(){
+        if(urlFileMultimedia !== ''){
+            $('#fileMultimedia').attr('src',urlFileMultimedia);
+            $('#tweetMultimedia').attr('href',urlTweetMultimedia);
+            $('#txtMultimedia').text('Este es tu gif más comentado en Twitter. Retweets: ' + numMultimTw + ' Me gusta: ' + numMultimFv);
+            $('#linkMultim').show()();
+        }else{
+            $('#txtMultimedia').text('Parece que tus gifs no son muy populares.');
+            $('#linkMultim').hide();
+        }
+    }
+}); 
+$('#btnVideo').on({
+    'click': function(){
+        if(urlFileMultimedia !== ''){
+            $('#fileMultimedia').attr('src',urlFileMultimedia);
+            $('#tweetMultimedia').attr('href',urlTweetMultimedia);
+            $('#txtMultimedia').text('Este es tu vídeo más comentado en Twitter. Retweets: ' + numMultimTw + ' Me gusta: ' + numMultimFv);
+            $('#linkMultim').show()();
+        }else{
+            $('#txtMultimedia').text('Parece que tus vídeos no son muy populares.');
+            $('#linkMultim').hide();
+        }
+}
+}); 
+
+
+
+
+
 })(jQuery); // End of use strict

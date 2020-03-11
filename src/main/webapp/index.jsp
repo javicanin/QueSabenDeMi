@@ -358,7 +358,7 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <img class="img-profile rounded" src="${usrBean.urlImgProfileBig}" >
+                <img class="img-fluid rounded"  src="${usrBean.urlImgProfileBig}" >
                 <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="https://twitter.com/${usrBean.screenName}" target="_blank">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -506,10 +506,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                       <div class="dropdown-header">Tipo de uso:</div>
-                      <a class="dropdown-item" onclick="test(1)" href="#">Horas</a>
-                      <a class="dropdown-item" onclick="test(2)" href="#">Días</a>
-                      <a class="dropdown-item" onclick="test(3)" href="#">Meses</a>
-                      <a class="dropdown-item" onclick="test(4)" href="#">Años</a>
+                      <a class="dropdown-item" onclick="selectTime(1);return false;" href="#">Horas</a>
+                      <a class="dropdown-item" onclick="selectTime(2);return false;" href="#">Días</a>
+                      <a class="dropdown-item" onclick="selectTime(3);return false;" href="#">Meses</a>
+                      <a class="dropdown-item" onclick="selectTime(4);return false;" href="#">Años</a>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#">Something else here</a>
                     </div>
@@ -591,6 +591,44 @@
         <!-- Content Row -->
         <div class="row">
                 
+            <div class="col-xl-4 col-lg-5">
+              <!-- Illustrations -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Tweets con multimedia</h6>
+
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Tipo de multimedia:</div>
+                      <a id="btnImagen" class="dropdown-item" onclick="selectFile(1);return false;" href="#">Imagen</a>
+                      <a id="btnGif" class="dropdown-item" onclick="selectFile(2);return false;" href="#">Gif</a>
+                      <a id="btnVideo" class="dropdown-item" onclick="selectFile(3);return false;" href="#">Video</a>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="card-body">
+                  <div class="text-center">
+                    <img id="fileMultimedia" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="${multimediaBean["photo"].urlArchivo}" alt="">
+                  </div>
+                    <c:if test="${multimediaBean['photo'] != null}">
+                      <p id="txtMultimedia">Esta es tu imagen más comentada en Twitter. Retweets: ${multimediaBean["photo"].numRetweets} Me gusta: ${multimediaBean["photo"].numFavoritos}</p>
+                      <p id="linkMultim">Pulsa
+                        <a id="tweetMultimedia" target="_blank" rel="nofollow" href="${multimediaBean["photo"].urlTweet}"> aquí </a>para acceder al Tweet.
+                      </p>
+                    </c:if>
+                    <c:if test="${multimediaBean['photo'] == null}">
+                      <p id="txtMultimedia">Parece que tus imágenes no son muy populares.</p>
+                      <p id="linkMultim"> <a id="tweetMultimedia" target="_blank" rel="nofollow" href=""></a> </p>
+                    </c:if>
+                    
+                </div>
+              </div>
+            </div>
+            
           <!-- DataTales Example -->
           <div class="col-xl-8 col-lg-7">
 
@@ -819,7 +857,7 @@
     var usoTwtBean = <%=request.getAttribute("usoTw")%>;
     var datos = usoTwtBean['dias'];
     var etiquetas = usoTwtBean['labelsDias'];
-    function test(tipo){
+    function selectTime(tipo){
         if (tipo===1){
             datos = usoTwtBean['horas'];
             etiquetas = usoTwtBean['labelsHoras'];
@@ -853,6 +891,33 @@
 
 ////////////////////// MAPA ///////////////////////
     var tweets = <%=request.getAttribute("geoJsonPlaces")%>;
+
+/////////////// TIPO DE FICHERO MULTIMEDIA ///////////////     
+    var urlFileMultimedia = "${multimediaBean["photo"].urlArchivo}";
+    var urlTweetMultimedia = "${multimediaBean["photo"].urlTweet}";
+    var numMultimTw = "${multimediaBean["photo"].numRetweets}";
+    var numMultimFv = "${multimediaBean["photo"].numFavoritos}";
+    function selectFile(tipo){
+        if (tipo===1){
+            urlFileMultimedia = "${multimediaBean["photo"].urlArchivo}";
+            urlTweetMultimedia = "${multimediaBean["photo"].urlTweet}";
+            numMultimTw = "${multimediaBean["photo"].numRetweets}";
+            numMultimFv = "${multimediaBean["photo"].numFavoritos}";
+        }
+        if (tipo===2){
+            urlFileMultimedia = "${multimediaBean["animated_gif"].urlArchivo}";
+            urlTweetMultimedia = "${multimediaBean["animated_gif"].urlTweet}";
+            numMultimTw = "${multimediaBean["animated_gif"].numRetweets}";
+            numMultimFv = "${multimediaBean["animated_gif"].numFavoritos}";
+        }
+        if (tipo===3){
+            urlFileMultimedia = "${multimediaBean["video"].urlArchivo}";
+            urlTweetMultimedia = "${multimediaBean["video"].urlTweet}";
+            numMultimTw = "${multimediaBean["video"].numRetweets}";
+            numMultimFv = "${multimediaBean["video"].numFavoritos}";
+        }
+    }
+
 
 
   </script>
