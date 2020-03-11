@@ -47,9 +47,8 @@
             container_width : "175px",
             group_maxHeight : "80px",
             exclusive : false,
-            collapsed : true,
+            collapsed : false,
             position: 'topright',
-            
         };
         //Añadimos el nuevo control de capas mediante el siguiente código:
         var capas= L.Control.styledLayerControl(baseMaps, overlays, options);

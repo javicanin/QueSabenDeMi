@@ -361,9 +361,31 @@
                 <img class="img-fluid rounded"  src="${usrBean.urlImgProfileBig}" >
                 <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="https://twitter.com/${usrBean.screenName}" target="_blank">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  URL usuario: ${usrBean.screenName}
-                </a>
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    URL usuario: ${usrBean.screenName}
+                  </a>
+                  <a class="dropdown-item" href="#" target="">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Amigos: ${usrBean.numFriends}
+                  </a>
+                  <a class="dropdown-item" href="#" target="">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Seguidores: ${usrBean.numFollowers}
+                  </a>
+                  <a class="dropdown-item" href="#" target="">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Tweets: ${usrBean.numTweets}
+                  </a>
+                  <a class="dropdown-item" href="#" target="">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Me gustas: ${usrBean.numFavoritos}
+                  </a>
+                  <a class="dropdown-item" href="#" target="">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Listas: ${usrBean.numListas}
+                  </a>
+
+
               </div>
             </li>
 
@@ -380,7 +402,7 @@
           <div class="row">
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-3 mb-4">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -397,7 +419,7 @@
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-3 mb-4">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -414,7 +436,7 @@
             </div>
 
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-2 col-md-3 mb-4">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -440,7 +462,7 @@
             </div>
 
             <!-- Pending Requests Card Example -->
-            <div class="col-xl-2 col-md-3 mb-4">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -456,7 +478,7 @@
               </div>
             </div>
 
-            <div class="col-xl-2 col-md-3 mb-4">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -472,7 +494,7 @@
               </div>
             </div>
 
-            <div class="col-xl-2 col-md-3 mb-4">
+            <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -490,7 +512,79 @@
                     
           </div>
 
-          <!-- Content Row -->
+
+
+        <!-- Content Row -->
+        <div class="row">
+
+          <!-- DataTales Example -->
+          <div class="col-xl-6 col-lg-6">
+
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">Éstos parecen tus mejores amigos de Twitter</h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0" >
+                  <thead>
+                    <tr>
+                      <th style="text-align: center">Imagen</th>
+                      <th>Nombre</th>
+                      <th>Screen name</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th style="text-align: center">Imagen</th>
+                      <th>Nombre</th>
+                      <th>Screen name</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                  <c:forEach items="<%=request.getAttribute("amigos")%>" var="amg">
+                    <tr>
+                      <td style="text-align: center">
+                          <div class="zoom">
+                              <img style="width: 2rem; height: 2rem" class="img-profile rounded" src="${amg.value.urlImgProfileBig}">
+                          </div>
+                              
+                      </td>
+                      <td style="vertical-align: middle">
+                        <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.name}</a>
+                      </td>
+                      <td style="vertical-align: middle">
+                        <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.screenName}</a>                              
+                      </td>
+                    </tr>
+                  </c:forEach>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          <div class="col-xl-6 col-lg-6">
+                <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Dónde usas Twitter</h6>
+                </div>
+                <div class="card-body">
+                  <div class="text-center">
+                    <div  id="map" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 25rem;" alt=""></div>
+                  </div>
+                  <p>En este mapa podrás observar las ubicaciones en el uso de twitter </p>
+                </div>
+              </div>
+          </div>
+            
+            
+        </div>
+                    
+                    
+                    
+        <!-- Content Row -->
 
           <div class="row">
 
@@ -588,10 +682,11 @@
                 
                 
                 
-        <!-- Content Row -->
-        <div class="row">
-                
-            <div class="col-xl-4 col-lg-5">
+          <!-- Content Row -->
+          <div class="row">
+
+
+            <div class="col-xl-6 col-lg-6 col-md-6">
               <!-- Illustrations -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -628,97 +723,10 @@
                 </div>
               </div>
             </div>
-            
-          <!-- DataTales Example -->
-          <div class="col-xl-8 col-lg-7">
-
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Éstos parecen tus mejores amigos de Twitter</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0" >
-                  <thead>
-                    <tr>
-                      <th style="text-align: center">Imagen</th>
-                      <th>Nombre</th>
-                      <th>Screen name</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th style="text-align: center">Imagen</th>
-                      <th>Nombre</th>
-                      <th>Screen name</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                  <c:forEach items="<%=request.getAttribute("amigos")%>" var="amg">
-                    <tr>
-                      <td style="text-align: center">
-                          <div class="zoom">
-                              <img style="width: 2rem; height: 2rem" class="img-profile rounded" src="${amg.value.urlImgProfileBig}">
-                          </div>
-                              
-                      </td>
-                      <td style="vertical-align: middle">
-                        <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.name}</a>
-                      </td>
-                      <td style="vertical-align: middle">
-                        <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.screenName}</a>                              
-                      </td>
-                    </tr>
-                  </c:forEach>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
-                
-                
-                
-                
-                
-                
-                
-                
-                
-          <!-- Content Row -->
-          <div class="row">
-
-            <div class="col-lg-6 mb-4">
-
-              <!-- Tabla -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Dónde usas Twitter</h6>
-                </div>
-                <div class="card-body">
-                  <div class="text-center">
-                    <div  id="map" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 25rem;" alt=""></div>
-                  </div>
-                  <p>En este mapa podrás observar las ubicaciones en el uso de twitter </p>
-                </div>
-              </div>
-
-              <!-- Approach -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                </div>
-                <div class="card-body">
-                  <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-                  <p class="mb-0">Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes.</p>
-                </div>
-              </div>
-
-            </div>
+                  
               
             <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
+            <div class="col-xl-6 col-lg-6 col-md-6 mb-4">
 
               <!-- Project Card Example -->
               <div class="card shadow mb-4">
@@ -748,9 +756,19 @@
                   </div>
                 </div>
               </div>
+            </div>
+                  
+                  
+                  
+          </div>
 
+                
+                
+          <!-- Content Row -->
+          <div class="row">
+                
+              
               <!-- Color System -->
-              <div class="row">
                 <div class="col-lg-6 mb-4">
                   <div class="card bg-primary text-white shadow">
                     <div class="card-body">
@@ -799,11 +817,9 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
             </div>
 
-          </div>
 
 
         </div>
