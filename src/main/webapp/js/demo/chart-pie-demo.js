@@ -16,7 +16,16 @@ var myPieChart = new Chart(ctx, {
     }],
   },
   options: {
+    title:{
+      display: true,
+      fontSize: 16,
+      fontStyle: 'normal',
+      position: 'top',
+      text: 'ordenador o teléfono',
+      fontColor: '#4e73df'
+    },
     maintainAspectRatio: false,
+    responsive: true,
     tooltips: {
       backgroundColor: "rgb(255,255,255)",
       bodyFontColor: "#858796",
@@ -31,7 +40,7 @@ var myPieChart = new Chart(ctx, {
       display: true,
       position: 'bottom',
       labels: {
-          fontSize: 10,
+          fontSize: 12,
           boxWidth: 12,
           padding: 10,
       }

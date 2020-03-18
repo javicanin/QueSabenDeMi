@@ -52,20 +52,20 @@ $(document).ready(function() {
       // disable button
       $(this).prop('disabled', true);
       // add spinner to button
-      $(this).html(
-        '<span class="spinner-border spinner-border-sm p-2" role="status" aria-hidden="true"></span> Cargando...'
-      );
+//      $(this).html(
+//        '<span class="spinner-border spinner-border-sm p-2" role="status" aria-hidden="true"></span> Cargando...'
+ //     );
       $('#form-search').submit();
     });
 });
 
-$('#btnImagen').on({
+$('#file-imagen').on({
     'click': function(){
         if(urlFileMultimedia !== ''){
             $('#fileMultimedia').attr('src',urlFileMultimedia);
             $('#tweetMultimedia').attr('href',urlTweetMultimedia);
             $('#txtMultimedia').text('Esta es tu imagen más comentada en Twitter. Retweets: ' + numMultimTw + ' Me gusta: ' + numMultimFv);
-            $('#linkMultim').show()();
+            $('#linkMultim').show();
         }else{
             $('#txtMultimedia').text('Parece que tus imágenes no son muy populares.');
             $('#linkMultim').hide();
@@ -73,34 +73,32 @@ $('#btnImagen').on({
         
     }
 }); 
-$('#btnGif').on({
+$('#file-gif').on({
     'click': function(){
         if(urlFileMultimedia !== ''){
             $('#fileMultimedia').attr('src',urlFileMultimedia);
             $('#tweetMultimedia').attr('href',urlTweetMultimedia);
             $('#txtMultimedia').text('Este es tu gif más comentado en Twitter. Retweets: ' + numMultimTw + ' Me gusta: ' + numMultimFv);
-            $('#linkMultim').show()();
+            $('#linkMultim').show();
         }else{
             $('#txtMultimedia').text('Parece que tus gifs no son muy populares.');
             $('#linkMultim').hide();
         }
     }
 }); 
-$('#btnVideo').on({
+$('#file-video').on({
     'click': function(){
         if(urlFileMultimedia !== ''){
             $('#fileMultimedia').attr('src',urlFileMultimedia);
             $('#tweetMultimedia').attr('href',urlTweetMultimedia);
             $('#txtMultimedia').text('Este es tu vídeo más comentado en Twitter. Retweets: ' + numMultimTw + ' Me gusta: ' + numMultimFv);
-            $('#linkMultim').show()();
+            $('#linkMultim').show();
         }else{
             $('#txtMultimedia').text('Parece que tus vídeos no son muy populares.');
             $('#linkMultim').hide();
         }
 }
 }); 
-
-
 
 
 

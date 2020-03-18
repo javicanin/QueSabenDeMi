@@ -1,6 +1,6 @@
 
 
-        var map = L.map('map',{center: [40.418889, -3.691944], zoom: 4, fullscreenControl: true, fullscreenControlOptions: {position: 'topleft'}});          
+        var map = L.map('map',{center: [40.418889, -3.691944], zoom: 4, scrollWheelZoom: false, fullscreenControl: true, fullscreenControlOptions: {position: 'topleft'}});          
         var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);        
 
         
@@ -47,9 +47,10 @@
             container_width : "175px",
             group_maxHeight : "80px",
             exclusive : false,
-            collapsed : false,
+            collapsed : true,
             position: 'topright',
         };
+        
         //Añadimos el nuevo control de capas mediante el siguiente código:
         var capas= L.Control.styledLayerControl(baseMaps, overlays, options);
         map.addControl(capas);        

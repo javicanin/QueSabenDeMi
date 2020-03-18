@@ -10,6 +10,7 @@
     
     
 <style>
+  /*ZOOM DE IMAGENES DE TABLA*/
 .zoom {
   /*padding: 2px;*/
   transition: transform .2s; /* Animation */
@@ -23,6 +24,19 @@
   -webkit-transform: scale(3.3); /* Safari 3-8 */
   transform: scale(3.3); 
 }
+
+  /*ESTILOS SPINNER EN MODAL*/
+.bd-example-modal-lg .modal-dialog{
+    display: table;
+    position: relative;
+    margin: 0 auto;
+    top: calc(50% - 24px);
+  }
+  
+  .bd-example-modal-lg .modal-dialog .modal-content{
+    background-color: transparent;
+    border: none;
+  }
 </style>
 
 
@@ -213,7 +227,7 @@
             <div class="input-group">
               <input type="text" name="userTwitter" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
               <div class="input-group-append">
-                <button class="btn btn-primary" type="submit" id="btnFetch">
+                <button class="btn btn-primary" type="submit" onclick="modalSpinner();" id="btnFetch___________">
                   <i class="fas fa-search fa-sm" id="lupa"></i>
                 </button>
               </div>
@@ -357,8 +371,8 @@
                 <img class="img-profile rounded-circle" src="${usrBean.urlImgProfile}" >
               </a>
               <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <img class="img-fluid rounded"  src="${usrBean.urlImgProfileBig}" >
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" style="z-index: 1100;" aria-labelledby="userDropdown">
+                <img class="img-fluid rounded py-2 px-3"  src="${usrBean.urlImgProfileBig}" >
                 <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="https://twitter.com/${usrBean.screenName}" target="_blank">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -572,7 +586,7 @@
                 </div>
                 <div class="card-body">
                   <div class="text-center">
-                    <div  id="map" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 25rem;" alt=""></div>
+                    <div  id="map" class="img-fluid mb-4 rounded" style="height: 25rem;" alt=""></div>
                   </div>
                   <p>En este mapa podrás observar las ubicaciones en el uso de twitter </p>
                 </div>
@@ -592,9 +606,17 @@
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Cuándo usas Twitter</h6>
-                  <div class="dropdown no-arrow">
+                <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="ml-3 mt-2 font-weight-bold text-primary">Cuándo usas Twitter</h6>
+                  <ul class="nav nav-tabs mr-3 mt-2 border-bottom-0">
+                      <li id="prueba" class="nav-item"><a id="time-horas" class="nav-link px-2" onclick="selectTime(1);return false;" href="#">Horas</a></li>
+                      <li class="nav-item"><a id="time-dias" class="nav-link active px-2" onclick="selectTime(2);return false;" href="#">Días</a></li>
+                      <li class="nav-item"><a id="time-meses" class="nav-link px-2" onclick="selectTime(3);return false;" href="#">Meses</a></li>
+                      <li class="nav-item"><a id="time-annios" class="nav-link px-2" onclick="selectTime(4);return false;" href="#">Años</a></li>
+                  </ul>
+
+
+<!--                  <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
@@ -608,6 +630,8 @@
                       <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                   </div>
+-->
+
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -622,9 +646,10 @@
             <div class="col-xl-4 col-lg-5">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Qué tecnologías usas</h6>
-                  <div class="dropdown no-arrow">
+                <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-3 font-weight-bold text-primary">Qué tecnologías usas</h6>
+
+<!--                  <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                     </a>
@@ -636,13 +661,15 @@
                       <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                   </div>
+-->                  
+                  
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
+                  <div class="chart-pie">
                     <canvas id="myPieChart"></canvas>
                   </div>
-                  <div class="mt-4 text-center small">
+<!--                  <div class="mt-4 text-center small">
                     <span class="mr-2">
                     </span>
                     <span class="mr-2">
@@ -651,7 +678,7 @@
                     </span>
                     
                   </div>
-                  
+-->                  
 <%--                  <div class="mt-4 text-center small">
                   <c:forEach items="${labelsDispositivos}" var="lbl" varStatus="it">
                     <span class="mr-2">
@@ -689,9 +716,16 @@
             <div class="col-xl-6 col-lg-6 col-md-6">
               <!-- Illustrations -->
               <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Tweets con multimedia</h6>
+                <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="ml-3 mt-2 font-weight-bold text-primary">Tweets con multimedia</h6>
 
+                  <ul class="nav nav-tabs mr-3 mt-2 border-bottom-0">
+                      <li class="nav-item"><a id="file-imagen" class="nav-link active px-2" onclick="selectFile(1);return false;" href="#">Imagen</a></li>
+                      <li class="nav-item"><a id="file-gif" class="nav-link px-3" onclick="selectFile(2);return false;" href="#">Gif</a></li>
+                      <li class="nav-item"><a id="file-video" class="nav-link px-2" onclick="selectFile(3);return false;" href="#">Video</a></li>
+                  </ul>
+                  
+<!--                  
                   <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -703,6 +737,7 @@
                       <a id="btnVideo" class="dropdown-item" onclick="selectFile(3);return false;" href="#">Video</a>
                     </div>
                   </div>
+-->
                   
                 </div>
                 <div class="card-body">
@@ -725,100 +760,13 @@
             </div>
                   
               
-            <!-- Content Column -->
-            <div class="col-xl-6 col-lg-6 col-md-6 mb-4">
-
-              <!-- Project Card Example -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-                </div>
-                <div class="card-body">
-                  <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
-                  <div class="progress mb-4">
-                    <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
-                  <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-                  
-                  
+ 
                   
           </div>
 
                 
                 
-          <!-- Content Row -->
-          <div class="row">
-                
-              
-              <!-- Color System -->
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-primary text-white shadow">
-                    <div class="card-body">
-                      Primary
-                      <div class="text-white-50 small">#4e73df</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-success text-white shadow">
-                    <div class="card-body">
-                      Success
-                      <div class="text-white-50 small">#1cc88a</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-info text-white shadow">
-                    <div class="card-body">
-                      Info
-                      <div class="text-white-50 small">#36b9cc</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-warning text-white shadow">
-                    <div class="card-body">
-                      Warning
-                      <div class="text-white-50 small">#f6c23e</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-danger text-white shadow">
-                    <div class="card-body">
-                      Danger
-                      <div class="text-white-50 small">#e74a3b</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6 mb-4">
-                  <div class="card bg-secondary text-white shadow">
-                    <div class="card-body">
-                      Secondary
-                      <div class="text-white-50 small">#858796</div>
-                    </div>
-                  </div>
-                </div>
 
-            </div>
 
 
 
@@ -842,32 +790,25 @@
 
   </div>
   <!-- End of Page Wrapper -->
+  
+<div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content text-center text-white">
+            <span class="fa fa-spinner fa-spin fa-3x"></span>
+            <div class="my-2">Cargando . . .</div>
+        </div>
+    </div>
+</div>
+  
 
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  				
 
+  
+  
   <script type="text/javascript">
     /////////////// GRAFICA USO TWITTER /////////////// 
     var usoTwtBean = <%=request.getAttribute("usoTw")%>;
@@ -879,28 +820,33 @@
             etiquetas = usoTwtBean['labelsHoras'];
             myLineChart.options.scales.xAxes[0].scaleLabel.display = true;
             myLineChart.options.scales.xAxes[0].scaleLabel.labelString = "Horas";
+            $('#time-horas').tab('show');
         }
         if (tipo===2){
             datos = usoTwtBean['dias'];
             etiquetas = usoTwtBean['labelsDias'];
             myLineChart.options.scales.xAxes[0].scaleLabel.display = false;
+            $('#time-dias').tab('show');
         }
         if (tipo===3){
             datos = usoTwtBean['meses'];
             etiquetas = usoTwtBean['labelsMeses'];
             myLineChart.options.scales.xAxes[0].scaleLabel.display = false;
+            $('#time-meses').tab('show');
         }
         if (tipo===4){
             datos = usoTwtBean['annios'];
             etiquetas = usoTwtBean['labelsAnnios'];
             myLineChart.options.scales.xAxes[0].scaleLabel.display = true;
             myLineChart.options.scales.xAxes[0].scaleLabel.labelString = "Años";
+            $('#time-annios').tab('show');
         }
 
         myLineChart.data.datasets[0].data = datos;
         myLineChart.data.labels = etiquetas;
         myLineChart.update();
     }
+
 /////////////// GRAFICA DISPOSITIVOS ///////////////     
     var labelsDisp = <%=request.getAttribute("labelsDispositivos")%>;
     var datosDisp = <%=request.getAttribute("datosDispositivos")%>;
@@ -919,21 +865,32 @@
             urlTweetMultimedia = "${multimediaBean["photo"].urlTweet}";
             numMultimTw = "${multimediaBean["photo"].numRetweets}";
             numMultimFv = "${multimediaBean["photo"].numFavoritos}";
+            $('#file-imagen').tab('show');
         }
         if (tipo===2){
             urlFileMultimedia = "${multimediaBean["animated_gif"].urlArchivo}";
             urlTweetMultimedia = "${multimediaBean["animated_gif"].urlTweet}";
             numMultimTw = "${multimediaBean["animated_gif"].numRetweets}";
             numMultimFv = "${multimediaBean["animated_gif"].numFavoritos}";
+            $('#file-gif').tab('show');
         }
         if (tipo===3){
             urlFileMultimedia = "${multimediaBean["video"].urlArchivo}";
             urlTweetMultimedia = "${multimediaBean["video"].urlTweet}";
             numMultimTw = "${multimediaBean["video"].numRetweets}";
             numMultimFv = "${multimediaBean["video"].numFavoritos}";
+            $('#file-video').tab('show');
         }
     }
 
+/////////////// TIPO DE FICHERO MULTIMEDIA ///////////////  
+function modalSpinner(){
+       $('.modal').modal('show');
+/*       setTimeout(function () {
+       	console.log('hejsan');
+       	$('.modal').modal('hide');
+       }, 300000);*/
+    }  
 
 
   </script>
