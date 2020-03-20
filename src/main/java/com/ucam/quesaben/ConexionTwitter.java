@@ -184,6 +184,8 @@ public class ConexionTwitter extends HttpServlet {
       meGusta = getFavoritos(user, 200, 5);
       usoTw = getInfoUsoTwitter(statuses, meGusta);
 
+      ArrayList<String> fraseHoras = frasesUsoTwitterHoras(usoTw);
+
       //followers = getFollowers(user, 200, 6, false, true);
       //friends = getFriends(user, 200, 6, true, true);
       listasPropias = getListasPropias(user, 200, 1);
@@ -264,6 +266,8 @@ public class ConexionTwitter extends HttpServlet {
             request.setAttribute("labelsMeses", labelsMeses);
             request.setAttribute("annios", annios);
             request.setAttribute("labelsAnnios", labelsAnnios);*/
+
+      request.setAttribute("fraseHoras", fraseHoras);
 
       ArrayList datosDispositivos = new ArrayList();
       ArrayList labelsDispositivos = new ArrayList();
@@ -738,8 +742,6 @@ public class ConexionTwitter extends HttpServlet {
     HashMap<String, Integer> dispositivos = new HashMap<String, Integer>();
     System.out.println("################################################");
     System.out.println("----------------- DISPOSITIVOS -----------------");
-
-    List borrar = new ArrayList();
 
     try {
       String dispositivo = "";
@@ -1236,7 +1238,7 @@ public class ConexionTwitter extends HttpServlet {
           System.out.println(usr.getScreenName() + ": " + usr.getId() + ":" + usr.getFollowersCount());
           usrScrNm.put(usr.getId(), usr);
         }
-        pos = pos+100;
+        pos = pos + 100;
         cont--;
       }
     } catch (Exception ex) {
@@ -1423,6 +1425,7 @@ public class ConexionTwitter extends HttpServlet {
       int numMes;
       int numAnnio;
       int valor = 0;
+      int totalItem = tweets.size() + favoritos.size();
       for (Status tw : tweets) {
         date = tw.getCreatedAt();
         String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss u").format(date);
@@ -1434,14 +1437,22 @@ public class ConexionTwitter extends HttpServlet {
         valor = (Integer) usoTw.horas.get(numHora);
         valor++;
         usoTw.horas.set(numHora, valor);
+        usoTw.porcentHoras.set(numHora, (float) (valor * 100) / totalItem);
+        
+        valor = (int)usoTw.franjaHoras.get(usoTw.getIntFranjaFromLabelHora(numHora));
+        valor++;
+        usoTw.franjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), valor);
+        usoTw.porcentFranjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), (float) (valor * 100) / totalItem);
 
         valor = (Integer) usoTw.dias.get(numDia - 1);
         valor++;
         usoTw.dias.set(numDia - 1, valor);
+        usoTw.porcentDias.set(numDia - 1, (float) (valor * 100) / totalItem);
 
         valor = (Integer) usoTw.meses.get(numMes - 1);
         valor++;
         usoTw.meses.set(numMes - 1, valor);
+        usoTw.porcentMeses.set(numMes - 1, (float) (valor * 100) / totalItem);
 
         if (!usoAnnios.containsKey(numAnnio)) {
           usoAnnios.put(numAnnio, 1);
@@ -1461,14 +1472,22 @@ public class ConexionTwitter extends HttpServlet {
         valor = (Integer) usoTw.horas.get(numHora);
         valor++;
         usoTw.horas.set(numHora, valor);
+        usoTw.porcentHoras.set(numHora, (float) (valor * 100) / totalItem);
 
+        valor = (int)usoTw.franjaHoras.get(usoTw.getIntFranjaFromLabelHora(numHora));
+        valor++;
+        usoTw.franjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), valor);
+        usoTw.porcentFranjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), (float) (valor * 100) / totalItem);
+        
         valor = (Integer) usoTw.dias.get(numDia - 1);
         valor++;
         usoTw.dias.set(numDia - 1, valor);
+        usoTw.porcentDias.set(numDia - 1, (float) (valor * 100) / totalItem);
 
         valor = (Integer) usoTw.meses.get(numMes - 1);
         valor++;
         usoTw.meses.set(numMes - 1, valor);
+        usoTw.porcentMeses.set(numMes - 1, (float) (valor * 100) / totalItem);
 
         if (!usoAnnios.containsKey(numAnnio)) {
           usoAnnios.put(numAnnio, 1);
@@ -1484,8 +1503,11 @@ public class ConexionTwitter extends HttpServlet {
         usoTw.labelsAnnios.add(i);
         if (usoAnnios.containsKey(i)) {
           usoTw.annios.add(usoAnnios.get(i));
+          usoTw.porcentAnnios.add((float) (usoAnnios.get(i) * 100) / totalItem);
+
         } else {
           usoTw.annios.add(0);
+          usoTw.porcentAnnios.add(0.0F);
         }
       }
 
@@ -1522,6 +1544,203 @@ public class ConexionTwitter extends HttpServlet {
       System.out.println("ERROR: " + ex.getMessage());
     }
     return mayorMenor;
+  }
+
+  public ArrayList fraseGeneralUsoTwitter(InfoUsoTwitterBean usoTw) {
+    ArrayList frases = new ArrayList();
+    HashMap<String, Float> times = new HashMap();
+    try {
+      for (int i = 0; i < usoTw.horas.size(); i++) {
+        times.put((String) usoTw.labelsHoras.get(i), (Float) usoTw.porcentHoras.get(i));
+      }
+      for (int i = 0; i < usoTw.dias.size(); i++) {
+        times.put((String) usoTw.labelsDias.get(i), (Float) usoTw.porcentDias.get(i));
+      }
+      for (int i = 0; i < usoTw.meses.size(); i++) {
+        times.put((String) usoTw.labelsMeses.get(i), (Float) usoTw.porcentMeses.get(i));
+      }
+      for (int i = 0; i < usoTw.annios.size(); i++) {
+        times.put((String) usoTw.labelsAnnios.get(i), (Float) usoTw.porcentAnnios.get(i));
+      }
+
+      LinkedHashMap<String, Float> timesOrden = (LinkedHashMap<String, Float>) ordenarMapStrFloatPorValor(times);
+
+      for (Map.Entry<String, Float> h : timesOrden.entrySet()) {
+        switch (h.getKey()) {
+          case "00":
+          case "01":
+          case "02":
+          case "03":
+          case "04":
+          case "05":
+            frases.add("De madrugada");
+            break;
+          case "06":
+          case "07":
+          case "08":
+            frases.add("Por la mañana temprano");
+            break;
+          case "09":
+          case "10":
+          case "11":
+            frases.add("A media mañana");
+            break;
+          case "12":
+          case "13":
+          case "14":
+          case "15":
+            frases.add("A mediodía");
+            break;
+          case "16":
+          case "17":
+          case "18":
+          case "19":
+          case "20":
+            frases.add("Por la tarde");
+            break;
+          case "21":
+          case "22":
+          case "23":
+            frases.add("Por la noche");
+            break;
+          case "Lunes":
+          case "Martes":
+          case "Miércoles":
+          case "Jueves":
+          case "Viernes":
+          case "Sábado":
+          case "Domingo":
+            frases.add("En el día de la semana " + h.getKey());
+            break;
+          case "Enero":
+          case "Febrero":
+          case "Marzo":
+          case "Abril":
+          case "Mayo":
+          case "Junio":
+          case "Julio":
+          case "Agosto":
+          case "Septiembre":
+          case "Octubre":
+          case "Noviembre":
+          case "Diciembre":
+            frases.add("En el mes de " + h.getKey());
+            break;
+          default:
+            frases.add("En el año" + h.getKey());
+            break;
+        }
+        break;
+      }
+
+    } catch (Exception ex) {
+      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
+      System.out.println("ERROR: " + ex.getMessage());
+    }
+    return frases;
+  }
+
+  public ArrayList<String> frasesUsoTwitterHoras(InfoUsoTwitterBean usoTw) {
+    ArrayList frase = new ArrayList();
+    HashMap<String, Float> franjas = new HashMap();
+    try {
+      for (int i = 0; i < usoTw.franjaHoras.size(); i++) {
+        franjas.put((String) usoTw.labelsFranjaHoras.get(i), (float) usoTw.porcentFranjaHoras.get(i));
+      }
+/*        switch ((String) usoTw.getLabelsHoras().get(i)) {
+          case "00":
+          case "01":
+          case "02":
+          case "03":
+          case "04":
+          case "05":
+            if (!franjas.containsKey("madrugada")) {
+              franjas.put("madrugada", (Float) usoTw.porcentHoras.get(i));
+            } else {
+              franjas.replace("madrugada", franjas.get("madrugada") + (Float) usoTw.porcentHoras.get(i));
+            }
+            break;
+          case "06":
+          case "07":
+          case "08":
+            if (!franjas.containsKey("temprano")) {
+              franjas.put("temprano", (Float) usoTw.porcentHoras.get(i));
+            } else {
+              franjas.replace("temprano", franjas.get("temprano") + (Float) usoTw.porcentHoras.get(i));
+            }
+            break;
+          case "09":
+          case "10":
+          case "11":
+            if (!franjas.containsKey("mañana")) {
+              franjas.put("mañana", (Float) usoTw.porcentHoras.get(i));
+            } else {
+              franjas.replace("mañana", franjas.get("mañana") + (Float) usoTw.porcentHoras.get(i));
+            }
+            break;
+          case "12":
+          case "13":
+          case "14":
+          case "15":
+            if (!franjas.containsKey("mediodia")) {
+              franjas.put("mediodia", (Float) usoTw.porcentHoras.get(i));
+            } else {
+              franjas.replace("mediodia", franjas.get("mediodia") + (Float) usoTw.porcentHoras.get(i));
+            }
+            break;
+          case "16":
+          case "17":
+          case "18":
+          case "19":
+          case "20":
+            if (!franjas.containsKey("tarde")) {
+              franjas.put("tarde", (Float) usoTw.porcentHoras.get(i));
+            } else {
+              franjas.replace("tarde", franjas.get("tarde") + (Float) usoTw.porcentHoras.get(i));
+            }
+            break;
+          case "21":
+          case "22":
+          case "23":
+            if (!franjas.containsKey("noche")) {
+              franjas.put("noche", (Float) usoTw.porcentHoras.get(i));
+            } else {
+              franjas.replace("noche", franjas.get("noche") + (Float) usoTw.porcentHoras.get(i));
+            }
+            break;
+        }
+
+      }*/
+      LinkedHashMap<String, Float> franjasOrden = (LinkedHashMap<String, Float>) ordenarMapStrFloatPorValor(franjas);
+
+      for (Map.Entry<String, Float> f : franjasOrden.entrySet()) {
+        switch (f.getKey()) {
+          case "madrugada":
+            frase.add("De madrugada");
+            break;
+          case "temprano":
+            frase.add("Por la mañana temprano");
+            break;
+          case "mañana":
+            frase.add("A media mañana");
+            break;
+          case "mediodia":
+            frase.add("A mediodía");
+            break;
+          case "tarde":
+            frase.add("Por la tarde");
+            break;
+          case "noche":
+            frase.add("Por la noche");
+            break;
+        }
+        break;
+      }
+    } catch (Exception ex) {
+      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
+      System.out.println("ERROR: " + ex.getMessage());
+    }
+    return frase;
   }
 
   public HashMap<String, TweetMultimediaBean> getTweetsMultimediaFavoritos(List<Status> tweets) {
@@ -1676,6 +1895,13 @@ public class ConexionTwitter extends HttpServlet {
     return estructura.entrySet()
             .stream()
             .sorted((Map.Entry.<String, Integer>comparingByValue().reversed()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+  }
+
+  public Map<String, Float> ordenarMapStrFloatPorValor(Map<String, Float> estructura) {
+    return estructura.entrySet()
+            .stream()
+            .sorted((Map.Entry.<String, Float>comparingByValue().reversed()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
   }
 
