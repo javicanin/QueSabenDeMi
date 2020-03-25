@@ -14,8 +14,8 @@ public class LeerUsuariosFichero {
     try {
       // Apertura del fichero y creacion de BufferedReader para poder
       // hacer una lectura comoda (disponer del metodo readLine()).
-File f = new File("DBDriverInfo.properties");
-System.out.println(f.getAbsolutePath());      
+      File f = new File("DBDriverInfo.properties");
+      System.out.println(f.getAbsolutePath());
       archivo = new File(System.getProperty("com.sun.aas.instanceRoot") + "/config/gamers.txt");
       fr = new FileReader(archivo);
       br = new BufferedReader(fr);
@@ -26,8 +26,8 @@ System.out.println(f.getAbsolutePath());
         usrs.add(usr);
       }
       usuarios = new String[usrs.size()];
-      for(int i=0; i<usrs.size();i++){
-        usuarios[i] = (String)usrs.get(i);
+      for (int i = 0; i < usrs.size(); i++) {
+        usuarios[i] = (String) usrs.get(i);
       }
     } catch (Exception e) {
       e.printStackTrace();

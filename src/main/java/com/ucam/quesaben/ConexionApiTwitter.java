@@ -1,6 +1,10 @@
 package com.ucam.quesaben;
 
+import java.util.Map;
+import java.util.logging.Level;
+import twitter4j.RateLimitStatus;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -27,4 +31,26 @@ public class ConexionApiTwitter {
             return twitter;
         
     }
+
+    public static void getRateLimits(boolean soloUsados) {
+    Twitter twitter = ConexionApiTwitter.getConexion();
+    System.out.println("----------------- RATE LIMITS -----------------");
+    Map<String, RateLimitStatus> rateLimitStatus;
+    try {
+      rateLimitStatus = twitter.getRateLimitStatus();
+      for (Map.Entry<String, RateLimitStatus> rLS : rateLimitStatus.entrySet()) {
+        String key = rLS.getKey();
+        RateLimitStatus value = rLS.getValue();
+        if (soloUsados && (value.getLimit() != value.getRemaining())) {
+          System.out.println(key + "(Limit/Remaining -> seconds): " + value.getLimit() + "/" + value.getRemaining() + " -> " + value.getSecondsUntilReset());
+        }
+      }
+    } catch (TwitterException ex) {
+      java.util.logging.Logger.getLogger(ConexionTwitter.class
+              .getName()).log(Level.SEVERE, null, ex);
+      System.out.println("ERROR: " + ex.getMessage());
+    }
+
+  }
+    
 }
