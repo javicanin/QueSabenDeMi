@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class CargaPropertiesFrases {
+public class LoadPropertiesFrases {
 
   public HashMap<String, String> allFrases;
   public HashMap<String, String> randomFrases;
 
-  public CargaPropertiesFrases() throws Exception {
+  public LoadPropertiesFrases() throws Exception {
     try {
       Properties prop = new Properties();
       FileReader fr = new FileReader(System.getProperty("com.sun.aas.instanceRoot") + Constantes.FICHERO_PROPIEDADES_FRASES);
@@ -42,7 +42,7 @@ public class CargaPropertiesFrases {
     int cont = 0;
     for (Map.Entry<String, String> af : allFrases.entrySet()) {
       clave = af.getKey();
-      claveUnica = clave.substring(0, clave.indexOf(Constantes.CHAR_SEPARADOR_NUM_FRASE));
+      claveUnica = clave.substring(0, clave.indexOf(Constantes.CHAR_SEPARADOR_PROPERTIES));
       if (tiposFrases.containsKey(claveUnica)) {
         cont = (int) tiposFrases.get(claveUnica);
         tiposFrases.put(claveUnica, ++cont);
@@ -55,7 +55,7 @@ public class CargaPropertiesFrases {
     randomFrases = new HashMap<String, String>();
     for (Map.Entry<String, Integer> tf : tiposFrases.entrySet()) {
        numFraseAleatoria = FuncUtils.getRandomNumberInRange(1, tf.getValue());
-       claveUnica = tf.getKey() + Constantes.CHAR_SEPARADOR_NUM_FRASE + Integer.toString(numFraseAleatoria);
+       claveUnica = tf.getKey() + Constantes.CHAR_SEPARADOR_PROPERTIES + Integer.toString(numFraseAleatoria);
        String frase = allFrases.get(claveUnica);
        randomFrases.put(tf.getKey(), frase);
     }

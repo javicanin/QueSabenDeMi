@@ -37,6 +37,16 @@
         background-color: transparent;
         border: none;
       }
+      
+      /*Texto fijo del campo input ej: @*/
+      .input-txt-fixed {
+        position: absolute;
+        z-index: 9;
+        display: block;
+        padding-left: .75rem;
+        padding-top: .375rem;
+        padding-bottom: .375rem;
+      }
     </style>
 
   </head>
@@ -57,7 +67,11 @@
 
             <div class="row">
               <div class="col-12 my-5">
-                <h1 class="h1 text-center text-primary">Qué sabe Twitter de mi...</h1>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 my-5">
+                <h1 class="h1 text-center text-primary">Qué sabe Twitter sobre mi...</h1>
               </div>
             </div>
 
@@ -65,7 +79,8 @@
               <div class="col-12 my-5">
                 <form id="form-search" name="formulario" class="col-xl-4 offset-xl-4 col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-8 offset-xs-2 col-10 offset-1" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
                   <div class="input-group">
-                    <input type="text" name="userTwitter" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
+                    <span class="input-txt-fixed font-weight-bolder">@</span>
+                    <input type="text" name="userTwitter" style="padding-left: 29px" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit" onclick="modalSpinner();">
                         <i class="fas fa-search fa-sm" id="lupa"></i>

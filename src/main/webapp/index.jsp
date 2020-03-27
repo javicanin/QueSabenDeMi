@@ -37,7 +37,18 @@
         background-color: transparent;
         border: none;
       }
-    </style>
+
+      /*Texto fijo del campo input ej: @*/
+      .input-txt-fixed {
+        position: absolute;
+        z-index: 9;
+        display: block;
+        padding-left: .75rem;
+        padding-top: .375rem;
+        padding-bottom: .375rem;
+      }
+
+</style>
 
 
 
@@ -225,7 +236,8 @@
             <!-- Topbar Search -->
             <form id="form-search" name="formulario" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
               <div class="input-group">
-                <input type="text" name="userTwitter" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
+                <span class="input-txt-fixed font-weight-bolder">@</span>
+                <input type="text" name="userTwitter" style="padding-left: 29px" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <button class="btn btn-primary" type="submit" onclick="modalSpinner();" id="btnFetch___________">
                     <i class="fas fa-search fa-sm" id="lupa"></i>
@@ -414,7 +426,7 @@
             <!-- Content Row -->
             <div class="row">
 
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-primary">
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
@@ -437,7 +449,7 @@
                 </div>
 
 
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                   <div class="card border-left-success">
                     <div class="card-body p-2">
                       <div class="row no-gutters align-items-center">
@@ -461,7 +473,7 @@
 
 
                 <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                   <div class="card border-left-info">
                     <div class="card-body p-2">
                       <div class="row no-gutters align-items-center">
@@ -478,7 +490,7 @@
               </div>
 
               <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-warning">
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
@@ -495,7 +507,7 @@
               </div>
 
               <!-- Earnings (Monthly) Card Example -->
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-primary">
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
@@ -521,7 +533,7 @@
               </div>
 
               <!-- Pending Requests Card Example -->
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-success">
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
@@ -537,7 +549,7 @@
                 </div>
               </div>
 
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-info">
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
@@ -562,9 +574,9 @@
             <div class="row">
 
               <!-- DataTales Example -->
-              <div class="col-xl-6 col-lg-6">
+              <div class="col-xl-6 col-lg-6 px-2">
 
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-3">
                   <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Tus mejores amigos o perfiles preferidos</h6>
                   </div>
@@ -573,33 +585,71 @@
                       <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0" >
                         <thead>
                           <tr>
-                            <th style="text-align: center">Imagen</th>
+                            <!--<th style="text-align: center">Imagen</th>-->
                             <th>Nombre</th>
-                            <th>Screen name</th>
+                            <th style="text-align: center">Peso</th>
+                            <th style="text-align: center">Interacciones</th>
+                            <th style="text-align: center">tw(${fn:length(idRtw)})</th>
+                            <th style="text-align: center">fv(${fn:length(idFv)})</th>
+                            <th style="text-align: center">rtwMe(${fn:length(idRtwMe)})</th>
                           </tr>
                         </thead>
                         <tfoot>
-                          <tr>
+                          <!--<tr>
                             <th style="text-align: center">Imagen</th>
                             <th>Nombre</th>
-                            <th>Screen name</th>
-                          </tr>
+                            <th style="text-align: center">Interacciones</th>
+                            <th>Usuario</th>
+                          </tr>-->
                         </tfoot>
                         <tbody>
                           <c:forEach items="<%=request.getAttribute("amigos")%>" var="amg">
                             <tr>
-                              <td style="text-align: center">
+                              <!--<td style="text-align: center">
                                 <div class="zoom">
                                   <img style="width: 2rem; height: 2rem" class="img-profile rounded" src="${amg.value.urlImgProfileBig}">
                                 </div>
+                              </td>-->
+                              <td style="vertical-align: middle">
+                                <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.name}</a>                              
+                              </td>
+                              <td style="text-align: center; vertical-align: middle">
+                                ${posFriend[amg.value.id]}
+                              </td>
+                              <td style="text-align: center; vertical-align: middle">
+                                ${usrInterac[amg.value.id]}
+                              </td>
+                              <td style="text-align: center; vertical-align: middle">
+                                <c:forEach items="<%=request.getAttribute("idRtw")%>" var="rtw" varStatus="st">
+                                  <c:if test="${rtw.key==amg.value.id}" >
+                                ${idRtw[amg.value.id]} (${st.index})
+                                </c:if>
+                                </c:forEach>
+                              </td>
+                              <td style="text-align: center; vertical-align: middle">
+                                <c:forEach items="<%=request.getAttribute("idFv")%>" var="fv" varStatus="st">
+                                  <c:if test="${fv.key==amg.value.id}" >
+                                ${idFv[amg.value.id]} (${st.index})
+                                </c:if>
+                                </c:forEach>
+                              </td>
+                              <td style="text-align: center; vertical-align: middle">
+                                <c:forEach items="<%=request.getAttribute("idRtwMe")%>" var="rtwm" varStatus="st">
+                                  <c:if test="${rtwm.key==amg.value.id}" >
+                                ${idRtwMe[amg.value.id]} (${st.index})
+                                </c:if>
+                                </c:forEach>
+                              </td>
 
+
+<%--                              <td style="text-align: center; vertical-align: middle">
+                                <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
+                                <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
                               </td>
                               <td style="vertical-align: middle">
-                                <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.name}</a>
-                              </td>
-                              <td style="vertical-align: middle">
-                                <a href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.screenName}</a>                              
-                              </td>
+                                <!--<a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.screenName}</a>-->
+                                <a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.id}</a>
+                              </td>--%>
                             </tr>
                           </c:forEach>
                         </tbody>
@@ -609,8 +659,8 @@
                 </div>
               </div>
 
-              <div class="col-xl-6 col-lg-6">
-                <div class="card shadow mb-4">
+              <div class="col-xl-6 col-lg-6 px-2">
+                <div class="card shadow mb-3">
                   <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Dónde usas Twitter</h6>
                   </div>
@@ -633,8 +683,8 @@
             <div class="row">
 
               <!-- Area Chart -->
-              <div class="col-xl-8 col-lg-7">
-                <div class="card shadow mb-4" id="cuandoUsas">
+              <div class="col-xl-8 col-lg-7 px-2">
+                <div class="card shadow mb-3" id="cuandoUsas">
                   <!-- Card Header - Dropdown -->
                   <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="ml-3 mt-2 font-weight-bold text-primary">Cuándo usas Twitter</h6>
@@ -673,8 +723,8 @@
               </div>
 
               <!-- Pie Chart -->
-              <div class="col-xl-4 col-lg-5">
-                <div class="card shadow mb-4">
+              <div class="col-xl-4 col-lg-5 px-2">
+                <div class="card shadow mb-3">
                   <!-- Card Header - Dropdown -->
                   <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-3 font-weight-bold text-primary">Desde el teléfono, ordenador, aplicación</h6>
@@ -688,7 +738,7 @@
                         </div>
                       </c:if>
                       <c:if test="${datosDispositivos=='[]'}">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 17.3rem;" src="images/logo-multimedia-tw.png" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 17.3rem" src="images/logo-multimedia-tw.png" alt="">
                       </c:if>
                     </div>
                     <c:if test="${datosDispositivos!='[]'}">
@@ -744,9 +794,9 @@
             <div class="row">
 
 
-              <div class="col-xl-6 col-lg-6 col-md-6">
+              <div class="col-xl-6 col-lg-6 col-md-6 px-2">
                 <!-- Illustrations -->
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-3">
                   <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="ml-3 mt-2 font-weight-bold text-primary">Imágenes y vídeos populares</h6>
 
@@ -760,7 +810,7 @@
                   </div>
                   <div class="card-body">
                     <div class="text-center">
-                      <img id="fileMultimedia" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                      <img id="fileMultimedia" class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 20rem;"
                            <c:if test="${multimediaBean['photo'].urlArchivo != null}">
                              src="${multimediaBean['photo'].urlArchivo}"
                            </c:if>
@@ -786,6 +836,20 @@
               </div>
 
 
+              
+              
+              <div class="col-xl-6 col-lg-6 col-md-6 px-2">
+                <div class="card shadow mb-3">
+                  <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-3 font-weight-bold text-primary">Qué puedo adivinar sobre tí</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="text-center">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
 
 
             </div>
