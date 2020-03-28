@@ -65,6 +65,7 @@ public class ConexionTwitter extends HttpServlet {
    * @throws IOException if an I/O error occurs
    */
   User usuario;
+  UsuarioBean usrBean;
   ArrayList idsFollowers;
   ArrayList idsFriends;
   //PagableResponseList<User> followers;
@@ -151,7 +152,7 @@ public class ConexionTwitter extends HttpServlet {
 
       System.out.println("------------- USUARIO CONSULTADO -------------");
       usuario = twitter.showUser(user);
-      UsuarioBean usrBean = new UsuarioBean(usuario);
+      usrBean = new UsuarioBean(usuario);
       System.out.println("Nombre: " + usuario.getName());
       System.out.println("ScreenName: " + usuario.getScreenName());
       System.out.println("Lang: " + usuario.getLang());
@@ -234,7 +235,10 @@ public class ConexionTwitter extends HttpServlet {
 
       getGamersInFriends(gamers, idsFriends);
 
-      LoadPropertiesFrases frases = new LoadPropertiesFrases();
+      LoadPropertiesFrases propFrases = new LoadPropertiesFrases();
+      propFrases.loadRandomProperties();
+      frasesApp = selectFrases(propFrases);
+      
 
       /*frasesApp = prop.loadAllProperties();
       String fraseVefificado = prop.getPropertiesAsAleatory(Constantes.FRASE_VERIFICADO);
@@ -264,7 +268,7 @@ public class ConexionTwitter extends HttpServlet {
       request.setAttribute("fraseNoVerificado", fraseNoVefificado);
       request.setAttribute("fraseProtegido", fraseProtegido);
       request.setAttribute("fraseNoProtegido", fraseNoProtegido);*/
-      request.setAttribute("frases", frases.randomFrases);
+      request.setAttribute("frases", frasesApp);
 
 //request.setAttribute("followers", followers);
       request.setAttribute("usrBean", usrBean);
@@ -278,24 +282,10 @@ public class ConexionTwitter extends HttpServlet {
       request.setAttribute("idFv", idsUserFavoritos);
       request.setAttribute("idRtwMe", idsSegMutuosReteetsMe);
 /////////////////////////////////////////////////////////
-      /*String horas = new Gson().toJson(usoTw.getHoras());
-            String labelsHoras = new Gson().toJson(usoTw.getLabelsHoras());
-            String dias = new Gson().toJson(usoTw.getDias());
-            String labelsDias = new Gson().toJson(usoTw.getLabelsDias());
-            String meses = new Gson().toJson(usoTw.getMeses());
-            String labelsMeses = new Gson().toJson(usoTw.getLabelsMeses());
-            String annios = new Gson().toJson(usoTw.getAnnios());
-            String labelsAnnios = new Gson().toJson(usoTw.getLabelsAnnios());*/
+
       String usoTwt = new Gson().toJson(usoTw);
       request.setAttribute("usoTw", usoTwt);
-      /*request.setAttribute("horas", horas);
-            request.setAttribute("labelsHoras", labelsHoras);
-            request.setAttribute("dias", dias);
-            request.setAttribute("labelsDias", labelsDias);
-            request.setAttribute("meses", meses);
-            request.setAttribute("labelsMeses", labelsMeses);
-            request.setAttribute("annios", annios);
-            request.setAttribute("labelsAnnios", labelsAnnios);*/
+
       String fraseHoras = usoTw.titularUsoTwitter("horas");
       String fraseUsoGeneral = usoTw.titularUsoTwitter("general");
 
@@ -389,6 +379,27 @@ public class ConexionTwitter extends HttpServlet {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+  public HashMap<String, String> selectFrases(LoadPropertiesFrases lpf){
+    HashMap<String, String> frases = new HashMap();
+    String clave = usrBean.clavePerfilVerificado();
+    frases.put(Constantes.CLAVE_VERIFICADO, lpf.getRandomFraseByKey(clave));
+    
+    clave = usrBean.clavePerfilProtegido();
+    frases.put(Constantes.CLAVE_PROTEGIDO, lpf.getRandomFraseByKey(clave));
+
+    clave = usrBean.claveVolumenUso();
+    frases.put(Constantes.CLAVE_VOL_USO, lpf.getRandomFraseByKey(clave));
+
+    clave = usrBean.claveNumSeguidores();
+    frases.put(Constantes.CLAVE_NUM_SEGUIDORES, lpf.getRandomFraseByKey(clave));
+
+    clave = usrBean.claveNumAmigos();
+    frases.put(Constantes.CLAVE_NUM_AMIGOS, lpf.getRandomFraseByKey(clave));
+
+
+    return frases;
+  }
+
   public ArrayList getIdsFollowers(String screenName, int groupSize, int numLlamadas) {
     ArrayList followers = new ArrayList();
     IDs followersPage;

@@ -436,8 +436,9 @@
                           <c:if test="${not usrBean.verified}">Perfil NO verificado</c:if>
                           </div>
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
-                          <c:if test="${usrBean.verified}">${frases['VERIFICADO']}</c:if>
-                          <c:if test="${not usrBean.verified}">${frases['NO-VERIFICADO']}</c:if>
+<%--                          <c:if test="${usrBean.verified}">${frases['VERIFICADO']}</c:if>
+                          <c:if test="${not usrBean.verified}">${frases['NO-VERIFICADO']}</c:if>--%>
+                          ${frases['VERIFICADO']}
                           </div>
                         </div>
                         <!--<div class="col-auto">
@@ -459,8 +460,9 @@
                           <c:if test="${not usrBean.protegido}">Perfil NO protegido</c:if>
                           </div>
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
-                          <c:if test="${usrBean.protegido}">${frases['PROTEGIDO']}</c:if>
-                          <c:if test="${not usrBean.protegido}">${frases['NO-PROTEGIDO']}</c:if>
+<%--                          <c:if test="${usrBean.protegido}">${frases['PROTEGIDO']}</c:if>
+                          <c:if test="${not usrBean.protegido}">${frases['NO-PROTEGIDO']}</c:if>--%>
+${frases['PROTEGIDO']}
                           </div>
                         </div>
                         <!--<div class="col-auto">
@@ -495,8 +497,8 @@
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
-                        <div class="h6 font-weight-bold text-warning mb-1">Followers</div>
-                        <div class="text-xs font-weight-bold text-uppercase text-gray-900">${usrBean.numFollowers}</div>
+                        <div class="h6 font-weight-bold text-warning mb-1">Tweets: ${usrBean.numTweets} / Me gustas: ${usrBean.numFavoritos}</div>
+                        <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['VOLUMEN-USO']}</div>
                       </div>
                       <!--<div class="col-auto">
                         <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -512,10 +514,10 @@
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
-                        <div class="h6 font-weight-bold text-primary mb-1">Amigos</div>
+                        <div class="h6 font-weight-bold text-primary mb-1">Amigos: ${usrBean.numFriends}</div>
                         <div class="row no-gutters align-items-center">
                           <div class="col-auto">
-                            <div class="text-xs font-weight-bold text-uppercase text-gray-900">${usrBean.numFriends}</div>
+                            <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['NUM-AMIGOS']}</div>
                           </div>
                           <div class="col">
                             <div class="progress progress-sm mr-2">
@@ -538,8 +540,8 @@
                   <div class="card-body p-2">
                     <div class="row no-gutters align-items-center">
                       <div class="col mr-2">
-                        <div class="h6 font-weight-bold text-success mb-1">Me gustas</div>
-                        <div class="text-xs font-weight-bold text-uppercase text-gray-900">${usrBean.numFavoritos}</div>
+                        <div class="h6 font-weight-bold text-success mb-1">Followers: ${usrBean.numFollowers}</div>
+                        <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['NUM-SEGUIDORES']}</div>
                       </div>
                       <!--<div class="col-auto">
                         <i class="fas fa-calendar fa-2x text-gray-300"></i>

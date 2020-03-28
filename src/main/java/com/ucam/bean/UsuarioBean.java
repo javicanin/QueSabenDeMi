@@ -1,5 +1,7 @@
 package com.ucam.bean;
 
+import com.ucam.utils.Constantes;
+import com.ucam.utils.FuncUtils;
 import java.util.Date;
 import twitter4j.User;
 
@@ -26,7 +28,71 @@ public class UsuarioBean{
     
     public UsuarioBean() {
     }
+    
+    public String claveVolumenUso(){
+      int volUso = numTweets + numFavoritos;
+      if(FuncUtils.isBetween(volUso, 0, Constantes.USO_APENAS, 3))
+        return Constantes.CLAVE_VOL_USO_APENAS;
+      if(FuncUtils.isBetween(volUso, Constantes.USO_APENAS + 1, Constantes.USO_MODERADO, 3))
+        return Constantes.CLAVE_VOL_USO_MODERADO;
+      if(FuncUtils.isBetween(volUso, Constantes.USO_MODERADO + 1, Constantes.USO_INTENSIVO, 3))
+        return Constantes.CLAVE_VOL_USO_INTENSIVO;
+      if(volUso > Constantes.USO_INTENSIVO + 1)
+        return Constantes.CLAVE_VOL_USO_EXTREMADO;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
 
+    public String clavePerfilVerificado(){
+      if(verified)
+        return Constantes.CLAVE_VERIFICADO;
+      if(!verified)
+        return Constantes.CLAVE_NO_VERIFICADO;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+
+    public String clavePerfilProtegido(){
+      if(protegido)
+        return Constantes.CLAVE_PROTEGIDO;
+      if(!protegido)
+        return Constantes.CLAVE_NO_PROTEGIDO;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+
+    public String claveNumSeguidores(){
+      int foll = numFollowers;
+      if(foll == 0)
+        return Constantes.CLAVE_NUM_SEGUIDORES_NINGUNO;
+      if(FuncUtils.isBetween(foll, 0, Constantes.NUM_SEG_POCOS, 3))
+        return Constantes.CLAVE_NUM_SEGUIDORES_POCOS;
+      if(FuncUtils.isBetween(foll, Constantes.NUM_SEG_POCOS + 1, Constantes.NUM_SEG_ACEPTABLE, 3))
+        return Constantes.CLAVE_NUM_SEGUIDORES_ACEPTABLE;
+      if(FuncUtils.isBetween(foll, Constantes.NUM_SEG_ACEPTABLE + 1, Constantes.NUM_SEG_NOTABLE, 3))
+        return Constantes.CLAVE_NUM_SEGUIDORES_NOTABLE;
+      if(FuncUtils.isBetween(foll, Constantes.NUM_SEG_NOTABLE + 1, Constantes.NUM_SEG_MUCHOS, 3))
+        return Constantes.CLAVE_NUM_SEGUIDORES_MUCHOS;
+      if(foll > Constantes.NUM_SEG_MUCHOS)
+        return Constantes.CLAVE_NUM_SEGUIDORES_MUCHISIMOS;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+
+    public String claveNumAmigos(){
+      int frd = numFriends;
+      if(frd == 0)
+        return Constantes.CLAVE_NUM_AMIGOS_NINGUNO;
+      if(FuncUtils.isBetween(frd, 0, Constantes.NUM_AMIGOS_POCOS, 3))
+        return Constantes.CLAVE_NUM_AMIGOS_POCOS;
+      if(FuncUtils.isBetween(frd, Constantes.NUM_AMIGOS_POCOS + 1, Constantes.NUM_AMIGOS_ACEPTABLE, 3))
+        return Constantes.CLAVE_NUM_AMIGOS_ACEPTABLE;
+      if(FuncUtils.isBetween(frd, Constantes.NUM_AMIGOS_ACEPTABLE + 1, Constantes.NUM_AMIGOS_NOTABLE, 3))
+        return Constantes.CLAVE_NUM_AMIGOS_NOTABLE;
+      if(FuncUtils.isBetween(frd, Constantes.NUM_AMIGOS_NOTABLE + 1, Constantes.NUM_AMIGOS_MUCHOS, 3))
+        return Constantes.CLAVE_NUM_AMIGOS_MUCHOS;
+      if(frd > Constantes.NUM_AMIGOS_MUCHOS)
+        return Constantes.CLAVE_NUM_AMIGOS_MUCHISIMOS;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+    
+    
     public UsuarioBean(User usuario) {
         id = usuario.getId();
         name = usuario.getName();

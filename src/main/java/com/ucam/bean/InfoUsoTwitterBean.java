@@ -1,5 +1,6 @@
 package com.ucam.bean;
 
+import com.ucam.utils.Constantes;
 import com.ucam.utils.FuncUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +30,8 @@ public class InfoUsoTwitterBean {
   public InfoUsoTwitterBean() {
     labelsHoras = new ArrayList<>(Arrays.asList("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"));
     //labelsFranjaHoras = new ArrayList<>(Arrays.asList("madrugada", "temprano", "mañana", "mediodia", "tarde", "noche"));
-    labelsFranjaHoras = new ArrayList<>(Arrays.asList("madrugada", "mañana", "mediodia", "tarde", "noche"));
+    labelsFranjaHoras = new ArrayList<>(Arrays.asList(Constantes.FRANJA_USO_HORAS_MADRUGADA, Constantes.FRANJA_USO_HORAS_MANIANA,
+            Constantes.FRANJA_USO_HORAS_MEDIODIA, Constantes.FRANJA_USO_HORAS_TARDE, Constantes.FRANJA_USO_HORAS_NOCHE));
     labelsDias = new ArrayList<>(Arrays.asList("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"));
     labelsMeses = new ArrayList<>(Arrays.asList("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"));
     horas = new ArrayList<Integer>();
@@ -328,22 +330,22 @@ public class InfoUsoTwitterBean {
         if (t.getValue() != 0) {
           switch (t.getKey()) {
             // FRANJAS DE HORAS 
-            case "madrugada":
+            case Constantes.FRANJA_USO_HORAS_MADRUGADA:
               frase = "De madrugada";
               break;
             /*case "temprano":
               frase = "Por la mañana temprano";
               break;*/
-            case "mañana":
+            case Constantes.FRANJA_USO_HORAS_MANIANA:
               frase = "Por la mañana";
               break;
-            case "mediodia":
+            case Constantes.FRANJA_USO_HORAS_MEDIODIA:
               frase = "A mediodía";
               break;
-            case "tarde":
+            case Constantes.FRANJA_USO_HORAS_TARDE:
               frase = "Por la tarde";
               break;
-            case "noche":
+            case Constantes.FRANJA_USO_HORAS_NOCHE:
               frase = "Por la noche";
               break;
             // DIAS DE LA SEMANA

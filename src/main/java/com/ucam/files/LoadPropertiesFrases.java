@@ -15,6 +15,22 @@ public class LoadPropertiesFrases {
   public HashMap<String, String> allFrases;
   public HashMap<String, String> randomFrases;
 
+  public HashMap<String, String> getAllFrases() {
+    return allFrases;
+  }
+
+  public void setAllFrases(HashMap<String, String> allFrases) {
+    this.allFrases = allFrases;
+  }
+
+  public HashMap<String, String> getRandomFrases() {
+    return randomFrases;
+  }
+
+  public void setRandomFrases(HashMap<String, String> randomFrases) {
+    this.randomFrases = randomFrases;
+  }
+
   public LoadPropertiesFrases() throws Exception {
     try {
       Properties prop = new Properties();
@@ -22,20 +38,18 @@ public class LoadPropertiesFrases {
       prop.load(fr);
 
       Enumeration<Object> claves = prop.keys();
-      allFrases = new HashMap<String, String>();
+      allFrases = new HashMap();
       while (claves.hasMoreElements()) {
         Object clave = claves.nextElement();
         allFrases.put(clave.toString(), prop.get(clave).toString());
       }
 
-      getRandomProperties();
-      
     } catch (FileNotFoundException e) {
       throw new Exception("Error al cargar el fichero de propiedades:" + Constantes.FICHERO_PROPIEDADES_FRASES);
     }
   }
 
-  public void getRandomProperties() {
+  public void loadRandomProperties() {
     HashMap<String, Integer> tiposFrases = new HashMap();
     String clave = "";
     String claveUnica = "";
@@ -52,7 +66,7 @@ public class LoadPropertiesFrases {
     }
     
     int numFraseAleatoria = 0;
-    randomFrases = new HashMap<String, String>();
+    randomFrases = new HashMap();
     for (Map.Entry<String, Integer> tf : tiposFrases.entrySet()) {
        numFraseAleatoria = FuncUtils.getRandomNumberInRange(1, tf.getValue());
        claveUnica = tf.getKey() + Constantes.CHAR_SEPARADOR_PROPERTIES + Integer.toString(numFraseAleatoria);
@@ -61,4 +75,11 @@ public class LoadPropertiesFrases {
     }
   }
 
+  public String getRandomFraseByKey(String key){
+    if(randomFrases.containsKey(key)){
+      return randomFrases.get(key);
+    }
+    return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+  }
+  
 }

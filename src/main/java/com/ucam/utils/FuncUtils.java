@@ -10,6 +10,19 @@ import java.util.stream.Collectors;
 
 public class FuncUtils {
 
+  public static boolean isBetween(int num, int inf, int sup, int included){
+    switch (included){
+      case 0:
+        return (num>inf) && (num<sup);
+      case 1:
+        return (num>=inf) && (num<sup);
+      case 2:
+        return (num>inf) && (num<=sup);
+      case 3:
+        return (num>=inf) && (num<=sup);
+    }
+    return false;
+  }
   public static int getRandomNumberInRange(int min, int max) {
     Random randomGenerator = new Random();
     return randomGenerator.nextInt(max) + min;
