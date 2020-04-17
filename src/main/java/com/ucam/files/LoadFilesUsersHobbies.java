@@ -3,9 +3,14 @@ package com.ucam.files;
 import java.io.*;
 import java.util.ArrayList;
 
-public class LeerUsuariosFichero {
+public class LoadFilesUsersHobbies {
+  String nombreArchivo;
 
-  public static String[] leerFicheroUsuarios() {
+  public LoadFilesUsersHobbies(String nombreFichero) {
+    nombreArchivo = nombreFichero;
+  }
+
+  public String[] leerFicheroUsuarios() {
     File archivo = null;
     FileReader fr = null;
     BufferedReader br = null;
@@ -15,8 +20,8 @@ public class LeerUsuariosFichero {
       // Apertura del fichero y creacion de BufferedReader para poder
       // hacer una lectura comoda (disponer del metodo readLine()).
       File f = new File("DBDriverInfo.properties");
-      System.out.println(f.getAbsolutePath());
-      archivo = new File(System.getProperty("com.sun.aas.instanceRoot") + "/config/gamers.txt");
+      //System.out.println(f.getAbsolutePath());
+      archivo = new File(System.getProperty("com.sun.aas.instanceRoot") + nombreArchivo);
       fr = new FileReader(archivo);
       br = new BufferedReader(fr);
       // Lectura del fichero

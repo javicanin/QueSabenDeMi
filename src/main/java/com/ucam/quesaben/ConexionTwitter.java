@@ -14,13 +14,14 @@ import com.ucam.bean.PropertiesGeoJson;
 import com.ucam.bean.TweetMultimediaBean;
 import com.ucam.bean.UsuarioBean;
 import com.ucam.files.LoadPropertiesFrases;
-import com.ucam.files.LeerUsuariosFichero;
+import com.ucam.files.LoadFilesUsersHobbies;
 import com.ucam.files.LoadPropDisp;
 import com.ucam.utils.Constantes;
 import com.ucam.utils.FuncUtils;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -100,6 +101,7 @@ public class ConexionTwitter extends HttpServlet {
   InfoUsoTwitterBean usoTw;
   HashMap<String, TweetMultimediaBean> multimediaFavoritos;
   HashMap<Long, User> gamers;
+  HashMap<Long, User> politicos;
   HashMap<String, String> frasesApp;
 
   GeoLocation geo;
@@ -152,6 +154,7 @@ public class ConexionTwitter extends HttpServlet {
 
       System.out.println("------------- USUARIO CONSULTADO -------------");
       usuario = twitter.showUser(user);
+      //System.out.println("Nombre: \n" + usuario.toString());
       usrBean = new UsuarioBean(usuario);
       System.out.println("Nombre: " + usuario.getName());
       System.out.println("ScreenName: " + usuario.getScreenName());
@@ -180,11 +183,11 @@ public class ConexionTwitter extends HttpServlet {
       ConexionApiTwitter.getRateLimits(true);
       //getUserFriendships(370199897L, 385337732L);
       //searchTweets();
-      idsFollowers = getIdsFollowers(user, 5000, 3);
-      idsFriends = getIdsFriends(user, 5000, 3);
+      idsFollowers = getIdsFollowers(user, 5000, 1);
+      idsFriends = getIdsFriends(user, 5000, 1);
       idsSegMutuos = getIdsSeguidoresMutuos(idsFollowers, idsFriends);
       System.out.println("Seguidores Mutuos: " + idsSegMutuos.size());
-      statuses = getTweets(user, 200, 10);
+      statuses = getTweets(user, 200, 20);
       meGusta = getFavoritos(user, 200, 5);
       usoTw = getInfoUsoTwitter(statuses, meGusta);
 
@@ -230,11 +233,17 @@ public class ConexionTwitter extends HttpServlet {
 
       multimediaFavoritos = getTweetsMultimediaFavoritos(statuses);
 
-      String[] gamersFile = LeerUsuariosFichero.leerFicheroUsuarios();
+      LoadFilesUsersHobbies lfuh = new LoadFilesUsersHobbies(Constantes.FICHERO_USUARIOS_GAMERS);
+      String[] gamersFile = lfuh.leerFicheroUsuarios();
       gamers = getListIdsUserFromScreenName(gamersFile);
+      getUserHobbiesInFriends(gamers, idsFriends);
 
-      getGamersInFriends(gamers, idsFriends);
-
+      lfuh = new LoadFilesUsersHobbies(Constantes.FICHERO_USUARIOS_POLITICA);
+      String[] politicaFile = lfuh.leerFicheroUsuarios();
+      politicos = getListIdsUserFromScreenName(politicaFile);
+      getUserHobbiesInFriends(politicos, idsFriends);
+      
+      
       LoadPropertiesFrases propFrases = new LoadPropertiesFrases();
       propFrases.loadRandomProperties();
       frasesApp = selectFrases(propFrases);
@@ -396,6 +405,11 @@ public class ConexionTwitter extends HttpServlet {
     clave = usrBean.claveNumAmigos();
     frases.put(Constantes.CLAVE_NUM_AMIGOS, lpf.getRandomFraseByKey(clave));
 
+    clave = FuncUtils.claveNumGamers(getUserHobbiesInFriends(gamers, idsFriends).size());
+    frases.put(Constantes.CLAVE_GUSTOS_GAMERS, lpf.getRandomFraseByKey(clave));
+
+    clave = FuncUtils.claveNumPoliticos(getUserHobbiesInFriends(politicos, idsFriends).size());
+    frases.put(Constantes.CLAVE_GUSTOS_POLITICA, lpf.getRandomFraseByKey(clave));
 
     return frases;
   }
@@ -427,6 +441,7 @@ public class ConexionTwitter extends HttpServlet {
     /*for (int i=0; i<followers.size(); i++) {
             System.out.println(followers.get(i));
         }*/
+    System.out.println(followers.toString());
     return followers;
   }
 
@@ -488,6 +503,7 @@ public class ConexionTwitter extends HttpServlet {
     /*for (int i=0; i<friends.size(); i++) {
             System.out.println(friends.get(i));
         }*/
+    System.out.println(friends.toString());
     return friends;
   }
 
@@ -574,6 +590,23 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
+
+/*        for (Status st : tweets) {
+            System.out.println("TXT: " + st.getText());
+            System.out.println("ID: " + st.getId());
+            System.out.println("IsRetweet/IsRetweeted/IsRetweetedByMe: " + st.isRetweet()+"/"+st.isRetweeted()+"/"+st.isFavorited()+"/"+st.isRetweetedByMe());
+            System.out.println("InReply: " + st.getInReplyToScreenName());
+            if(st.getRetweetedStatus()!=null)
+              System.out.println("RetweetedStatus: "+st.getRetweetedStatus().toString());
+            System.out.println("User: " + st.getUser().getScreenName());
+            System.out.println("RwtCount/favoriteCount:" + st.getRetweetCount() + "/" + st.getFavoriteCount());
+            if(st.getQuotedStatus()!=null)
+              System.out.println("QuotedStatus/QuotedStatusId/QuotedStatus/User-ScreenName: \n"+st.getQuotedStatus()+"\n"+st.getQuotedStatusId()+"\n"+st.getQuotedStatus().getUser().getScreenName());
+            if(st.getMediaEntities()!=null)
+              System.out.println("MediaEntities: " + Arrays.toString(st.getMediaEntities()));
+            System.out.println("\n");
+        }*/
+
     /*
         for (Status st : tweets) {
             System.out.println(st.getId() + " # Retweets/Me Gusta: " + st.getRetweetCount() + "/" + st.getFavoriteCount() + " ### " + st.getText());
@@ -586,6 +619,7 @@ public class ConexionTwitter extends HttpServlet {
       }
     }
      */
+    System.out.println(tweets.toString());
     return tweets;
   }
 
@@ -721,7 +755,7 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-
+    System.out.println(favoritos.toString());
     return favoritos;
   }
 
@@ -752,6 +786,7 @@ public class ConexionTwitter extends HttpServlet {
     /*for (UserList ul : listas) {
             System.out.println("" + ul.toString());
         }*/
+    System.out.println(listas.toString());
     return listas;
   }
 
@@ -782,6 +817,7 @@ public class ConexionTwitter extends HttpServlet {
     /*for (UserList ul : listas) {
             System.out.println(ul.toString());
         }*/
+    System.out.println(listas.toString());
     return listas;
   }
 
@@ -812,6 +848,7 @@ public class ConexionTwitter extends HttpServlet {
     /*for (UserList ul : listas) {
             System.out.println("" + ul.toString());
         }*/
+    System.out.println(listas.toString());
     return listas;
   }
 
@@ -1125,6 +1162,7 @@ public class ConexionTwitter extends HttpServlet {
               .getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
+    System.out.println(lugares.toString());
     return lugares;
   }
 
@@ -1249,10 +1287,13 @@ public class ConexionTwitter extends HttpServlet {
   }
 
   public long[] getMaxArrayIdsRetweets(HashMap<Long, Integer> idsRetweets, int losXMasRetweeteados) {
-    long[] idsRtw = new long[losXMasRetweeteados];
+    int arraySize = losXMasRetweeteados;
+    if(idsRetweets.size() < losXMasRetweeteados)
+      arraySize = idsRetweets.size();
+    long[] idsRtw = new long[arraySize];
     int cont = 0;
     for (Map.Entry<Long, Integer> ids : idsRetweets.entrySet()) {
-      if (cont < losXMasRetweeteados) {
+      if (cont < arraySize) {
         idsRtw[cont] = ids.getKey();
         cont = cont + 1;
       } else {
@@ -1293,9 +1334,9 @@ public class ConexionTwitter extends HttpServlet {
       System.out.println("ERROR: " + ex.getMessage());
     }
 
-    for (Map.Entry<Long, Integer> rtm : numsRetweets.entrySet()) {
+    /*for (Map.Entry<Long, Integer> rtm : numsRetweets.entrySet()) {
       System.out.println(rtm.getKey() + ":" + rtm.getValue());
-    }
+    }*/
 
     return numsRetweets;
   }
@@ -1784,7 +1825,8 @@ public class ConexionTwitter extends HttpServlet {
     System.out.println("--------- TWEETS MULTIMEDIA FAVORITOS ------------");
     try {
       for (Status tw : tweets) {
-        //Con getRetweetedStatus() == null obtenemos los tweets propios que no son retweet
+        //getRetweetedStatus() tiene contenido cuando se trata de un retweet sin comentario, los cuales no pueden tener foto
+        //por este motivo hay que analizar todos aquellos que pueden tener foto getRetweetedStatus() == null
         //Además extraemos aquellos que hayan sido retwiteados o favoritos al menos una vez
         if ((tw.getRetweetCount() > 0 || tw.getFavoriteCount() > 0) && tw.getRetweetedStatus() == null) {
           MediaEntity[] mMedia = tw.getMediaEntities();
@@ -1834,22 +1876,22 @@ public class ConexionTwitter extends HttpServlet {
     return twsConMasMultimedia;
   }
 
-  public ArrayList getGamersInFriends(HashMap<Long, User> gamers, ArrayList idsFriends) {
-    ArrayList frdGmr = new ArrayList();
-    System.out.println("------------------ GAMER SEGUIDOS -----------------");
+  public ArrayList getUserHobbiesInFriends(HashMap<Long, User> usrHobb, ArrayList idsFriends) {
+    ArrayList frdHob = new ArrayList();
+    System.out.println("-------------- USER HOBBIES SEGUIDOS -------------");
     try {
-      for (Map.Entry<Long, User> gmr : gamers.entrySet()) {
-        if (idsFriends.contains(gmr.getKey())) {
-          frdGmr.add(gmr);
-          System.out.println("Gamer seguido: " + gmr.getValue().getScreenName());
+      for (Map.Entry<Long, User> usr : usrHobb.entrySet()) {
+        if (idsFriends.contains(usr.getKey())) {
+          frdHob.add(usr);
+          System.out.println("User hobbie seguido: " + usr.getValue().getScreenName());
         }
       }
     } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    System.out.println("Nº de Gamers seguidos: " + frdGmr.size());
-    return frdGmr;
+    System.out.println("Nº de user hobbies seguidos: " + frdHob.size());
+    return frdHob;
   }
 
   //La estructura que contiene los IDs y el recuento de lugares de tweets y favoritos tiene que estar ordenada en forma decreciente por el valor

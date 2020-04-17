@@ -2,7 +2,7 @@
 $(document).ready(function () {
   $('#dataTable').DataTable({
     "searching": false,
-    "bInfo" : true,
+    "bInfo" : false,
     paging: true,
     ordering: false,
     "aLengthMenu": [[8, 15, 25], [8, 15, 25]],

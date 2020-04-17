@@ -270,7 +270,7 @@
               </li>
 
               <!-- Nav Item - Alerts -->
-              <li class="nav-item dropdown no-arrow mx-1">
+              <%--<li class="nav-item dropdown no-arrow mx-1">
                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-bell fa-fw"></i>
                   <!-- Counter - Alerts -->
@@ -373,6 +373,7 @@
                   <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                 </div>
               </li>
+              --%>
 
               <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -387,28 +388,28 @@
                   <img class="img-fluid rounded py-2 px-3"  src="${usrBean.urlImgProfileBig}" >
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="https://twitter.com/${usrBean.screenName}" target="_blank">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    URL usuario: ${usrBean.screenName}
+                    <i class="fas fa-external-link fa-sm fa-fw mr-2 text-gray-400"></i>
+                    URL usuario: <span class="text-primary">${usrBean.screenName}</span>
                   </a>
                   <a class="dropdown-item" href="#" target="">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Amigos: ${usrBean.numFriends}
+                    Amigos: <span class="text-primary">${usrBean.numFriends}</span>
                   </a>
                   <a class="dropdown-item" href="#" target="">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Seguidores: ${usrBean.numFollowers}
+                    Seguidores: <span class="text-primary">${usrBean.numFollowers}</span>
                   </a>
                   <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Tweets: ${usrBean.numTweets}
+                    <i class="fas fa-twitter fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Tweets: <span class="text-primary">${usrBean.numTweets}</span>
                   </a>
                   <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Me gustas: ${usrBean.numFavoritos}
+                    <i class="fas fa-heart-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Me gustas: <span class="text-primary">${usrBean.numFavoritos}</span>
                   </a>
                   <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Listas: ${usrBean.numListas}
+                    <i class="fas fa-lis fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Listas: <span class="text-primary">${usrBean.numListas}</span>
                   </a>
 
 
@@ -438,7 +439,7 @@
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
 <%--                          <c:if test="${usrBean.verified}">${frases['VERIFICADO']}</c:if>
                           <c:if test="${not usrBean.verified}">${frases['NO-VERIFICADO']}</c:if>--%>
-                          ${frases['VERIFICADO']}
+                            ${frases['VERIFICADO']}
                           </div>
                         </div>
                         <!--<div class="col-auto">
@@ -462,7 +463,7 @@
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
 <%--                          <c:if test="${usrBean.protegido}">${frases['PROTEGIDO']}</c:if>
                           <c:if test="${not usrBean.protegido}">${frases['NO-PROTEGIDO']}</c:if>--%>
-${frases['PROTEGIDO']}
+                            ${frases['PROTEGIDO']}
                           </div>
                         </div>
                         <!--<div class="col-auto">
@@ -519,11 +520,11 @@ ${frases['PROTEGIDO']}
                           <div class="col-auto">
                             <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['NUM-AMIGOS']}</div>
                           </div>
-                          <div class="col">
+                          <!--<div class="col">
                             <div class="progress progress-sm mr-2">
                               <div class="progress-bar bg-info" role="progressbar" style="width: 38.8%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
-                          </div>
+                          </div>-->
                         </div>
                       </div>
                       <!--<div class="col-auto">
@@ -550,7 +551,7 @@ ${frases['PROTEGIDO']}
                   </div>
                 </div>
               </div>
-
+<%--
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-info">
                   <div class="card-body p-2">
@@ -566,7 +567,7 @@ ${frases['PROTEGIDO']}
                   </div>
                 </div>
               </div>
-
+--%>
 
             </div>
 
@@ -587,13 +588,18 @@ ${frases['PROTEGIDO']}
                       <table class="table table-bordered table-sm" id="dataTable" width="100%" cellspacing="0" >
                         <thead>
                           <tr>
-                            <!--<th style="text-align: center">Imagen</th>-->
+                            <th style="text-align: center">Imagen</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th style="text-align: center">Interacciones</th>
+<%--
                             <th>Nombre</th>
                             <th style="text-align: center">Peso</th>
                             <th style="text-align: center">Interacciones</th>
                             <th style="text-align: center">tw(${fn:length(idRtw)})</th>
                             <th style="text-align: center">fv(${fn:length(idFv)})</th>
                             <th style="text-align: center">rtwMe(${fn:length(idRtwMe)})</th>
+--%>
                           </tr>
                         </thead>
                         <tfoot>
@@ -607,14 +613,24 @@ ${frases['PROTEGIDO']}
                         <tbody>
                           <c:forEach items="<%=request.getAttribute("amigos")%>" var="amg">
                             <tr>
-                              <!--<td style="text-align: center">
+                              <td style="text-align: center">
                                 <div class="zoom">
                                   <img style="width: 2rem; height: 2rem" class="img-profile rounded" src="${amg.value.urlImgProfileBig}">
                                 </div>
-                              </td>-->
+                              </td>
                               <td style="vertical-align: middle">
                                 <a href="https://twitter.com/${amg.value.screenName}" target="_blank">${amg.value.name}</a>                              
                               </td>
+                              <td style="vertical-align: middle">
+                                <a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.screenName}</a>
+                                <!--<a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.id}</a>-->
+                              </td>
+                              <td style="text-align: center; vertical-align: middle">
+                                <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
+                                <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
+                              </td>
+
+<%--                              
                               <td style="text-align: center; vertical-align: middle">
                                 ${posFriend[amg.value.id]}
                               </td>
@@ -642,16 +658,11 @@ ${frases['PROTEGIDO']}
                                 </c:if>
                                 </c:forEach>
                               </td>
-
-
-<%--                              <td style="text-align: center; vertical-align: middle">
+                              <td style="text-align: center; vertical-align: middle">
                                 <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
                                 <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
                               </td>
-                              <td style="vertical-align: middle">
-                                <!--<a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.screenName}</a>-->
-                                <a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.id}</a>
-                              </td>--%>
+--%>
                             </tr>
                           </c:forEach>
                         </tbody>
@@ -744,7 +755,7 @@ ${frases['PROTEGIDO']}
                       </c:if>
                     </div>
                     <c:if test="${datosDispositivos!='[]'}">
-                      <p></p>
+                      <p class="pb-4"></p>
                     </c:if>
                     <c:if test="${datosDispositivos=='[]'}">
                       <p>${frases['INFO-NO-DISPONIBLE']}</p>
@@ -843,11 +854,11 @@ ${frases['PROTEGIDO']}
               <div class="col-xl-6 col-lg-6 col-md-6 px-2">
                 <div class="card shadow mb-3">
                   <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-3 font-weight-bold text-primary">Qué puedo adivinar sobre tí</h6>
+                    <h6 class="m-3 font-weight-bold text-primary">Tus gustos o aficiones</h6>
                   </div>
                   <div class="card-body">
-                    <div class="text-center">
-                    </div>
+                  <p>${frases['GUSTOS-GAMERS']}</p>
+                  <p class="mb-0">${frases['GUSTOS-POLITICA']}</p>
                   </div>
                 </div>
               </div>

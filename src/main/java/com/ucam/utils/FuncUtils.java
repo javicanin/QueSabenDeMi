@@ -10,6 +10,32 @@ import java.util.stream.Collectors;
 
 public class FuncUtils {
 
+    public static String claveNumGamers(int numGamers){
+      int gmr = numGamers;
+      if(gmr == 0)
+        return Constantes.CLAVE_GUSTOS_GAMERS_NADA;
+      if(FuncUtils.isBetween(gmr, 0, Constantes.NUM_GAMERS_CIERTO, 3))
+        return Constantes.CLAVE_GUSTOS_GAMERS_CIERTO;
+      if(FuncUtils.isBetween(gmr, Constantes.NUM_GAMERS_CIERTO + 1, Constantes.NUM_GAMERS_BASTANTES, 3))
+        return Constantes.CLAVE_GUSTOS_GAMERS_BASTANTE;
+      if(gmr > Constantes.NUM_GAMERS_BASTANTES)
+        return Constantes.CLAVE_GUSTOS_GAMERS_MUCHO;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+
+    public static String claveNumPoliticos(int numPoliticos){
+      int plt = numPoliticos;
+      if(plt == 0)
+        return Constantes.CLAVE_GUSTOS_POLITICA_NADA;
+      if(FuncUtils.isBetween(plt, 0, Constantes.NUM_POLITICOS_CIERTO, 3))
+        return Constantes.CLAVE_GUSTOS_POLITICA_CIERTO;
+      if(FuncUtils.isBetween(plt, Constantes.NUM_POLITICOS_CIERTO + 1, Constantes.NUM_POLITICOS_BASTANTES, 3))
+        return Constantes.CLAVE_GUSTOS_POLITICA_BASTANTE;
+      if(plt > Constantes.NUM_POLITICOS_BASTANTES)
+        return Constantes.CLAVE_GUSTOS_POLITICA_MUCHO;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+
   public static boolean isBetween(int num, int inf, int sup, int included){
     switch (included){
       case 0:

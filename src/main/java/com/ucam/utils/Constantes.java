@@ -2,9 +2,11 @@ package com.ucam.utils;
 
 public class Constantes {
 
+  public static final String FICHERO_PROPIEDADES_TWITTER = "/config/twitter.properties";
   public static final String FICHERO_PROPIEDADES_FRASES = "/config/frases.properties";
   public static final String FICHERO_PROPIEDADES_DISP = "/config/dispositivos.properties";
   public static final String FICHERO_USUARIOS_GAMERS = "/config/gamers.txt";
+  public static final String FICHERO_USUARIOS_POLITICA = "/config/politica.txt";
   
   //Máximo número de lugares GeoLocation en la búsqueda de la API, a partir del campo libre userLocation
   public static final int MAX_PLACES_SEARCH_API = 5;
@@ -27,6 +29,10 @@ public class Constantes {
   public static final int NUM_AMIGOS_ACEPTABLE = 500;
   public static final int NUM_AMIGOS_NOTABLE = 2500;
   public static final int NUM_AMIGOS_MUCHOS = 5000;
+  public static final int NUM_GAMERS_CIERTO = 5;
+  public static final int NUM_GAMERS_BASTANTES = 12;
+  public static final int NUM_POLITICOS_CIERTO = 5;
+  public static final int NUM_POLITICOS_BASTANTES = 12;
   
   public static final String DISP_ANDROID = "ANDROID";
   public static final String DISP_APPLE = "APPLE";
@@ -73,7 +79,17 @@ public class Constantes {
   public static final String CLAVE_NUM_AMIGOS_MUCHOS = "NUM-AMIGOS-MUCHOS";
   public static final String CLAVE_NUM_AMIGOS_MUCHISIMOS = "NUM-AMIGOS-MUCHISIMOS";
   
-  
+  public static final String CLAVE_GUSTOS_GAMERS = "GUSTOS-GAMERS";
+  public static final String CLAVE_GUSTOS_GAMERS_NADA = "GUSTOS-GAMERS-NADA";
+  public static final String CLAVE_GUSTOS_GAMERS_CIERTO = "GUSTOS-GAMERS-CIERTO";
+  public static final String CLAVE_GUSTOS_GAMERS_BASTANTE = "GUSTOS-GAMERS-BASTANTE";
+  public static final String CLAVE_GUSTOS_GAMERS_MUCHO = "GUSTOS-GAMERS-MUCHO";
+  public static final String CLAVE_GUSTOS_POLITICA = "GUSTOS-POLITICA";
+  public static final String CLAVE_GUSTOS_POLITICA_NADA = "GUSTOS-POLITICA-NADA";
+  public static final String CLAVE_GUSTOS_POLITICA_CIERTO = "GUSTOS-POLITICA-CIERTO";
+  public static final String CLAVE_GUSTOS_POLITICA_BASTANTE = "GUSTOS-POLITICA-BASTANTE";
+  public static final String CLAVE_GUSTOS_POLITICA_MUCHO = "GUSTOS-POLITICA-MUCHO";
+
 
   public static final String CHAR_SEPARADOR_PROPERTIES = "_";
 }

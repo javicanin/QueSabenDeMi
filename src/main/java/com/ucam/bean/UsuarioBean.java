@@ -91,8 +91,8 @@ public class UsuarioBean{
         return Constantes.CLAVE_NUM_AMIGOS_MUCHISIMOS;
       return Constantes.CLAVE_INFO_NO_DISPONIBLE;
     }
-    
-    
+
+
     public UsuarioBean(User usuario) {
         id = usuario.getId();
         name = usuario.getName();
