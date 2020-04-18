@@ -6,22 +6,22 @@
 package com.ucam.quesaben;
 
 import com.google.gson.Gson;
+import com.ucam.bean.DispositivosPropertiesBean;
 import com.ucam.bean.GeoJsonFeatures;
 import com.ucam.bean.GeoJsonPlacesBean;
 import com.ucam.bean.GeometryGeoJson;
 import com.ucam.bean.InfoUsoTwitterBean;
 import com.ucam.bean.PropertiesGeoJson;
 import com.ucam.bean.TweetMultimediaBean;
+import com.ucam.bean.UsersGamersBean;
+import com.ucam.bean.UsersPoliticsBean;
 import com.ucam.bean.UsuarioBean;
 import com.ucam.files.LoadPropertiesFrases;
-import com.ucam.files.LoadFilesUsersHobbies;
-import com.ucam.files.LoadPropDisp;
 import com.ucam.utils.Constantes;
 import com.ucam.utils.FuncUtils;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -102,6 +102,7 @@ public class ConexionTwitter extends HttpServlet {
   HashMap<String, TweetMultimediaBean> multimediaFavoritos;
   HashMap<Long, User> gamers;
   HashMap<Long, User> politicos;
+  HashMap<String, String> frasesAleatorias;
   HashMap<String, String> frasesApp;
 
   GeoLocation geo;
@@ -116,6 +117,7 @@ public class ConexionTwitter extends HttpServlet {
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
     try {
+
       Twitter twitter = ConexionApiTwitter.getConexion();
 
       System.out.println("------------- USUARIO APLICACION -------------");
@@ -197,8 +199,6 @@ public class ConexionTwitter extends HttpServlet {
       listasSuscritas = getListasSuscritas(user, 200, 1);
       listasMiembro = getListasMiembro(user, 200, 1);
 
-      LoadPropDisp lpd = new LoadPropDisp();
-      dispProp = lpd.allDisp;
       dispositivos = getDispositivosTweets(statuses);
 
       //seguidoresMutuos = getSeguidoresMutuos(followers, friends);
@@ -233,21 +233,15 @@ public class ConexionTwitter extends HttpServlet {
 
       multimediaFavoritos = getTweetsMultimediaFavoritos(statuses);
 
-      LoadFilesUsersHobbies lfuh = new LoadFilesUsersHobbies(Constantes.FICHERO_USUARIOS_GAMERS);
-      String[] gamersFile = lfuh.leerFicheroUsuarios();
-      gamers = getListIdsUserFromScreenName(gamersFile);
+      gamers = getListIdsUserFromScreenName(UsersGamersBean.usuariosGamers);
       getUserHobbiesInFriends(gamers, idsFriends);
 
-      lfuh = new LoadFilesUsersHobbies(Constantes.FICHERO_USUARIOS_POLITICA);
-      String[] politicaFile = lfuh.leerFicheroUsuarios();
-      politicos = getListIdsUserFromScreenName(politicaFile);
+      politicos = getListIdsUserFromScreenName(UsersPoliticsBean.usuariosPoliticos);
       getUserHobbiesInFriends(politicos, idsFriends);
-      
-      
-      LoadPropertiesFrases propFrases = new LoadPropertiesFrases();
-      propFrases.loadRandomProperties();
-      frasesApp = selectFrases(propFrases);
-      
+
+      frasesAleatorias = LoadPropertiesFrases.getRandomFrases();
+      frasesApp = selectFrases(frasesAleatorias);
+
 
       /*frasesApp = prop.loadAllProperties();
       String fraseVefificado = prop.getPropertiesAsAleatory(Constantes.FRASE_VERIFICADO);
@@ -388,28 +382,28 @@ public class ConexionTwitter extends HttpServlet {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-  public HashMap<String, String> selectFrases(LoadPropertiesFrases lpf){
+  public HashMap<String, String> selectFrases(HashMap<String, String> fr) {
     HashMap<String, String> frases = new HashMap();
     String clave = usrBean.clavePerfilVerificado();
-    frases.put(Constantes.CLAVE_VERIFICADO, lpf.getRandomFraseByKey(clave));
-    
+    frases.put(Constantes.CLAVE_VERIFICADO, fr.get(clave));
+
     clave = usrBean.clavePerfilProtegido();
-    frases.put(Constantes.CLAVE_PROTEGIDO, lpf.getRandomFraseByKey(clave));
+    frases.put(Constantes.CLAVE_PROTEGIDO, fr.get(clave));
 
     clave = usrBean.claveVolumenUso();
-    frases.put(Constantes.CLAVE_VOL_USO, lpf.getRandomFraseByKey(clave));
+    frases.put(Constantes.CLAVE_VOL_USO, fr.get(clave));
 
     clave = usrBean.claveNumSeguidores();
-    frases.put(Constantes.CLAVE_NUM_SEGUIDORES, lpf.getRandomFraseByKey(clave));
+    frases.put(Constantes.CLAVE_NUM_SEGUIDORES, fr.get(clave));
 
     clave = usrBean.claveNumAmigos();
-    frases.put(Constantes.CLAVE_NUM_AMIGOS, lpf.getRandomFraseByKey(clave));
+    frases.put(Constantes.CLAVE_NUM_AMIGOS, fr.get(clave));
 
     clave = FuncUtils.claveNumGamers(getUserHobbiesInFriends(gamers, idsFriends).size());
-    frases.put(Constantes.CLAVE_GUSTOS_GAMERS, lpf.getRandomFraseByKey(clave));
+    frases.put(Constantes.CLAVE_GUSTOS_GAMERS, fr.get(clave));
 
     clave = FuncUtils.claveNumPoliticos(getUserHobbiesInFriends(politicos, idsFriends).size());
-    frases.put(Constantes.CLAVE_GUSTOS_POLITICA, lpf.getRandomFraseByKey(clave));
+    frases.put(Constantes.CLAVE_GUSTOS_POLITICA, fr.get(clave));
 
     return frases;
   }
@@ -591,7 +585,7 @@ public class ConexionTwitter extends HttpServlet {
       System.out.println("ERROR: " + ex.getMessage());
     }
 
-/*        for (Status st : tweets) {
+    /*        for (Status st : tweets) {
             System.out.println("TXT: " + st.getText());
             System.out.println("ID: " + st.getId());
             System.out.println("IsRetweet/IsRetweeted/IsRetweetedByMe: " + st.isRetweet()+"/"+st.isRetweeted()+"/"+st.isFavorited()+"/"+st.isRetweetedByMe());
@@ -607,7 +601,7 @@ public class ConexionTwitter extends HttpServlet {
             System.out.println("\n");
         }*/
 
-    /*
+ /*
         for (Status st : tweets) {
             System.out.println(st.getId() + " # Retweets/Me Gusta: " + st.getRetweetCount() + "/" + st.getFavoriteCount() + " ### " + st.getText());
         }
@@ -863,7 +857,7 @@ public class ConexionTwitter extends HttpServlet {
       String claveUnica = "";
       for (Status status : statuses) {
         dispositivo = status.getSource();
-        for (Map.Entry<String, String> d : dispProp.entrySet()) {
+        for (Map.Entry<String, String> d : DispositivosPropertiesBean.allDisp.entrySet()) {
           if (dispositivo.contains(d.getValue())) {
             clave = d.getKey();
             claveUnica = clave.substring(0, clave.indexOf(Constantes.CHAR_SEPARADOR_PROPERTIES));
@@ -1288,8 +1282,9 @@ public class ConexionTwitter extends HttpServlet {
 
   public long[] getMaxArrayIdsRetweets(HashMap<Long, Integer> idsRetweets, int losXMasRetweeteados) {
     int arraySize = losXMasRetweeteados;
-    if(idsRetweets.size() < losXMasRetweeteados)
+    if (idsRetweets.size() < losXMasRetweeteados) {
       arraySize = idsRetweets.size();
+    }
     long[] idsRtw = new long[arraySize];
     int cont = 0;
     for (Map.Entry<Long, Integer> ids : idsRetweets.entrySet()) {
@@ -1337,7 +1332,6 @@ public class ConexionTwitter extends HttpServlet {
     /*for (Map.Entry<Long, Integer> rtm : numsRetweets.entrySet()) {
       System.out.println(rtm.getKey() + ":" + rtm.getValue());
     }*/
-
     return numsRetweets;
   }
 

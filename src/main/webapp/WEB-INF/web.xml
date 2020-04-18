@@ -4,9 +4,18 @@
         <servlet-name>ConexionTwitter</servlet-name>
         <servlet-class>com.ucam.quesaben.ConexionTwitter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoadInit</servlet-name>
+        <servlet-class>com.ucam.quesaben.LoadInit</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ConexionTwitter</servlet-name>
         <url-pattern>/ConexionTwitter</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadInit</servlet-name>
+        <url-pattern>/LoadInit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

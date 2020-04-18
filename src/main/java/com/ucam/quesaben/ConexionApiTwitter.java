@@ -1,5 +1,6 @@
 package com.ucam.quesaben;
 
+import com.ucam.bean.KeyTokenTwitterBean;
 import com.ucam.files.LoadTwitterProperties;
 import com.ucam.utils.Constantes;
 import java.util.Map;
@@ -24,14 +25,12 @@ public class ConexionApiTwitter {
   public static Twitter getConexion() {
     Twitter twitter = null;
     try {
-      LoadTwitterProperties ltp = new LoadTwitterProperties();
-
       ConfigurationBuilder cb = new ConfigurationBuilder();
       cb.setDebugEnabled(true)
-              .setOAuthConsumerKey(ltp.getOAuthConsumerKey())
-              .setOAuthConsumerSecret(ltp.getOAuthConsumerSecret())
-              .setOAuthAccessToken(ltp.getOAuthAccessToken())
-              .setOAuthAccessTokenSecret(ltp.getOAuthAccessTokenSecret());
+              .setOAuthConsumerKey(KeyTokenTwitterBean.OAuthConsumerKey)
+              .setOAuthConsumerSecret(KeyTokenTwitterBean.OAuthConsumerSecret)
+              .setOAuthAccessToken(KeyTokenTwitterBean.OAuthAccessToken)
+              .setOAuthAccessTokenSecret(KeyTokenTwitterBean.OAuthAccessTokenSecret);
       TwitterFactory tf = new TwitterFactory(cb.build());
       twitter = tf.getInstance();
     } catch (Exception ex) {

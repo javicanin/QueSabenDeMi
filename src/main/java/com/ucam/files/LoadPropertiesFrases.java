@@ -1,10 +1,10 @@
 package com.ucam.files;
 
+import com.ucam.bean.FrasesBean;
 import com.ucam.utils.Constantes;
 import com.ucam.utils.FuncUtils;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,49 +12,33 @@ import java.util.Properties;
 
 public class LoadPropertiesFrases {
 
-  public HashMap<String, String> allFrases;
-  public HashMap<String, String> randomFrases;
-
-  public HashMap<String, String> getAllFrases() {
-    return allFrases;
-  }
-
-  public void setAllFrases(HashMap<String, String> allFrases) {
-    this.allFrases = allFrases;
-  }
-
-  public HashMap<String, String> getRandomFrases() {
-    return randomFrases;
-  }
-
-  public void setRandomFrases(HashMap<String, String> randomFrases) {
-    this.randomFrases = randomFrases;
-  }
-
-  public LoadPropertiesFrases() throws Exception {
+  //public static HashMap<String, String> allFrases;
+  
+  public static void cargarPropertiesFrases(String nombreFichero) throws Exception {
     try {
       Properties prop = new Properties();
-      FileReader fr = new FileReader(System.getProperty("com.sun.aas.instanceRoot") + Constantes.FICHERO_PROPIEDADES_FRASES);
+      FileReader fr = new FileReader(System.getProperty("com.sun.aas.instanceRoot") + nombreFichero);
       prop.load(fr);
 
       Enumeration<Object> claves = prop.keys();
-      allFrases = new HashMap();
+      FrasesBean.allFrases = new HashMap();
       while (claves.hasMoreElements()) {
         Object clave = claves.nextElement();
-        allFrases.put(clave.toString(), prop.get(clave).toString());
+        FrasesBean.allFrases.put(clave.toString(), prop.get(clave).toString());
       }
 
     } catch (FileNotFoundException e) {
-      throw new Exception("Error al cargar el fichero de propiedades:" + Constantes.FICHERO_PROPIEDADES_FRASES);
+      throw new Exception("Error al cargar el fichero de propiedades:" + nombreFichero);
     }
   }
 
-  public void loadRandomProperties() {
+  public static HashMap<String, String> getRandomFrases() {
     HashMap<String, Integer> tiposFrases = new HashMap();
+    HashMap<String, String> randomFrases;
     String clave = "";
     String claveUnica = "";
     int cont = 0;
-    for (Map.Entry<String, String> af : allFrases.entrySet()) {
+    for (Map.Entry<String, String> af : FrasesBean.allFrases.entrySet()) {
       clave = af.getKey();
       claveUnica = clave.substring(0, clave.indexOf(Constantes.CHAR_SEPARADOR_PROPERTIES));
       if (tiposFrases.containsKey(claveUnica)) {
@@ -70,16 +54,10 @@ public class LoadPropertiesFrases {
     for (Map.Entry<String, Integer> tf : tiposFrases.entrySet()) {
        numFraseAleatoria = FuncUtils.getRandomNumberInRange(1, tf.getValue());
        claveUnica = tf.getKey() + Constantes.CHAR_SEPARADOR_PROPERTIES + Integer.toString(numFraseAleatoria);
-       String frase = allFrases.get(claveUnica);
+       String frase = FrasesBean.allFrases.get(claveUnica);
        randomFrases.put(tf.getKey(), frase);
     }
+    return randomFrases;
   }
 
-  public String getRandomFraseByKey(String key){
-    if(randomFrases.containsKey(key)){
-      return randomFrases.get(key);
-    }
-    return Constantes.CLAVE_INFO_NO_DISPONIBLE;
-  }
-  
 }

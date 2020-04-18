@@ -4,13 +4,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class LoadFilesUsersHobbies {
-  String nombreArchivo;
 
-  public LoadFilesUsersHobbies(String nombreFichero) {
-    nombreArchivo = nombreFichero;
-  }
-
-  public String[] leerFicheroUsuarios() {
+  public static String[] leerFicheroUsuarios(String nombreArchivo) {
     File archivo = null;
     FileReader fr = null;
     BufferedReader br = null;
