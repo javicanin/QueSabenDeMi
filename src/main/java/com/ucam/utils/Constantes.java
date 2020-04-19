@@ -7,6 +7,7 @@ public class Constantes {
   public static final String FICHERO_PROPIEDADES_DISP = "/config/dispositivos.properties";
   public static final String FICHERO_USUARIOS_GAMERS = "/config/gamers.txt";
   public static final String FICHERO_USUARIOS_POLITICA = "/config/politica.txt";
+  public static final String FICHERO_USUARIOS_DEPORTES = "/config/deportistas.txt";
   
   //Máximo número de lugares GeoLocation en la búsqueda de la API, a partir del campo libre userLocation
   public static final int MAX_PLACES_SEARCH_API = 5;
@@ -33,6 +34,8 @@ public class Constantes {
   public static final int NUM_GAMERS_BASTANTES = 12;
   public static final int NUM_POLITICOS_CIERTO = 5;
   public static final int NUM_POLITICOS_BASTANTES = 12;
+  public static final int NUM_DEPORTES_CIERTO = 5;
+  public static final int NUM_DEPORTES_BASTANTES = 12;
   
   public static final String DISP_ANDROID = "ANDROID";
   public static final String DISP_APPLE = "APPLE";
@@ -89,6 +92,11 @@ public class Constantes {
   public static final String CLAVE_GUSTOS_POLITICA_CIERTO = "GUSTOS-POLITICA-CIERTO";
   public static final String CLAVE_GUSTOS_POLITICA_BASTANTE = "GUSTOS-POLITICA-BASTANTE";
   public static final String CLAVE_GUSTOS_POLITICA_MUCHO = "GUSTOS-POLITICA-MUCHO";
+  public static final String CLAVE_GUSTOS_DEPORTES = "GUSTOS-DEPORTES";
+  public static final String CLAVE_GUSTOS_DEPORTES_NADA = "GUSTOS-DEPORTES-NADA";
+  public static final String CLAVE_GUSTOS_DEPORTES_CIERTO = "GUSTOS-DEPORTES-CIERTO";
+  public static final String CLAVE_GUSTOS_DEPORTES_BASTANTE = "GUSTOS-DEPORTES-BASTANTE";
+  public static final String CLAVE_GUSTOS_DEPORTES_MUCHO = "GUSTOS-DEPORTES-MUCHO";
 
 
   public static final String CHAR_SEPARADOR_PROPERTIES = "_";

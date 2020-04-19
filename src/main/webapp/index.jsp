@@ -7,54 +7,6 @@
   <head>
 
 
-
-
-    <style>
-      /*ZOOM DE IMAGENES DE TABLA*/
-      .zoom {
-        /*padding: 2px;*/
-        transition: transform .2s; /* Animation */
-        width: 2rem;
-        height: 2rem;
-        margin: auto;
-      }
-
-      .zoom:hover {
-        -ms-transform: scale(3.3); /* IE 9 */
-        -webkit-transform: scale(3.3); /* Safari 3-8 */
-        transform: scale(3.3); 
-      }
-
-      /*ESTILOS SPINNER EN MODAL*/
-      .bd-example-modal-lg .modal-dialog{
-        display: table;
-        position: relative;
-        margin: 0 auto;
-        top: calc(50% - 24px);
-      }
-
-      .bd-example-modal-lg .modal-dialog .modal-content{
-        background-color: transparent;
-        border: none;
-      }
-
-      /*Texto fijo del campo input ej: @*/
-      .input-txt-fixed {
-        position: absolute;
-        z-index: 9;
-        display: block;
-        padding-left: .75rem;
-        padding-top: .375rem;
-        padding-bottom: .375rem;
-      }
-
-</style>
-
-
-
-
-
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -68,6 +20,7 @@
 
     <title>Qué saben de mí</title>
 
+    <link href="css/estilos.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -82,8 +35,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="   crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
     <!-- GeoJSON -->
-    <script type="text/javascript" src="js/areaTweet.js"></script>
-    <script type="text/javascript" src="js/Twitters.js"></script>
     <!-- esri -->
     <script src="https://unpkg.com/esri-leaflet@2.0.8"></script>
     <!--MarkerCluster -->
@@ -236,7 +187,7 @@
             <!-- Topbar Search -->
             <form id="form-search" name="formulario" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
               <div class="input-group">
-                <span class="input-txt-fixed font-weight-bolder">@</span>
+                <span class="text-primary input-txt-fixed font-weight-bolder">@</span>
                 <input type="text" name="userTwitter" style="padding-left: 29px" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
                   <button class="btn btn-primary" type="submit" onclick="modalSpinner();" id="btnFetch___________">
@@ -857,20 +808,24 @@
                     <h6 class="m-3 font-weight-bold text-primary">Tus gustos o aficiones</h6>
                   </div>
                   <div class="card-body">
-                  <p>${frases['GUSTOS-GAMERS']}</p>
-                  <p class="mb-0">${frases['GUSTOS-POLITICA']}</p>
+                    <p class="m-0 p-0">
+                      <img id="" class="img-fluid" style="width: 2.5rem;" src="images/games.png" title="Videojuegos" alt="">
+                      ${frases['GUSTOS-GAMERS']}
+                    </p>
+                    <p class="m-0 p-0">
+                      <img id="" class="img-fluid" style="width: 2.5rem;" src="images/parlamento.png" title="Política" alt="">
+                      ${frases['GUSTOS-POLITICA']}
+                    </p>
+                    <p class="m-0 p-0">
+                      <img id="" class="img-fluid" style="width: 2.5rem;" src="images/ball-football.png" title="Deportes" alt="">
+                      ${frases['GUSTOS-DEPORTES']}
+                    </p>
                   </div>
                 </div>
               </div>
               
 
-
             </div>
-
-
-
-
-
 
 
           </div>
@@ -882,7 +837,7 @@
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; Your Website 2019</span>
+              <span>Copyright &copy; QueSabenDeMi 2020</span>
             </div>
           </div>
         </footer>
@@ -986,7 +941,7 @@
         }
       }
 
-  /////////////// TIPO DE FICHERO MULTIMEDIA ///////////////  
+  /////////////////// SPINNER MODAL ///////////////////
       function modalSpinner() {
         $('.modal').modal('show');
         /*       setTimeout(function () {
@@ -1012,10 +967,10 @@
     <script src="vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/chart-area-demo.js"></script>
     <!-- Condicion para que no cargue el grafico si no hay datos-->
     <c:if test="${datosDispositivos!='[]'}">
-      <script src="js/demo/chart-pie-demo.js"></script>
+      <script src="js/chart-pie-demo.js"></script>
     </c:if>
     
 
@@ -1024,7 +979,7 @@
     <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="js/datatables-demo.js"></script>
 
 
     <!-- Controles para el mapa de Tweets -->

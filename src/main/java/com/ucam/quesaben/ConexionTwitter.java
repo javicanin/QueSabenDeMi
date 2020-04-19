@@ -15,6 +15,7 @@ import com.ucam.bean.PropertiesGeoJson;
 import com.ucam.bean.TweetMultimediaBean;
 import com.ucam.bean.UsersGamersBean;
 import com.ucam.bean.UsersPoliticsBean;
+import com.ucam.bean.UsersSportsBean;
 import com.ucam.bean.UsuarioBean;
 import com.ucam.files.LoadPropertiesFrases;
 import com.ucam.utils.Constantes;
@@ -102,6 +103,7 @@ public class ConexionTwitter extends HttpServlet {
   HashMap<String, TweetMultimediaBean> multimediaFavoritos;
   HashMap<Long, User> gamers;
   HashMap<Long, User> politicos;
+  HashMap<Long, User> deportes;
   HashMap<String, String> frasesAleatorias;
   HashMap<String, String> frasesApp;
 
@@ -239,6 +241,9 @@ public class ConexionTwitter extends HttpServlet {
       politicos = getListIdsUserFromScreenName(UsersPoliticsBean.usuariosPoliticos);
       getUserHobbiesInFriends(politicos, idsFriends);
 
+      deportes = getListIdsUserFromScreenName(UsersSportsBean.usuariosDeportes);
+      getUserHobbiesInFriends(deportes, idsFriends);
+      
       frasesAleatorias = LoadPropertiesFrases.getRandomFrases();
       frasesApp = selectFrases(frasesAleatorias);
 
@@ -405,6 +410,10 @@ public class ConexionTwitter extends HttpServlet {
     clave = FuncUtils.claveNumPoliticos(getUserHobbiesInFriends(politicos, idsFriends).size());
     frases.put(Constantes.CLAVE_GUSTOS_POLITICA, fr.get(clave));
 
+    clave = FuncUtils.claveNumDeportes(getUserHobbiesInFriends(deportes, idsFriends).size());
+    frases.put(Constantes.CLAVE_GUSTOS_DEPORTES, fr.get(clave));
+    
+    
     return frases;
   }
 
@@ -1151,12 +1160,13 @@ public class ConexionTwitter extends HttpServlet {
                 System.out.println(p.getId() + " # " + p.getName() + " # " + p.getFullName() + " # " + p.getCountryCode() + " # " + p.getCountry());
             }
        */
-    } catch (TwitterException ex) {
+    } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class
               .getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    System.out.println(lugares.toString());
+    if(lugares!=null)
+      System.out.println(lugares.toString());
     return lugares;
   }
 

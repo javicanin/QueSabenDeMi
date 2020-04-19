@@ -7,6 +7,7 @@ package com.ucam.quesaben;
 
 import com.ucam.bean.UsersGamersBean;
 import com.ucam.bean.UsersPoliticsBean;
+import com.ucam.bean.UsersSportsBean;
 import com.ucam.files.LoadFilesUsersHobbies;
 import com.ucam.files.LoadPropDisp;
 import com.ucam.files.LoadPropertiesFrases;
@@ -33,6 +34,7 @@ public class LoadInit extends HttpServlet {
       LoadTwitterProperties.cargaPropiedades(Constantes.FICHERO_PROPIEDADES_TWITTER);
       UsersGamersBean.usuariosGamers = LoadFilesUsersHobbies.leerFicheroUsuarios(Constantes.FICHERO_USUARIOS_GAMERS);
       UsersPoliticsBean.usuariosPoliticos = LoadFilesUsersHobbies.leerFicheroUsuarios(Constantes.FICHERO_USUARIOS_POLITICA);
+      UsersSportsBean.usuariosDeportes = LoadFilesUsersHobbies.leerFicheroUsuarios(Constantes.FICHERO_USUARIOS_DEPORTES);
       LoadPropDisp.cargaDispositivosFromProperties(Constantes.FICHERO_PROPIEDADES_DISP);
       LoadPropertiesFrases.cargarPropertiesFrases(Constantes.FICHERO_PROPIEDADES_FRASES);
 

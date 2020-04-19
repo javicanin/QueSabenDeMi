@@ -18,36 +18,14 @@
 
     <title>Qué saben de mí</title>
 
+    <link href="css/inicio.css" rel="stylesheet">
+    <link href="css/estilos.css" rel="stylesheet">    
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-    <style>
-      .bd-example-modal-lg .modal-dialog{
-        display: table;
-        position: relative;
-        margin: 0 auto;
-        top: calc(50% - 24px);
-      }
-
-      .bd-example-modal-lg .modal-dialog .modal-content{
-        background-color: transparent;
-        border: none;
-      }
-      
-      /*Texto fijo del campo input ej: @*/
-      .input-txt-fixed {
-        position: absolute;
-        z-index: 9;
-        display: block;
-        padding-left: .75rem;
-        padding-top: .375rem;
-        padding-bottom: .375rem;
-      }
-    </style>
 
   </head>
 
@@ -63,7 +41,7 @@
 
         <!-- Main Content -->
         <div id="content">
-          <div class="container-fluid bg-white">
+          <div class="container-fluid">
 
             <div class="row">
               <div class="col-12 my-5">
@@ -71,32 +49,32 @@
             </div>
             <div class="row">
               <div class="col-12 my-5">
-                <h1 class="h1 text-center text-primary">Qué sabe Twitter sobre mi...</h1>
+                <p id="titulo-app" class="text-center text-primary">Qué sabe Twitter sobre mi...</p>
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-12 my-5">
-                <form id="form-search" name="formulario" class="col-xl-4 offset-xl-4 col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-8 offset-xs-2 col-10 offset-1" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
+            <div class="row d-flex flex-column">
+              <div class="col-12">
+                <form id="form-search" name="formulario" title="Debe aceptar la política de privacidad" class="col-xl-4 offset-xl-4 col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-8 offset-xs-2 col-10 offset-1" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
                   <div class="input-group">
-                    <span class="input-txt-fixed font-weight-bolder">@</span>
-                    <input type="text" name="userTwitter" style="padding-left: 29px" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
+                    <span class="text-primary input-txt-fixed font-weight-bolder">@</span>
+                    <input type="text" name="userTwitter" id="userInput" disabled="true" style="padding-left: 29px" class="form-control border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
-                      <button class="btn btn-primary" type="submit" onclick="modalSpinner();">
+                      <button class="btn btn-primary" type="submit" id="botonConsulta" disabled="true" onclick="modalSpinner();">
                         <i class="fas fa-search fa-sm" id="lupa"></i>
                       </button>
                     </div>
                   </div>
+
                 </form>
+              <div class="form-check text-center col-12 my-3">
+                <input type="checkbox" class="form-check-input" name="check" id="check" onChange="aceptPrivacity(this);"/>
+                <label class="form-check-label" for="defaultCheck1">
+                  He leído y acepto la <a href="politica-privacidad.jsp" target="_blank">política de privacidad</a>
+                </label>
+              </div>                    
               </div>
             </div>
-
-            <!--                      <button class="btn btn-primary" type="submit" onclick="modalSpinner();" id="btn">
-            spinner
-                                  </button>
-            -->
-
-
 
           </div>
         </div>
@@ -104,10 +82,10 @@
 
 
         <!-- Footer -->
-        <footer class="sticky-footer bg-white">
+        <footer id="footer" class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; QueSabenDeMi  2020</span>
+              <span>Copyright &copy; QueSabenDeMi 2020</span>
             </div>
           </div>
         </footer>
@@ -136,6 +114,19 @@
     </div>
 
     <script type="text/javascript">
+      function aceptPrivacity(obj) {
+        if (obj.checked) {
+          document.getElementById('userInput').disabled = false;
+          document.getElementById('form-search').title = "";
+          document.getElementById('botonConsulta').disabled = false;
+        } else {
+          document.getElementById('userInput').disabled = true;
+          document.getElementById('userInput').value = "";
+          document.getElementById('form-search').title = "Debe aceptar la política de privacidad";
+          document.getElementById('botonConsulta').disabled = true;
+        }
+      }
+
       function modalSpinner() {
         $('.modal').modal('show');
         /*       setTimeout(function () {

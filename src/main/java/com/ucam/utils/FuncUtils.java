@@ -36,6 +36,20 @@ public class FuncUtils {
       return Constantes.CLAVE_INFO_NO_DISPONIBLE;
     }
 
+    public static String claveNumDeportes(int numDeportes){
+      int dpt = numDeportes;
+      if(dpt == 0)
+        return Constantes.CLAVE_GUSTOS_DEPORTES_NADA;
+      if(FuncUtils.isBetween(dpt, 0, Constantes.NUM_DEPORTES_CIERTO, 3))
+        return Constantes.CLAVE_GUSTOS_DEPORTES_CIERTO;
+      if(FuncUtils.isBetween(dpt, Constantes.NUM_DEPORTES_CIERTO + 1, Constantes.NUM_DEPORTES_BASTANTES, 3))
+        return Constantes.CLAVE_GUSTOS_DEPORTES_BASTANTE;
+      if(dpt > Constantes.NUM_DEPORTES_BASTANTES)
+        return Constantes.CLAVE_GUSTOS_DEPORTES_MUCHO;
+      return Constantes.CLAVE_INFO_NO_DISPONIBLE;
+    }
+    
+    
   public static boolean isBetween(int num, int inf, int sup, int included){
     switch (included){
       case 0:

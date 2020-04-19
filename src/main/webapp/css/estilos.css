@@ -1,0 +1,47 @@
+/*ZOOM DE IMAGENES DE TABLA*/
+.zoom {
+  /*padding: 2px;*/
+  transition: transform .2s; /* Animation */
+  width: 2rem;
+  height: 2rem;
+  margin: auto;
+}
+
+.zoom:hover {
+  -ms-transform: scale(3.3); /* IE 9 */
+  -webkit-transform: scale(3.3); /* Safari 3-8 */
+  transform: scale(3.3); 
+}
+
+/*ESTILOS SPINNER EN MODAL*/
+.bd-example-modal-lg .modal-dialog{
+  display: table;
+  position: relative;
+  margin: 0 auto;
+  top: calc(50% - 24px);
+}
+
+.bd-example-modal-lg .modal-dialog .modal-content{
+  background-color: transparent;
+  border: none;
+}
+
+/*Texto fijo del campo input ej: @*/
+.input-txt-fixed {
+  position: absolute;
+  z-index: 9;
+  display: block;
+  padding-left: .75rem;
+  padding-top: .375rem;
+  padding-bottom: .375rem;
+}
+
+#footer {
+  background: #ffab62;
+  width: 100%;
+  height: 80px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
