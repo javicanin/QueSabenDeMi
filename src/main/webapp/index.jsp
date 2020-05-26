@@ -64,11 +64,6 @@
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-            <!-- Sidebar Toggle (Topbar) 
-            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-              <i class="fa fa-bars"></i>
-            </button>-->
-
             <!-- Topbar Search -->
             <form id="form-search" name="formulario" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
               <div class="input-group">
@@ -175,8 +170,6 @@
                           <c:if test="${not usrBean.verified}">Perfil NO verificado</c:if>
                           </div>
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
-                          <!--                          <c:if test="${usrBean.verified}">${frases['VERIFICADO']}</c:if>
-                                                    <c:if test="${not usrBean.verified}">${frases['NO-VERIFICADO']}</c:if>-->
                           ${frases['VERIFICADO']}
                         </div>
                       </div>
@@ -196,8 +189,6 @@
                           <c:if test="${not usrBean.protegido}">Perfil NO protegido</c:if>
                           </div>
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
-                          <!--                          <c:if test="${usrBean.protegido}">${frases['PROTEGIDO']}</c:if>
-                                                    <c:if test="${not usrBean.protegido}">${frases['NO-PROTEGIDO']}</c:if>-->
                           ${frases['PROTEGIDO']}
                         </div>
                       </div>
@@ -282,24 +273,9 @@
                             <th style="text-align: center">Imagen</th>
                             <th>Nombre</th>
                             <th>Usuario</th>
-                            <!--<th style="text-align: center">Interacciones</th>-->
-                              <!--
-                                                          <th>Nombre</th>
-                                                          <th style="text-align: center">Peso</th>
-                                                          <th style="text-align: center">Interacciones</th>
-                                                          <th style="text-align: center">tw(${fn:length(idRtw)})</th>
-                                                          <th style="text-align: center">fv(${fn:length(idFv)})</th>
-                                                          <th style="text-align: center">rtwMe(${fn:length(idRtwMe)})</th>
-                              -->
                           </tr>
                         </thead>
                         <tfoot>
-                          <!--<tr>
-                            <th style="text-align: center">Imagen</th>
-                            <th>Nombre</th>
-                            <th style="text-align: center">Interacciones</th>
-                            <th>Usuario</th>
-                          </tr>-->
                         </tfoot>
                         <tbody>
                           <c:forEach items="<%=request.getAttribute("amigos")%>" var="amg">
@@ -314,47 +290,7 @@
                               </td>
                               <td style="vertical-align: middle">
                                 <a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.screenName}</a>
-                                <!--<a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.id}</a>-->
                               </td>
-                              <!--
-                              <td style="text-align: center; vertical-align: middle">
-                                <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
-                                <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
-                                </td>-->
-
-                              <!--                              
-                                                            <td style="text-align: center; vertical-align: middle">
-                                                              ${posFriend[amg.value.id]}
-                                                            </td>
-                                                            <td style="text-align: center; vertical-align: middle">
-                                                              ${usrInterac[amg.value.id]}
-                                                            </td>
-                                                            <td style="text-align: center; vertical-align: middle">
-                                                              <c:forEach items="<%=request.getAttribute("idRtw")%>" var="rtw" varStatus="st">
-                                                                <c:if test="${rtw.key==amg.value.id}" >
-                                                              ${idRtw[amg.value.id]} (${st.index})
-                                                              </c:if>
-                                                              </c:forEach>
-                                                            </td>
-                                                            <td style="text-align: center; vertical-align: middle">
-                                                              <c:forEach items="<%=request.getAttribute("idFv")%>" var="fv" varStatus="st">
-                                                                <c:if test="${fv.key==amg.value.id}" >
-                                                              ${idFv[amg.value.id]} (${st.index})
-                                                              </c:if>
-                                                              </c:forEach>
-                                                            </td>
-                                                            <td style="text-align: center; vertical-align: middle">
-                                                              <c:forEach items="<%=request.getAttribute("idRtwMe")%>" var="rtwm" varStatus="st">
-                                                                <c:if test="${rtwm.key==amg.value.id}" >
-                                                              ${idRtwMe[amg.value.id]} (${st.index})
-                                                              </c:if>
-                                                              </c:forEach>
-                                                            </td>
-                                                            <td style="text-align: center; vertical-align: middle">
-                                                              <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
-                                                              <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
-                                                            </td>
-                              -->
                             </tr>
                           </c:forEach>
                         </tbody>
@@ -434,19 +370,6 @@
                     <c:if test="${datosDispositivos=='[]'}">
                       <p>${frases['INFO-NO-DISPONIBLE']}</p>
                     </c:if>
-
-
-
-                    <!--                  <div class="mt-4 text-center small">
-                      <span class="mr-2">
-                      </span>
-                      <span class="mr-2">
-                      </span>
-                      <span class="mr-2">
-                      </span>
-                      
-                    </div>
-                    -->                  
 
                   </div>
                 </div>
@@ -646,10 +569,6 @@
       /////////////////// SPINNER MODAL ///////////////////
       function modalSpinner() {
         $('.modal').modal('show');
-        /*       setTimeout(function () {
-         console.log('hejsan');
-         $('.modal').modal('hide');
-         }, 300000);*/
       }
 
     </script>
