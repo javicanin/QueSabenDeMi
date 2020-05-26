@@ -7,11 +7,8 @@ package com.ucam.quesaben;
 
 import com.google.gson.Gson;
 import com.ucam.bean.DispositivosPropertiesBean;
-import com.ucam.bean.GeoJsonFeatures;
 import com.ucam.bean.GeoJsonPlacesBean;
-import com.ucam.bean.GeometryGeoJson;
 import com.ucam.bean.InfoUsoTwitterBean;
-import com.ucam.bean.PropertiesGeoJson;
 import com.ucam.bean.TweetMultimediaBean;
 import com.ucam.bean.UsersGamersBean;
 import com.ucam.bean.UsersPoliticsBean;
@@ -21,9 +18,7 @@ import com.ucam.files.LoadPropertiesFrases;
 import com.ucam.utils.Constantes;
 import com.ucam.utils.FuncUtils;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,7 +40,6 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 import twitter4j.GeoQuery;
-import twitter4j.MediaEntity;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Relationship;
@@ -53,31 +47,18 @@ import twitter4j.UserList;
 
 /**
  *
- * @author USUARIO
+ * @author F. Javier GOMEZ FERNANDEZ
  */
 public class ConexionTwitter extends HttpServlet {
-
-  /**
-   * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-   * methods.
-   *
-   * @param request servlet request
-   * @param response servlet response
-   * @throws ServletException if a servlet-specific error occurs
-   * @throws IOException if an I/O error occurs
-   */
   User usuario;
   UsuarioBean usrBean;
   ArrayList idsFollowers;
   ArrayList idsFriends;
-  //PagableResponseList<User> followers;
-  //PagableResponseList<User> friends;
   List<UserList> listasPropias;
   List<UserList> listasSuscritas;
   List<UserList> listasMiembro;
   List<Status> statuses;
   List<Status> meGusta;
-  //List<User> seguidoresMutuos;
   List<Place> placesTweets;
   GeoJsonPlacesBean geoJsonPlacesBean;
   List<Place> placesUserLocation;
@@ -106,11 +87,9 @@ public class ConexionTwitter extends HttpServlet {
   HashMap<Long, User> deportes;
   HashMap<String, String> frasesAleatorias;
   HashMap<String, String> frasesApp;
-
   GeoLocation geo;
   Place place;
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+  String mensajeError;
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -126,47 +105,22 @@ public class ConexionTwitter extends HttpServlet {
       User usuarioApp = twitter.verifyCredentials();
       System.out.println("Nombre: " + usuarioApp.getName());
       System.out.println("Descripcion: " + usuarioApp.getDescription());
-      System.out.println("Id Usuario: " + usuarioApp.getId());
-      System.out.println("Número Seguidores: " + usuarioApp.getFollowersCount());
 
-      //javicanin1
-      //tavito36301643
-      //amsl3
-      //Bonfanta
-      //paquirodriguezf
-      //danilof650gs
-      //GonzaloViCar
-      //snmr0551
-      //LucianoNuevoS
-      //Belenicenew
-      //CarmenNB8391
-      //COKEERISTOFF
-      //alvaromanguero
-      //Raul_17mg
-      //ireneMM90
-      //CristoferLK2
-      //Viajoenmoto
-      //DDoniga - places tweets
-      //jcae - listas sucritas
-      //Mdlosr
-      //MariolaRodr
-      //ricramsan
-      //JesusCalleja
-      //EstherMiguel87 - CUENTA PROTEGIDA
-      //String user = "CarmenNB8391";
+      //Se elimina posibles caracteres o cadenas para evitar ataques scripting
       String user = request.getParameter("userTwitter");
+      user = FuncUtils.reemplazosEvitaXSS(user);
+      //Se valida el contenido del campo de texto segun las especificaciones de los nombres de Twitter
+      mensajeError = FuncUtils.validaCampoPerfilTwitter(user, true);
+      if(!"".equals(mensajeError)){
+        //Si el campo de usuario tiene errores se produce una nueva excepción para que la ejecución no continue
+        throw new Exception(mensajeError);
+      }
 
       System.out.println("------------- USUARIO CONSULTADO -------------");
       usuario = twitter.showUser(user);
-      //System.out.println("Nombre: \n" + usuario.toString());
       usrBean = new UsuarioBean(usuario);
       System.out.println("Nombre: " + usuario.getName());
       System.out.println("ScreenName: " + usuario.getScreenName());
-      System.out.println("Lang: " + usuario.getLang());
-      System.out.println("Time/Zone: " + usuario.getTimeZone());
-      Date fcrea = usuario.getCreatedAt();
-//            String strFechaCreacion = fcrea.toString();
-//            System.out.println("Creado: " + strFechaCreacion);
       System.out.println("Location: " + usuario.getLocation());
       System.out.println("Descripción: " + usuario.getDescription());
       System.out.println("Tweets: " + usuario.getStatusesCount());
@@ -185,15 +139,13 @@ public class ConexionTwitter extends HttpServlet {
 ///////////////////////////////////////////////////////////////////////////////
 
       ConexionApiTwitter.getRateLimits(true);
-      //getUserFriendships(370199897L, 385337732L);
-      //searchTweets();
       idsFollowers = getIdsFollowers(user, 5000, 1);
       idsFriends = getIdsFriends(user, 5000, 1);
-      idsSegMutuos = getIdsSeguidoresMutuos(idsFollowers, idsFriends);
-      System.out.println("Seguidores Mutuos: " + idsSegMutuos.size());
+      idsSegMutuos = FuncUtils.getIdsSeguidoresMutuos(idsFollowers, idsFriends);
+      //System.out.println("Seguidores Mutuos: " + idsSegMutuos.size());
       statuses = getTweets(user, 200, 20);
       meGusta = getFavoritos(user, 200, 5);
-      usoTw = getInfoUsoTwitter(statuses, meGusta);
+      usoTw = FuncUtils.getInfoUsoTwitter(statuses, meGusta);
 
       //followers = getFollowers(user, 200, 6, false, true);
       //friends = getFriends(user, 200, 6, true, true);
@@ -201,84 +153,59 @@ public class ConexionTwitter extends HttpServlet {
       listasSuscritas = getListasSuscritas(user, 200, 1);
       listasMiembro = getListasMiembro(user, 200, 1);
 
-      dispositivos = getDispositivosTweets(statuses);
+      dispositivos = FuncUtils.getDispositivosTweets(statuses);
 
       //seguidoresMutuos = getSeguidoresMutuos(followers, friends);
       //listadoSeguidoresMutuos = getListadoSeguidoresMutuos(seguidoresMutuos);
-      placesTweets = getPlacesTweets(statuses, true);
-      geoJsonPlacesBean = getGeoJsonFeatures(statuses);
+      placesTweets = FuncUtils.getPlacesTweets(statuses, true);
+      geoJsonPlacesBean = FuncUtils.getGeoJsonFeatures(statuses);
 
-      idsPlacesTweets = getCountIdsPlaces(placesTweets);
-      mapPlacesTweets = getMapPlaces(placesTweets);
+      idsPlacesTweets = FuncUtils.getCountIdsPlaces(placesTweets);
+      mapPlacesTweets = FuncUtils.getMapPlaces(placesTweets);
       placesUserLocation = searchPlaces(999, 999, usuario.getLocation(), "city", null, Constantes.MAX_PLACES_SEARCH_API);
-      lugaresResidenciaFrecuenta = getLugarDomicilio(idsPlacesTweets, mapPlacesTweets, placesUserLocation, usuario, Constantes.MAX_PLACES_DOMICILIO);
+      lugaresResidenciaFrecuenta = FuncUtils.getLugarDomicilio(idsPlacesTweets, mapPlacesTweets, placesUserLocation, usuario, Constantes.MAX_PLACES_DOMICILIO);
 
       //meGustasToUserMutuos = getListaUsersMeGustas(meGusta, seguidoresMutuos);
       //retweetsToUserMutuos = getListaReteetsToSegMutuos(statuses, listadoSeguidoresMutuos);
-      idsUserRetweets = getListaIdsUserRetweets(statuses, idsSegMutuos);
-      idsUserFavoritos = getUserIdsFavoritos(meGusta, idsSegMutuos);
-      idsTweetsRetweetsMe = getIdsRetweetsMe(user, statuses);
+      idsUserRetweets = FuncUtils.getListaIdsUserRetweets(statuses, idsSegMutuos);
+      idsUserFavoritos = FuncUtils.getUserIdsFavoritos(meGusta, idsSegMutuos);
+      idsTweetsRetweetsMe = FuncUtils.getIdsRetweetsMe(user, statuses);
 
       //El parametro losXMasRetweeteados indica el tamaño máximo de la estructura para después
       //solicitar los ids de usuarios. Tened en cuenta el número de peticiones por ventana es 75
-      long[] idsRetweets = getMaxArrayIdsRetweets(idsTweetsRetweetsMe, Constantes.MAX_RTW_SEARCH_API);
+      long[] idsRetweets = FuncUtils.getMaxArrayIdsRetweets(idsTweetsRetweetsMe, Constantes.MAX_RTW_SEARCH_API);
       idsUsersRetweetsMe = getRetweetsMeForIds(idsRetweets, 200);
       //listaSegMutuosReteetsMe = getListaSegMutuosReteetsMe(idUsersRetweetsMe, listadoSeguidoresMutuos);
-      idsSegMutuosReteetsMe = getListaSegMutuosReteetsMe2(idsUsersRetweetsMe, idsSegMutuos);
+      idsSegMutuosReteetsMe = FuncUtils.getListaSegMutuosReteetsMe2(idsUsersRetweetsMe, idsSegMutuos);
 
-      idsUserAmigos = getIdsUserAmigos2(idsUserRetweets, idsUserFavoritos, idsSegMutuosReteetsMe, idsSegMutuos, Constantes.MAX_BEST_FRIENDS);
-      long[] listIdsUserAmigos = getMaxArrayIdsRetweets(idsUserAmigos, Constantes.MAX_BEST_FRIENDS);
+      idsUserAmigos = FuncUtils.getIdsUserAmigos2(idsUserRetweets, idsUserFavoritos, idsSegMutuosReteetsMe, idsSegMutuos, Constantes.MAX_BEST_FRIENDS);
+      long[] listIdsUserAmigos = FuncUtils.getMaxArrayIdsRetweets(idsUserAmigos, Constantes.MAX_BEST_FRIENDS);
 
       listUsersAmigosFromIds = getListUserfromIds(listIdsUserAmigos, idsUserAmigos);
 
-      userInteracciones = getUserInteracciones(idsUserRetweets, idsUserFavoritos, idsSegMutuosReteetsMe);
+      userInteracciones = FuncUtils.getUserInteracciones(idsUserRetweets, idsUserFavoritos, idsSegMutuosReteetsMe);
 
-      multimediaFavoritos = getTweetsMultimediaFavoritos(statuses);
+      multimediaFavoritos = FuncUtils.getTweetsMultimediaFavoritos(statuses);
 
       gamers = getListIdsUserFromScreenName(UsersGamersBean.usuariosGamers);
-      getUserHobbiesInFriends(gamers, idsFriends);
+      FuncUtils.getUserHobbiesInFriends(gamers, idsFriends);
 
       politicos = getListIdsUserFromScreenName(UsersPoliticsBean.usuariosPoliticos);
-      getUserHobbiesInFriends(politicos, idsFriends);
+      FuncUtils.getUserHobbiesInFriends(politicos, idsFriends);
 
       deportes = getListIdsUserFromScreenName(UsersSportsBean.usuariosDeportes);
-      getUserHobbiesInFriends(deportes, idsFriends);
+      FuncUtils.getUserHobbiesInFriends(deportes, idsFriends);
       
       frasesAleatorias = LoadPropertiesFrases.getRandomFrases();
       frasesApp = selectFrases(frasesAleatorias);
 
-
-      /*frasesApp = prop.loadAllProperties();
-      String fraseVefificado = prop.getPropertiesAsAleatory(Constantes.FRASE_VERIFICADO);
-      String fraseNoVefificado = prop.getPropertiesAsAleatory(Constantes.FRASE_NO_VERIFICADO);
-      String fraseProtegido = prop.getPropertiesAsAleatory(Constantes.FRASE_PROTEGIDO);
-      String fraseNoProtegido = prop.getPropertiesAsAleatory(Constantes.FRASE_NO_PROTEGIDO);*/
- /*            
-            System.out.println("------------ RESUMEN DATOS -------------");
-            System.out.println("followers: " + followers.size());
-            System.out.println("friends: " + friends.size());
-            System.out.println("statuses: " + statuses.size());
-            System.out.println("favoritos: " + meGusta.size());
-            System.out.println("listasPropias: " + listasPropias.size());
-            System.out.println("listasSuscritas: " + listasSuscritas.size());
-            System.out.println("listasMiembro: " + listasMiembro.size());
-            System.out.println("places: " + placesTweets.size());
-       */
       ConexionApiTwitter.getRateLimits(true);
 
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-      /*request.setAttribute("fraseVerificado", fraseVefificado);
-      request.setAttribute("fraseNoVerificado", fraseNoVefificado);
-      request.setAttribute("fraseProtegido", fraseProtegido);
-      request.setAttribute("fraseNoProtegido", fraseNoProtegido);*/
       request.setAttribute("frases", frasesApp);
-
-//request.setAttribute("followers", followers);
       request.setAttribute("usrBean", usrBean);
       request.setAttribute("amigos", listUsersAmigosFromIds);
       request.setAttribute("usrInterac", userInteracciones);
@@ -286,9 +213,9 @@ public class ConexionTwitter extends HttpServlet {
       request.setAttribute("domicilio", lugaresResidenciaFrecuenta);
 /////////////////////////////////////////////////////////
 //Valores pasados para las pruebas con la tabla de amigos
-      request.setAttribute("idRtw", idsUserRetweets);
-      request.setAttribute("idFv", idsUserFavoritos);
-      request.setAttribute("idRtwMe", idsSegMutuosReteetsMe);
+      //request.setAttribute("idRtw", idsUserRetweets);
+      //request.setAttribute("idFv", idsUserFavoritos);
+      //request.setAttribute("idRtwMe", idsSegMutuosReteetsMe);
 /////////////////////////////////////////////////////////
 
       String usoTwt = new Gson().toJson(usoTw);
@@ -300,16 +227,6 @@ public class ConexionTwitter extends HttpServlet {
       request.setAttribute("fraseHoras", fraseHoras);
       request.setAttribute("fraseUsoGeneral", fraseUsoGeneral);
 
-      /*      
-      ArrayList datosDispositivos = new ArrayList();
-      ArrayList labelsDispositivos = new ArrayList();
-      for (Map.Entry<String, Integer> dsp : dispositivos.entrySet()) {
-        labelsDispositivos.add(dsp.getKey());
-        datosDispositivos.add(dsp.getValue());
-      }
-      String labelDispJson = new Gson().toJson(labelsDispositivos);
-      String datosDispJson = new Gson().toJson(datosDispositivos);
-       */
       request.setAttribute("labelsDispositivos", FuncUtils.getStringGsonLabelDataDisp(dispositivos, "label"));
       request.setAttribute("datosDispositivos", FuncUtils.getStringGsonLabelDataDisp(dispositivos, "data"));
 
@@ -324,14 +241,25 @@ public class ConexionTwitter extends HttpServlet {
     } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
-      RequestDispatcher dispatcher = request.getRequestDispatcher(response.encodeURL("error.jsp"));
+      String error = ex.getMessage();
+      if(error!=null){
+        if(error.contains("User not found.")){
+          mensajeError = "El usuario no existe";
+          request.setAttribute("msgError", mensajeError);
+        }else{
+          request.setAttribute("msgError", ex.getMessage());
+        }
+      }
+      else{
+        mensajeError = "Error desconocido.\nInténtelo de nuevo más tarde.\nSi el error persiste consulte con el administrador del sistema.";
+        request.setAttribute("msgError", mensajeError);
+      }
+      RequestDispatcher dispatcher = request.getRequestDispatcher(response.encodeURL("blank.jsp"));
       dispatcher.forward(request, response);
 
     }
   }
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -379,14 +307,6 @@ public class ConexionTwitter extends HttpServlet {
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
   public HashMap<String, String> selectFrases(HashMap<String, String> fr) {
     HashMap<String, String> frases = new HashMap();
     String clave = usrBean.clavePerfilVerificado();
@@ -404,15 +324,14 @@ public class ConexionTwitter extends HttpServlet {
     clave = usrBean.claveNumAmigos();
     frases.put(Constantes.CLAVE_NUM_AMIGOS, fr.get(clave));
 
-    clave = FuncUtils.claveNumGamers(getUserHobbiesInFriends(gamers, idsFriends).size());
+    clave = FuncUtils.claveNumGamers(FuncUtils.getUserHobbiesInFriends(gamers, idsFriends).size());
     frases.put(Constantes.CLAVE_GUSTOS_GAMERS, fr.get(clave));
 
-    clave = FuncUtils.claveNumPoliticos(getUserHobbiesInFriends(politicos, idsFriends).size());
+    clave = FuncUtils.claveNumPoliticos(FuncUtils.getUserHobbiesInFriends(politicos, idsFriends).size());
     frases.put(Constantes.CLAVE_GUSTOS_POLITICA, fr.get(clave));
 
-    clave = FuncUtils.claveNumDeportes(getUserHobbiesInFriends(deportes, idsFriends).size());
+    clave = FuncUtils.claveNumDeportes(FuncUtils.getUserHobbiesInFriends(deportes, idsFriends).size());
     frases.put(Constantes.CLAVE_GUSTOS_DEPORTES, fr.get(clave));
-    
     
     return frases;
   }
@@ -441,10 +360,6 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    /*for (int i=0; i<followers.size(); i++) {
-            System.out.println(followers.get(i));
-        }*/
-    System.out.println(followers.toString());
     return followers;
   }
 
@@ -473,10 +388,6 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    /*        for (User flw : followers) {
-            System.out.println(flw.getId() + ": " + flw.getScreenName());
-        }
-     */
     return followers;
   }
 
@@ -503,10 +414,6 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    /*for (int i=0; i<friends.size(); i++) {
-            System.out.println(friends.get(i));
-        }*/
-    System.out.println(friends.toString());
     return friends;
   }
 
@@ -516,7 +423,6 @@ public class ConexionTwitter extends HttpServlet {
     Twitter twitter = ConexionApiTwitter.getConexion();
     System.out.println("################################################");
     System.out.println("-------------------- FRIENDS --------------------");
-
     //Lista de seguidores followers
     long cursor = -1;
     try {
@@ -536,29 +442,7 @@ public class ConexionTwitter extends HttpServlet {
       System.out.println("ERROR: " + ex.getMessage());
     }
 
-    /*        for (User frd : friends) {
-            System.out.println(frd.getId() + ": " + frd.getScreenName());
-        }
-     */
     return friends;
-  }
-
-  public ArrayList getIdsSeguidoresMutuos(ArrayList idsFollowers, ArrayList idsFriends) {
-    ArrayList segMutuos = new ArrayList();
-    if (idsFollowers.size() < idsFriends.size()) {
-      for (int i = 0; i < idsFollowers.size(); i++) {
-        if (idsFriends.contains(idsFollowers.get(i))) {
-          segMutuos.add(idsFollowers.get(i));
-        }
-      }
-    } else {
-      for (int i = 0; i < idsFriends.size(); i++) {
-        if (idsFollowers.contains(idsFriends.get(i))) {
-          segMutuos.add(idsFriends.get(i));
-        }
-      }
-    }
-    return segMutuos;
   }
 
   public ResponseList<Status> getTweets(String userName, int pageSize, int numLlamadas) {
@@ -569,11 +453,6 @@ public class ConexionTwitter extends HttpServlet {
     System.out.println("-------------------- TWEETS --------------------");
     //Listado de Tweets de un usuario
     Paging paginacion = new Paging(1, pageSize);
-    ////////////////////////////
-    //OJO PARA EVITAR PAGINACIÓN
-    ////////////////////////////
-    //List<Status> statuses = twitter.getUserTimeline(user);
-    //statuses = twitter.getUserTimeline(user);
     try {
       do {
         tweetsPage = twitter.getUserTimeline(userName, paginacion);
@@ -585,44 +464,10 @@ public class ConexionTwitter extends HttpServlet {
         numLlamadas--;
         paginacion.setPage(paginacion.getPage() + 1);
       } while (tweetsPage.size() > 0 && numLlamadas > 0);
-
-      /*for (Status st : tweets) {
-        System.out.println(st.toString());
-      }*/
     } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-
-    /*        for (Status st : tweets) {
-            System.out.println("TXT: " + st.getText());
-            System.out.println("ID: " + st.getId());
-            System.out.println("IsRetweet/IsRetweeted/IsRetweetedByMe: " + st.isRetweet()+"/"+st.isRetweeted()+"/"+st.isFavorited()+"/"+st.isRetweetedByMe());
-            System.out.println("InReply: " + st.getInReplyToScreenName());
-            if(st.getRetweetedStatus()!=null)
-              System.out.println("RetweetedStatus: "+st.getRetweetedStatus().toString());
-            System.out.println("User: " + st.getUser().getScreenName());
-            System.out.println("RwtCount/favoriteCount:" + st.getRetweetCount() + "/" + st.getFavoriteCount());
-            if(st.getQuotedStatus()!=null)
-              System.out.println("QuotedStatus/QuotedStatusId/QuotedStatus/User-ScreenName: \n"+st.getQuotedStatus()+"\n"+st.getQuotedStatusId()+"\n"+st.getQuotedStatus().getUser().getScreenName());
-            if(st.getMediaEntities()!=null)
-              System.out.println("MediaEntities: " + Arrays.toString(st.getMediaEntities()));
-            System.out.println("\n");
-        }*/
-
- /*
-        for (Status st : tweets) {
-            System.out.println(st.getId() + " # Retweets/Me Gusta: " + st.getRetweetCount() + "/" + st.getFavoriteCount() + " ### " + st.getText());
-        }
-     */
- /*    System.out.println("OJO SOLO SE ESTAN IMPRIMIENTO LOS QUE CONTIENEN MULTIMEDIA");
-    for (Status st : tweets) {
-      if (st.getMediaEntities().length != 0) {
-        System.out.println(st.toString());
-      }
-    }
-     */
-    System.out.println(tweets.toString());
     return tweets;
   }
 
@@ -642,7 +487,6 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-
     return tweets;
   }
 
@@ -672,59 +516,9 @@ public class ConexionTwitter extends HttpServlet {
     }
     //Ordena la estructura por el número de Retweets o respuestas
     listaRetweets = (HashMap<String, Integer>) FuncUtils.ordenarMapStrIntPorValor(listaRetweets);
-
-    /*        for (Map.Entry<String, Integer> tw : listaRetweets.entrySet()) {
-            System.out.println(tw.toString());
-        }
-     */
     return listaRetweets;
   }
 
-  public LinkedHashMap getListaIdsUserRetweets(List<Status> tweets, ArrayList idsSegMutuos) {
-    LinkedHashMap<Long, Integer> listaRetweets = new LinkedHashMap<>();
-    System.out.println("------------ IDs USER RETWEETS -------------");
-    Long usr = 0L;
-    try {
-      for (Status st : tweets) {
-        //Aquí se hace diferenciación entre si es:
-        //- ReTweet en respuesta a otro: se analiza el campo InReplyToScreenName
-        //- ReTweet sin comentario: se analiza el campo RetweetedStatus
-        //- ReTweet con comentario: se analiza el campo QuotedStatus
-        if (st.getRetweetedStatus() != null || st.getInReplyToScreenName() != null || st.getQuotedStatus() != null) {
-          if (st.getRetweetedStatus() != null) {
-            usr = st.getRetweetedStatus().getUser().getId();
-          }
-          if (st.getInReplyToScreenName() != null) {
-            usr = st.getInReplyToUserId();
-          }
-          if (st.getQuotedStatus() != null) {
-            usr = st.getQuotedStatus().getUser().getId();
-          }
-          if (idsSegMutuos.contains(usr)) {
-            if (listaRetweets.containsKey(usr)) {
-              int valor = (int) listaRetweets.get(usr);
-              valor = valor + 1;
-              listaRetweets.replace(usr, valor);
-            } else {
-              listaRetweets.put(usr, 1);
-            }
-          }
-        }
-      }
-      //Ordena la estructura por el número de Retweets o respuestas
-      listaRetweets = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(listaRetweets);
-      /*
-        for (Map.Entry<Long, Integer> tw : listaRetweets.entrySet()) {
-            System.out.println(tw.toString());
-        }
-       */
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return listaRetweets;
-  }
 
   public ResponseList<Status> getFavoritos(String userName, int pageSize, int numLlamadas) {
     ResponseList<Status> favoritos = null;
@@ -734,11 +528,6 @@ public class ConexionTwitter extends HttpServlet {
     System.out.println("------------------ FAVORITOS -------------------");
     //Listado de Tweets de un usuario
     Paging paginacion = new Paging(1, pageSize);
-    ////////////////////////////
-    //OJO PARA EVITAR PAGINACIÓN
-    ////////////////////////////
-    //List<Status> statuses = twitter.getUserTimeline(user);
-    //statuses = twitter.getUserTimeline(user);
     try {
       do {
         favoritosPage = twitter.getFavorites(userName, paginacion);
@@ -750,15 +539,10 @@ public class ConexionTwitter extends HttpServlet {
         numLlamadas--;
         paginacion.setPage(paginacion.getPage() + 1);
       } while (favoritosPage.size() > 0 && numLlamadas > 0);
-
-      /*for (Status st : favoritos) {
-        System.out.println(st.getId() + ": " + st.getText() + "| Retweets/Me Gusta: " + st.getRetweetCount() + "/" + st.getFavoriteCount());
-      }*/
     } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    System.out.println(favoritos.toString());
     return favoritos;
   }
 
@@ -768,7 +552,6 @@ public class ConexionTwitter extends HttpServlet {
     Twitter twitter = ConexionApiTwitter.getConexion();
     System.out.println("################################################");
     System.out.println("--------------- LISTAS PROPIAS -----------------");
-
     long cursor = -1;
     try {
       do {
@@ -786,10 +569,6 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    /*for (UserList ul : listas) {
-            System.out.println("" + ul.toString());
-        }*/
-    System.out.println(listas.toString());
     return listas;
   }
 
@@ -799,7 +578,6 @@ public class ConexionTwitter extends HttpServlet {
     Twitter twitter = ConexionApiTwitter.getConexion();
     System.out.println("################################################");
     System.out.println("--------------- LISTAS MIEMBRO -----------------");
-
     long cursor = -1;
     try {
       do {
@@ -812,15 +590,10 @@ public class ConexionTwitter extends HttpServlet {
         numLlamadas--;
         cursor = listasPage.getNextCursor();
       } while (cursor != 0 && listas.size() < numLlamadas);
-
     } catch (TwitterException ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    /*for (UserList ul : listas) {
-            System.out.println(ul.toString());
-        }*/
-    System.out.println(listas.toString());
     return listas;
   }
 
@@ -830,7 +603,6 @@ public class ConexionTwitter extends HttpServlet {
     Twitter twitter = ConexionApiTwitter.getConexion();
     System.out.println("################################################");
     System.out.println("-------------- LISTAS SUSCRITAS ---------------");
-
     long cursor = -1;
     try {
       do {
@@ -848,295 +620,10 @@ public class ConexionTwitter extends HttpServlet {
       java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    /*for (UserList ul : listas) {
-            System.out.println("" + ul.toString());
-        }*/
-    System.out.println(listas.toString());
     return listas;
   }
 
-  //REFACTORIZAR
-  public HashMap<String, Integer> getDispositivosTweets(List<Status> statuses) {
-    HashMap<String, Integer> dispositivos = new HashMap<String, Integer>();
-    System.out.println("################################################");
-    System.out.println("----------------- DISPOSITIVOS -----------------");
-    try {
-      String dispositivo = "";
-      String clave = "";
-      String claveUnica = "";
-      for (Status status : statuses) {
-        dispositivo = status.getSource();
-        for (Map.Entry<String, String> d : DispositivosPropertiesBean.allDisp.entrySet()) {
-          if (dispositivo.contains(d.getValue())) {
-            clave = d.getKey();
-            claveUnica = clave.substring(0, clave.indexOf(Constantes.CHAR_SEPARADOR_PROPERTIES));
-            switch (claveUnica) {
-              case Constantes.DISP_ANDROID:
-                if (!dispositivos.containsKey(Constantes.TXT_DISP_ANDROID)) {
-                  dispositivos.put(Constantes.TXT_DISP_ANDROID, 1);
-                } else {
-                  int valor = dispositivos.get(Constantes.TXT_DISP_ANDROID);
-                  dispositivos.replace(Constantes.TXT_DISP_ANDROID, ++valor);
-                }
-                break;
-              case Constantes.DISP_APPLE:
-                if (!dispositivos.containsKey(Constantes.TXT_DISP_APPLE)) {
-                  dispositivos.put(Constantes.TXT_DISP_APPLE, 1);
-                } else {
-                  int valor = dispositivos.get(Constantes.TXT_DISP_APPLE);
-                  dispositivos.replace(Constantes.TXT_DISP_APPLE, ++valor);
-                }
-                break;
-              case Constantes.DISP_ORDENADOR:
-                if (!dispositivos.containsKey(Constantes.TXT_DISP_ORDENADOR)) {
-                  dispositivos.put(Constantes.TXT_DISP_ORDENADOR, 1);
-                } else {
-                  int valor = dispositivos.get(Constantes.TXT_DISP_ORDENADOR);
-                  dispositivos.replace(Constantes.TXT_DISP_ORDENADOR, ++valor);
-                }
-                break;
-              case Constantes.DISP_NAVEGADOR_WEB:
-                if (!dispositivos.containsKey(Constantes.TXT_DISP_NAVEGADOR_WEB)) {
-                  dispositivos.put(Constantes.TXT_DISP_NAVEGADOR_WEB, 1);
-                } else {
-                  int valor = dispositivos.get(Constantes.TXT_DISP_NAVEGADOR_WEB);
-                  dispositivos.replace(Constantes.TXT_DISP_NAVEGADOR_WEB, ++valor);
-                }
-                break;
-              case Constantes.DISP_OTRAS_REDES:
-                if (!dispositivos.containsKey(Constantes.TXT_DISP_OTRAS_REDES)) {
-                  dispositivos.put(Constantes.TXT_DISP_OTRAS_REDES, 1);
-                } else {
-                  int valor = dispositivos.get(Constantes.TXT_DISP_OTRAS_REDES);
-                  dispositivos.replace(Constantes.TXT_DISP_OTRAS_REDES, ++valor);
-                }
-                break;
-              case Constantes.DISP_APLICACIONES:
-                if (!dispositivos.containsKey(Constantes.TXT_DISP_APLICACIONES)) {
-                  dispositivos.put(Constantes.TXT_DISP_APLICACIONES, 1);
-                } else {
-                  int valor = dispositivos.get(Constantes.TXT_DISP_APLICACIONES);
-                  dispositivos.replace(Constantes.TXT_DISP_APLICACIONES, ++valor);
-                }
-                break;
-            }
-          }
-        }
-        /*
-        if (dispositivo.contains(dispProp.get(Constantes.DISP_ANDROID))) {
-          dispositivo = Constantes.DISP_ANDROID;
-          if (!dispositivos.containsKey(Constantes.DISP_ANDROID)) {
-            dispositivos.put(Constantes.DISP_ANDROID, 1);
-          } else {
-            int valor = dispositivos.get(dispositivo);
-            valor++;
-            dispositivos.replace(dispositivo, valor);
-          }
-        }
-        /*        if (dispositivo.contains(Constantes.DISP_IPHONE)) {
-          dispositivo = Constantes.DISP_IPHONE;
-          if (!dispositivos.containsKey(Constantes.DISP_IPHONE)) {
-            dispositivos.put(Constantes.DISP_IPHONE, 1);
-          } else {
-            int valor = dispositivos.get(dispositivo);
-            valor++;
-            dispositivos.replace(dispositivo, valor);
-          }
-        }
-        if (dispositivo.contains(Constantes.DISP_MOBIL_WEB)) {
-          dispositivo = Constantes.DISP_MOBIL_WEB;
-          if (!dispositivos.containsKey(Constantes.DISP_MOBIL_WEB)) {
-            dispositivos.put(Constantes.DISP_MOBIL_WEB, 1);
-          } else {
-            int valor = dispositivos.get(dispositivo);
-            valor++;
-            dispositivos.replace(dispositivo, valor);
-          }
-        }
-        if (dispositivo.contains(Constantes.DISP_WEBSITES)) {
-          dispositivo = Constantes.DISP_WEBSITES;
-          if (!dispositivos.containsKey(Constantes.DISP_WEBSITES)) {
-            dispositivos.put(Constantes.DISP_WEBSITES, 1);
-          } else {
-            int valor = dispositivos.get(dispositivo);
-            valor++;
-            dispositivos.replace(dispositivo, valor);
-          }
-        }
-        if (!dispositivo.contains(Constantes.DISP_ANDROID) && !dispositivo.contains(Constantes.DISP_IPHONE)
-                && !dispositivo.contains(Constantes.DISP_MOBIL_WEB) && !dispositivo.contains(Constantes.DISP_WEBSITES)) {
-          dispositivo = Constantes.DISP_OTROS;
-          if (!dispositivos.containsKey(Constantes.DISP_OTROS)) {
-            dispositivos.put(Constantes.DISP_OTROS, 1);
-          } else {
-            int valor = dispositivos.get(dispositivo);
-            valor++;
-            dispositivos.replace(dispositivo, valor);
-          }
-        }*/
-      }
-      for (Map.Entry<String, Integer> dsp : dispositivos.entrySet()) {
-        System.out.println(dsp.getKey() + ": " + dsp.getValue());
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return dispositivos;
-  }
-
-  public List<User> getSeguidoresMutuos(PagableResponseList<User> followers, PagableResponseList<User> friends) {
-    List<User> segMutuos = new ArrayList<User>();
-    System.out.println("################################################");
-    System.out.println("------------- SEGUIDORES MUTUOS -------------");
-    if (followers != null && friends != null) {
-      for (User flw : followers) {
-        for (User frd : friends) {
-          if (flw.getId() == frd.getId()) {
-            segMutuos.add(flw);
-            //System.out.println(flw.getScreenName());
-          }
-        }
-      }
-    }
-    /*
-        for (User sgMt : followers) {
-            System.out.println(sgMt.getId() + ": " + sgMt.getScreenName());
-        }
-     */
-    return segMutuos;
-  }
-
-  public List<Place> getPlacesTweets(List<Status> statuses, boolean repetidos) {
-    List<Place> lugares = new ArrayList<Place>();
-    System.out.println("################################################");
-    System.out.println("---------- LUGARES TWEETS Y FAVORITOS ----------");
-    try {
-      Place lugar;
-      for (Status st : statuses) {
-        //Este condicional porque retweets sin comentario no permiten indicar ubicación, igual que me gustas
-        //En cualquier caso el Place sería del tweet retweeteado
-        if (!st.isRetweeted()) {
-          lugar = st.getPlace();
-          if (lugar != null && (!lugares.contains(lugar) || repetidos)) {
-            lugares.add(st.getPlace());
-          }
-        }
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return lugares;
-  }
-
-  public double[] getCentralPointOfPolygon(GeoLocation[][] geoLoc) {
-    double[] centralPoint = new double[2];
-    try {
-      if (geoLoc != null) {
-        double lat1 = geoLoc[0][0].getLatitude();
-        double lon1 = geoLoc[0][0].getLongitude();
-        double lat2 = geoLoc[0][2].getLatitude();
-        double lon2 = geoLoc[0][2].getLongitude();
-        if (lat1 != lat2 && lon1 != lon2) {
-          centralPoint[0] = lon1 - ((lon1 - lon2) / 2);
-          centralPoint[1] = lat2 - ((lat2 - lat1) / 2);
-        } else {
-          centralPoint[0] = lon1;
-          centralPoint[1] = lat1;
-        }
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return centralPoint;
-  }
-
-  public GeoJsonPlacesBean getGeoJsonFeatures(List<Status> statuses) {
-    GeoJsonPlacesBean gJsPl = new GeoJsonPlacesBean();
-    System.out.println("--------------- GEOJSON PLACES ---------------");
-    try {
-      Place lugar;
-      for (Status st : statuses) {
-        //Este condicional porque retweets sin comentario no permiten indicar ubicación, igual que me gustas
-        //En cualquier caso el Place sería del tweet retweeteado
-        if (!st.isRetweeted()) {
-          lugar = st.getPlace();
-          if (lugar != null) {
-            PropertiesGeoJson prop = new PropertiesGeoJson();
-            prop.nombre = lugar.getName();
-            prop.nombreCompleto = lugar.getFullName();
-            prop.tipo = lugar.getPlaceType();
-            prop.pais = lugar.getCountry();
-            String fecha = new SimpleDateFormat("EEEEEEEEE, dd/MM/yyyy HH:mm:ss").format(st.getCreatedAt());
-            prop.fechaTweet = fecha;
-
-            GeometryGeoJson geom = new GeometryGeoJson();
-            geom.type = "Point";
-            GeoLocation[][] boxCoords = lugar.getBoundingBoxCoordinates();
-            geom.coordinates = getCentralPointOfPolygon(boxCoords);
-
-            GeoJsonFeatures feat = new GeoJsonFeatures();
-            feat.type = "Feature";
-            feat.properties = prop;
-            feat.geometry = geom;
-
-            gJsPl.features.add(feat);
-          }
-        }
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return gJsPl;
-  }
-
-  public HashMap getCountIdsPlaces(List<Place> places) {
-    HashMap<String, Integer> lugares = new HashMap();
-    System.out.println("---------------- IDs PLACES -----------------");
-    try {
-      String idPlace;
-      int valor;
-      for (Place pl : places) {
-        idPlace = pl.getId();
-        if (lugares.containsKey(idPlace)) {
-          valor = lugares.get(idPlace);
-          valor++;
-          lugares.replace(idPlace, valor);
-        } else {
-          lugares.put(idPlace, 1);
-        }
-      }
-
-      lugares = (HashMap<String, Integer>) FuncUtils.ordenarMapStrIntPorValor(lugares);
-      /*for (Map.Entry<String, Integer> lg : lugares.entrySet()) {
-        System.out.println(lg.getKey() + ": " + lg.getValue());
-      }*/
-
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return lugares;
-  }
-
-  public HashMap<String, Place> getMapPlaces(List<Place> places) {
-    HashMap<String, Place> mapLugares = new HashMap<String, Place>();
-    for (Place pl : places) {
-      mapLugares.put(pl.getId(), pl);
-    }
-    return mapLugares;
-  }
-
-  //// METODO EN PRUEBAS PARA LOS LUGARES
+  //// METODO EN PRUEBAS PARA OBTENER LUGARES
   public ResponseList<Place> searchPlaces(long latitud, long longitud, String consulta, String granularidad, String precision, int maxResults) {
     ResponseList<Place> lugares = null;
     Twitter twitter = ConexionApiTwitter.getConexion();
@@ -1155,18 +642,11 @@ public class ConexionTwitter extends HttpServlet {
       query.accuracy(precision);
       query.setMaxResults(maxResults);
       lugares = twitter.searchPlaces(query);
-      /*
-            for (Place p : lugares) {
-                System.out.println(p.getId() + " # " + p.getName() + " # " + p.getFullName() + " # " + p.getCountryCode() + " # " + p.getCountry());
-            }
-       */
     } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class
               .getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-    if(lugares!=null)
-      System.out.println(lugares.toString());
     return lugares;
   }
 
@@ -1189,124 +669,6 @@ public class ConexionTwitter extends HttpServlet {
     //return lugares;
   }
 
-  public HashMap getListaUsersMeGustas(List<Status> meGustas, List<User> segMutuos) {
-    HashMap<String, Integer> listaMeGustas = new HashMap<>();
-    System.out.println("----------------- USER ME GUSTAS -----------------");
-    for (Status st : meGustas) {
-      if (segMutuos.contains(st.getUser())) {
-        String userName = st.getUser().getScreenName();
-        //System.out.println(st.getUser().getScreenName());
-        if (listaMeGustas.containsKey(userName)) {
-          int valor = (int) listaMeGustas.get(userName);
-          valor = valor + 1;
-          listaMeGustas.replace(userName, valor);
-        } else {
-          listaMeGustas.put(userName, 1);
-        }
-      }
-    }
-    //Ordena la estructura por el número de Me Gusta
-    listaMeGustas = (HashMap<String, Integer>) FuncUtils.ordenarMapStrIntPorValor(listaMeGustas);
-    /*
-        for (Map.Entry<String, Integer> usr : listaMeGustas.entrySet()) {
-            System.out.println(usr.getKey() + ":" + usr.getValue());
-        }
-     */
-    return listaMeGustas;
-  }
-
-  public HashMap getListadoSeguidoresMutuos(List<User> seguidoresMutuos) {
-    HashMap<Long, String> segMutuos = new HashMap();
-    System.out.println("------------ MAP SEGUIDORES MUTUOS ------------");
-    for (User usr : seguidoresMutuos) {
-      segMutuos.put(usr.getId(), usr.getScreenName());
-    }
-    /*
-        for (Map.Entry<Long, String> usr : segMutuos.entrySet()) {
-            System.out.println(usr.getKey() + ":" + usr.getValue());
-        }
-     */
-    return segMutuos;
-  }
-
-  public HashMap getIdsRetweetsMe(String user, List<Status> status) {
-    HashMap<Long, Integer> numsRetweets = new HashMap<Long, Integer>();
-    System.out.println("----------------- IDS RETWEETS ME -----------------");
-    try {
-      for (Status st : status) {
-        //Con getRetweetedStatus() == null obtenemos los tweets propios que no son retweet
-        //Además extraemos aquellos que hayan sido retwiteados al menos una vez
-        if (st.getRetweetCount() > 0 && st.getRetweetedStatus() == null) {
-          long idRetweet = st.getId();
-          numsRetweets.put(idRetweet, st.getRetweetCount());
-        }
-      }
-      //Ordena la estructura por el número de Retweets
-      numsRetweets = (HashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(numsRetweets);
-      /*
-        for (Map.Entry<Long, Integer> rtm : numsRetweets.entrySet()) {
-            System.out.println(rtm.getKey() + ":" + rtm.getValue());
-        }
-       */
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return numsRetweets;
-  }
-
-  public LinkedHashMap getUserIdsFavoritos(List<Status> meGustas, ArrayList segMutuos) {
-    LinkedHashMap<Long, Integer> usrMeGustas = new LinkedHashMap<>();
-    System.out.println("------------ USER IDs FAVORITOS ------------");
-    try {
-      for (Status st : meGustas) {
-        if (segMutuos.contains(st.getUser().getId())) {
-          Long userId = st.getUser().getId();
-          //System.out.println(st.getUser().getScreenName());
-          if (usrMeGustas.containsKey(userId)) {
-            int valor = (int) usrMeGustas.get(userId);
-            valor = valor + 1;
-            usrMeGustas.replace(userId, valor);
-          } else {
-            usrMeGustas.put(userId, 1);
-          }
-        }
-      }
-      //Ordena la estructura por el número de Me Gusta
-      usrMeGustas = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(usrMeGustas);
-      /*
-        for (Map.Entry<Long, Integer> usr : usrMeGustas.entrySet()) {
-            System.out.println(usr.getKey() + ":" + usr.getValue());
-        }
-       */
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return usrMeGustas;
-  }
-
-  public long[] getMaxArrayIdsRetweets(HashMap<Long, Integer> idsRetweets, int losXMasRetweeteados) {
-    int arraySize = losXMasRetweeteados;
-    if (idsRetweets.size() < losXMasRetweeteados) {
-      arraySize = idsRetweets.size();
-    }
-    long[] idsRtw = new long[arraySize];
-    int cont = 0;
-    for (Map.Entry<Long, Integer> ids : idsRetweets.entrySet()) {
-      if (cont < arraySize) {
-        idsRtw[cont] = ids.getKey();
-        cont = cont + 1;
-      } else {
-        break;
-      }
-    }
-    return idsRtw;
-  }
 
   public LinkedHashMap getRetweetsMeForIds(long[] tweetsIds, int groupSize) {
     LinkedHashMap<Long, Integer> numsRetweets = new LinkedHashMap();
@@ -1338,10 +700,6 @@ public class ConexionTwitter extends HttpServlet {
               .getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
-
-    /*for (Map.Entry<Long, Integer> rtm : numsRetweets.entrySet()) {
-      System.out.println(rtm.getKey() + ":" + rtm.getValue());
-    }*/
     return numsRetweets;
   }
 
@@ -1360,11 +718,6 @@ public class ConexionTwitter extends HttpServlet {
           }
         }
       }
-      /*            
-            for (Map.Entry<Long, UsuarioBean> lAmg : bestFriends.entrySet()) {
-                System.out.println(lAmg.getKey() + ": " + lAmg.getValue());
-            }
-       */
     } catch (Exception ex) {
       java.util.logging.Logger.getLogger(ConexionTwitter.class
               .getName()).log(Level.SEVERE, null, ex);
@@ -1403,553 +756,6 @@ public class ConexionTwitter extends HttpServlet {
       System.out.println("ERROR: " + ex.getMessage());
     }
     return usrScrNm;
-  }
-
-  public HashMap getListaSegMutuosReteetsMe(HashMap<Long, Integer> idsUsersRetweetsMe, HashMap segMutuos) {
-    HashMap<Long, Integer> listaSegMutuosRetweetsMe = new HashMap<>();
-    System.out.println("------------ RETWEETS ME SEG MUTUOS -------------");
-    for (Map.Entry<Long, Integer> ids : idsUsersRetweetsMe.entrySet()) {
-      if (segMutuos.containsKey(ids.getKey())) {
-        listaSegMutuosRetweetsMe.put(ids.getKey(), ids.getValue());
-      }
-    }
-    //Ordena la estructura por el número de Retweets
-    listaSegMutuosRetweetsMe = (HashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(listaSegMutuosRetweetsMe);
-    /*
-        for (Map.Entry<Long, Integer> usrRtm : listaSegMutuosRetweetsMe.entrySet()) {
-            System.out.println(usrRtm.getKey() + ":" + usrRtm.getValue());
-        }
-     */
-    return listaSegMutuosRetweetsMe;
-  }
-
-  public LinkedHashMap getListaSegMutuosReteetsMe2(HashMap<Long, Integer> idsUsersRetweetsMe, ArrayList segMutuos) {
-    LinkedHashMap<Long, Integer> listaSegMutuosRetweetsMe = new LinkedHashMap<>();
-    System.out.println("------------ RETWEETS ME SEG MUTUOS -------------");
-    for (Map.Entry<Long, Integer> ids : idsUsersRetweetsMe.entrySet()) {
-      if (segMutuos.contains(ids.getKey())) {
-        listaSegMutuosRetweetsMe.put(ids.getKey(), ids.getValue());
-      }
-    }
-    //Ordena la estructura por el número de Retweets
-    listaSegMutuosRetweetsMe = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(listaSegMutuosRetweetsMe);
-    /*
-        for (Map.Entry<Long, Integer> usrRtm : listaSegMutuosRetweetsMe.entrySet()) {
-            System.out.println(usrRtm.getKey() + ":" + usrRtm.getValue());
-        }
-     */
-    return listaSegMutuosRetweetsMe;
-  }
-
-  public LinkedHashMap getIdsUserAmigos(HashMap<Long, Integer> idsUsrRtw, HashMap<Long, Integer> idsUsrFv, HashMap<Long, Integer> idsUsrRtwMe) {
-    LinkedHashMap<Long, Integer> idsAmigos = new LinkedHashMap();
-    System.out.println("------------ IDs USERS AMIGOS -------------");
-    LinkedHashMap<Long, Integer> idsAmigos3 = new LinkedHashMap();
-    for (Map.Entry<Long, Integer> usrRtw : idsUsrRtw.entrySet()) {
-      //Si el usuario se encuentra en las tres listas
-      if (idsUsrFv.containsKey(usrRtw.getKey()) && idsUsrRtwMe.containsKey(usrRtw.getKey())) {
-        idsAmigos3.put(usrRtw.getKey(), usrRtw.getValue() + idsUsrFv.get(usrRtw.getKey()) + idsUsrRtwMe.get(usrRtw.getKey()));
-      }
-    }
-    idsAmigos3 = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(idsAmigos3);
-
-    LinkedHashMap<Long, Integer> idsAmigos2 = new LinkedHashMap();
-    //Si el usuario está en idsUsrRtw y en una de las otras dos
-    for (Map.Entry<Long, Integer> usrRtw : idsUsrRtw.entrySet()) {
-      if (idsUsrFv.containsKey(usrRtw.getKey()) && !idsAmigos3.containsKey(usrRtw.getKey())) {
-        idsAmigos2.put(usrRtw.getKey(), usrRtw.getValue() + idsUsrFv.get(usrRtw.getKey()));
-      }
-      if (idsUsrRtwMe.containsKey(usrRtw.getKey()) && !idsAmigos3.containsKey(usrRtw.getKey())) {
-        idsAmigos2.put(usrRtw.getKey(), usrRtw.getValue() + idsUsrRtwMe.get(usrRtw.getKey()));
-      }
-    }
-    //Si el usuario está en idsUsrFv y en idsUsrRtwMe
-    for (Map.Entry<Long, Integer> usrFv : idsUsrFv.entrySet()) {
-      if (idsUsrRtwMe.containsKey(usrFv.getKey()) && !idsAmigos3.containsKey(usrFv.getKey())) {
-        idsAmigos2.put(usrFv.getKey(), usrFv.getValue() + idsUsrFv.get(usrFv.getKey()));
-      }
-    }
-    idsAmigos2 = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(idsAmigos2);
-
-    LinkedHashMap<Long, Integer> idsAmigos1 = new LinkedHashMap();
-    //Si el usuario está sólo en una de las listas
-    for (Map.Entry<Long, Integer> usrRtw : idsUsrRtw.entrySet()) {
-      if (!idsAmigos2.containsKey(usrRtw.getKey()) && !idsAmigos3.containsKey(usrRtw.getKey())) {
-        idsAmigos1.put(usrRtw.getKey(), usrRtw.getValue());
-      }
-    }
-    for (Map.Entry<Long, Integer> usrFv : idsUsrFv.entrySet()) {
-      if (!idsAmigos2.containsKey(usrFv.getKey()) && !idsAmigos3.containsKey(usrFv.getKey())) {
-        idsAmigos1.put(usrFv.getKey(), usrFv.getValue());
-      }
-    }
-    for (Map.Entry<Long, Integer> usrRtwMe : idsUsrRtwMe.entrySet()) {
-      if (!idsAmigos2.containsKey(usrRtwMe.getKey()) && !idsAmigos3.containsKey(usrRtwMe.getKey())) {
-        idsAmigos1.put(usrRtwMe.getKey(), usrRtwMe.getValue());
-      }
-    }
-    idsAmigos1 = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(idsAmigos1);
-
-    for (Map.Entry<Long, Integer> fr3 : idsAmigos3.entrySet()) {
-      idsAmigos.put(fr3.getKey(), fr3.getValue());
-    }
-    for (Map.Entry<Long, Integer> fr2 : idsAmigos2.entrySet()) {
-      idsAmigos.put(fr2.getKey(), fr2.getValue());
-    }
-    for (Map.Entry<Long, Integer> fr1 : idsAmigos1.entrySet()) {
-      idsAmigos.put(fr1.getKey(), fr1.getValue());
-    }
-
-    return idsAmigos;
-  }
-
-  public LinkedHashMap getIdsUserAmigos2(LinkedHashMap<Long, Integer> idsUsrRtw, LinkedHashMap<Long, Integer> idsUsrFv, LinkedHashMap<Long, Integer> idsUsrRtwMe, ArrayList segMutuos, int maxAmigos) {
-    LinkedHashMap<Long, Integer> posicionamientos = new LinkedHashMap();
-    System.out.println("------------ IDs USERS AMIGOS -------------");
-
-    int pos = 0;
-    for (Map.Entry<Long, Integer> usrRtw : idsUsrRtw.entrySet()) {
-      int inversaPosicion = idsUsrRtw.size() - pos;
-      posicionamientos.put(usrRtw.getKey(), inversaPosicion + usrRtw.getValue());
-      pos++;
-    }
-    pos = 0;
-    for (Map.Entry<Long, Integer> usrFv : idsUsrFv.entrySet()) {
-      int inversaPosicion = idsUsrFv.size() - pos;
-      if (posicionamientos.containsKey(usrFv.getKey())) {
-        int posExistente = posicionamientos.get(usrFv.getKey());
-        posicionamientos.put(usrFv.getKey(), posExistente + inversaPosicion + usrFv.getValue());
-      } else {
-        posicionamientos.put(usrFv.getKey(), inversaPosicion + usrFv.getValue());
-      }
-      pos++;
-    }
-    pos = 0;
-    for (Map.Entry<Long, Integer> usrRtwMe : idsUsrRtwMe.entrySet()) {
-      int inversaPosicion = idsUsrRtwMe.size() - pos;
-      if (posicionamientos.containsKey(usrRtwMe.getKey())) {
-        int posExistente = posicionamientos.get(usrRtwMe.getKey());
-        posicionamientos.put(usrRtwMe.getKey(), posExistente + inversaPosicion + usrRtwMe.getValue());
-      } else {
-        posicionamientos.put(usrRtwMe.getKey(), inversaPosicion + usrRtwMe.getValue());
-      }
-      pos++;
-    }
-    posicionamientos = (LinkedHashMap<Long, Integer>) FuncUtils.ordenarMapLongIntPorValor(posicionamientos);
-
-    //Si el número de usuarios con los que se ha tenido interacción no alcanza el número mínimo pasado por parámetro
-    //Entonces se extraeran como máximo este número de usuarios de entre los seguidores mutuos.
-    //if (posicionamientos.size() < maxAmigos) {
-    for (int i = 0; i < segMutuos.size(); i++) {
-      if (posicionamientos.size() < maxAmigos) {
-        posicionamientos.put((Long) segMutuos.get(i), 1);
-      } else {
-        break;
-      }
-    }
-    //}
-
-    /*for (Map.Entry<Long, Integer> psc : posicionamientos.entrySet()) {
-      System.out.println(psc.getKey() + ":" + psc.getValue());
-    }*/
-    return posicionamientos;
-  }
-
-  public HashMap getUserInteracciones(HashMap<Long, Integer> idsUsrRtw, HashMap<Long, Integer> idsUsrFv, HashMap<Long, Integer> idsUsrRtwMe) {
-    HashMap<Long, Integer> interacciones = new HashMap();
-    System.out.println("---------------- INTERACCIONES ---------------");
-    try {
-      int cont = 0;
-      for (Map.Entry<Long, Integer> usrRtw : idsUsrRtw.entrySet()) {
-        if (interacciones.containsKey(usrRtw.getKey())) {
-          cont = interacciones.get(usrRtw.getKey()) + usrRtw.getValue();
-          interacciones.replace(usrRtw.getKey(), cont);
-        } else {
-          interacciones.put(usrRtw.getKey(), usrRtw.getValue());
-        }
-      }
-      for (Map.Entry<Long, Integer> usrFv : idsUsrFv.entrySet()) {
-        if (interacciones.containsKey(usrFv.getKey())) {
-          cont = interacciones.get(usrFv.getKey()) + usrFv.getValue();
-          interacciones.replace(usrFv.getKey(), cont);
-        } else {
-          interacciones.put(usrFv.getKey(), usrFv.getValue());
-        }
-      }
-      for (Map.Entry<Long, Integer> usrRtwMe : idsUsrRtwMe.entrySet()) {
-        if (interacciones.containsKey(usrRtwMe.getKey())) {
-          cont = interacciones.get(usrRtwMe.getKey()) + usrRtwMe.getValue();
-          interacciones.replace(usrRtwMe.getKey(), cont);
-        } else {
-          interacciones.put(usrRtwMe.getKey(), usrRtwMe.getValue());
-        }
-      }
-
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return interacciones;
-  }
-
-  public InfoUsoTwitterBean getInfoUsoTwitter(List<Status> tweets, List<Status> favoritos) {
-    InfoUsoTwitterBean usoTw = new InfoUsoTwitterBean();
-
-    HashMap<Integer, Integer> usoAnnios = new HashMap<>();
-
-    System.out.println("---------------- USO TWITTER -----------------");
-    try {
-      int totalItem = tweets.size() + favoritos.size();
-      Date date;
-      int numHora;
-      int numDia;
-      int numMes;
-      int numAnnio;
-      int valor = 0;
-
-      for (Status tw : tweets) {
-        date = tw.getCreatedAt();
-        String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss u").format(date);
-        System.out.println(fecha);
-        numHora = Integer.parseInt(fecha.substring(11, 13));
-        numDia = Integer.parseInt(fecha.substring(20, fecha.length()));
-        numMes = Integer.parseInt(fecha.substring(3, 5));
-        numAnnio = Integer.parseInt(fecha.substring(6, 10));
-        valor = (Integer) usoTw.horas.get(numHora);
-        valor++;
-        usoTw.horas.set(numHora, valor);
-        usoTw.porcentHoras.set(numHora, (float) (valor * 100) / totalItem);
-
-        valor = (int) usoTw.franjaHoras.get(usoTw.getIntFranjaFromLabelHora(numHora));
-        valor++;
-        usoTw.franjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), valor);
-        usoTw.porcentFranjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), (float) (valor * 100) / totalItem);
-
-        valor = (Integer) usoTw.dias.get(numDia - 1);
-        valor++;
-        usoTw.dias.set(numDia - 1, valor);
-        usoTw.porcentDias.set(numDia - 1, (float) (valor * 100) / totalItem);
-
-        valor = (Integer) usoTw.meses.get(numMes - 1);
-        valor++;
-        usoTw.meses.set(numMes - 1, valor);
-        usoTw.porcentMeses.set(numMes - 1, (float) (valor * 100) / totalItem);
-
-        if (!usoAnnios.containsKey(numAnnio)) {
-          usoAnnios.put(numAnnio, 1);
-        } else {
-          valor = usoAnnios.get(numAnnio);
-          valor++;
-          usoAnnios.put(numAnnio, valor);
-        }
-      }
-      for (Status fv : favoritos) {
-        date = fv.getCreatedAt();
-        String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss u").format(date);
-        numHora = Integer.parseInt(fecha.substring(11, 13));
-        numDia = Integer.parseInt(fecha.substring(20, fecha.length()));
-        numMes = Integer.parseInt(fecha.substring(3, 5));
-        numAnnio = Integer.parseInt(fecha.substring(6, 10));
-        valor = (Integer) usoTw.horas.get(numHora);
-        valor++;
-        usoTw.horas.set(numHora, valor);
-        usoTw.porcentHoras.set(numHora, (float) (valor * 100) / totalItem);
-
-        valor = (int) usoTw.franjaHoras.get(usoTw.getIntFranjaFromLabelHora(numHora));
-        valor++;
-        usoTw.franjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), valor);
-        usoTw.porcentFranjaHoras.set(usoTw.getIntFranjaFromLabelHora(numHora), (float) (valor * 100) / totalItem);
-
-        valor = (Integer) usoTw.dias.get(numDia - 1);
-        valor++;
-        usoTw.dias.set(numDia - 1, valor);
-        usoTw.porcentDias.set(numDia - 1, (float) (valor * 100) / totalItem);
-
-        valor = (Integer) usoTw.meses.get(numMes - 1);
-        valor++;
-        usoTw.meses.set(numMes - 1, valor);
-        usoTw.porcentMeses.set(numMes - 1, (float) (valor * 100) / totalItem);
-
-        if (!usoAnnios.containsKey(numAnnio)) {
-          usoAnnios.put(numAnnio, 1);
-        } else {
-          valor = usoAnnios.get(numAnnio);
-          valor++;
-          usoAnnios.put(numAnnio, valor);
-        }
-      }
-
-      int[] mayorMenor = getMayorMenorHashMap(usoAnnios);
-      for (int i = mayorMenor[0]; i <= mayorMenor[1]; i++) {
-        usoTw.labelsAnnios.add(i);
-        if (usoAnnios.containsKey(i)) {
-          usoTw.annios.add(usoAnnios.get(i));
-          usoTw.porcentAnnios.add((float) (usoAnnios.get(i) * 100) / totalItem);
-
-        } else {
-          usoTw.annios.add(0);
-          usoTw.porcentAnnios.add(0.0F);
-        }
-      }
-
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return usoTw;
-  }
-
-  public int[] getMayorMenorHashMap(HashMap<Integer, Integer> usoAnnios) {
-    int[] mayorMenor = new int[2];
-    try {
-      Date annioActual = new Date();
-      String strAnnio = new SimpleDateFormat("yyyy").format(annioActual);
-      int annio = Integer.parseInt(strAnnio);
-
-      mayorMenor[0] = annio;
-      mayorMenor[1] = annio;
-
-      for (Map.Entry<Integer, Integer> usAn : usoAnnios.entrySet()) {
-        if (usAn.getKey() < mayorMenor[0]) {
-          mayorMenor[0] = usAn.getKey();
-        }
-        if (usAn.getKey() > mayorMenor[1]) {
-          mayorMenor[1] = usAn.getKey();
-        }
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-    return mayorMenor;
-  }
-
-  /*
-  public ArrayList fraseGeneralUsoTwitter(InfoUsoTwitterBean usoTw) {
-    ArrayList frases = new ArrayList();
-    HashMap<String, Float> times = new HashMap();
-    try {
-      for (int i = 0; i < usoTw.horas.size(); i++) {
-        times.put((String) usoTw.labelsHoras.get(i), (Float) usoTw.porcentHoras.get(i));
-      }
-      for (int i = 0; i < usoTw.dias.size(); i++) {
-        times.put((String) usoTw.labelsDias.get(i), (Float) usoTw.porcentDias.get(i));
-      }
-      for (int i = 0; i < usoTw.meses.size(); i++) {
-        times.put((String) usoTw.labelsMeses.get(i), (Float) usoTw.porcentMeses.get(i));
-      }
-      for (int i = 0; i < usoTw.annios.size(); i++) {
-        times.put((String) usoTw.labelsAnnios.get(i), (Float) usoTw.porcentAnnios.get(i));
-      }
-
-      LinkedHashMap<String, Float> timesOrden = (LinkedHashMap<String, Float>) FuncUtils.ordenarMapStrFloatPorValor(times);
-
-      for (Map.Entry<String, Float> h : timesOrden.entrySet()) {
-        switch (h.getKey()) {
-          case "00":
-          case "01":
-          case "02":
-          case "03":
-          case "04":
-          case "05":
-            frases.add("De madrugada");
-            break;
-          case "06":
-          case "07":
-          case "08":
-            frases.add("Por la mañana temprano");
-            break;
-          case "09":
-          case "10":
-          case "11":
-            frases.add("A media mañana");
-            break;
-          case "12":
-          case "13":
-          case "14":
-          case "15":
-            frases.add("A mediodía");
-            break;
-          case "16":
-          case "17":
-          case "18":
-          case "19":
-          case "20":
-            frases.add("Por la tarde");
-            break;
-          case "21":
-          case "22":
-          case "23":
-            frases.add("Por la noche");
-            break;
-          case "Lunes":
-          case "Martes":
-          case "Miércoles":
-          case "Jueves":
-          case "Viernes":
-          case "Sábado":
-          case "Domingo":
-            frases.add("En el día de la semana " + h.getKey());
-            break;
-          case "Enero":
-          case "Febrero":
-          case "Marzo":
-          case "Abril":
-          case "Mayo":
-          case "Junio":
-          case "Julio":
-          case "Agosto":
-          case "Septiembre":
-          case "Octubre":
-          case "Noviembre":
-          case "Diciembre":
-            frases.add("En el mes de " + h.getKey());
-            break;
-          default:
-            frases.add("En el año" + h.getKey());
-            break;
-        }
-        break;
-      }
-
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-    return frases;
-  }
-   */
-  public HashMap<String, TweetMultimediaBean> getTweetsMultimediaFavoritos(List<Status> tweets) {
-    HashMap<String, TweetMultimediaBean> twsConMasMultimedia = new HashMap();
-    System.out.println("--------- TWEETS MULTIMEDIA FAVORITOS ------------");
-    try {
-      for (Status tw : tweets) {
-        //getRetweetedStatus() tiene contenido cuando se trata de un retweet sin comentario, los cuales no pueden tener foto
-        //por este motivo hay que analizar todos aquellos que pueden tener foto getRetweetedStatus() == null
-        //Además extraemos aquellos que hayan sido retwiteados o favoritos al menos una vez
-        if ((tw.getRetweetCount() > 0 || tw.getFavoriteCount() > 0) && tw.getRetweetedStatus() == null) {
-          MediaEntity[] mMedia = tw.getMediaEntities();
-          if (mMedia.length != 0) {
-            TweetMultimediaBean twMultimB = new TweetMultimediaBean(tw);
-            String tipo = mMedia[0].getType();
-            switch (tipo) {
-              //Foto
-              case "photo":
-                if (!twsConMasMultimedia.containsKey("photo")) {
-                  twsConMasMultimedia.put("photo", twMultimB);
-                } else {
-                  if (twsConMasMultimedia.get("photo").numRetyFav < tw.getRetweetCount() + tw.getFavoriteCount()) {
-                    twsConMasMultimedia.put("photo", twMultimB);
-                  }
-                }
-                break;
-              //Gif
-              case "animated_gif":
-                if (!twsConMasMultimedia.containsKey("animated_gif")) {
-                  twsConMasMultimedia.put("animated_gif", twMultimB);
-                } else {
-                  if (twsConMasMultimedia.get("animated_gif").numRetyFav < tw.getRetweetCount() + tw.getFavoriteCount()) {
-                    twsConMasMultimedia.put("animated_gif", twMultimB);
-                  }
-                }
-                break;
-              //Video
-              case "video":
-                if (!twsConMasMultimedia.containsKey("video")) {
-                  twsConMasMultimedia.put("video", twMultimB);
-                } else {
-                  if (twsConMasMultimedia.get("video").numRetyFav < tw.getRetweetCount() + tw.getFavoriteCount()) {
-                    twsConMasMultimedia.put("video", twMultimB);
-                  }
-                }
-                break;
-            }
-          }
-        }
-      }
-      //Ordena la estructura por el número de Retweets
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-    return twsConMasMultimedia;
-  }
-
-  public ArrayList getUserHobbiesInFriends(HashMap<Long, User> usrHobb, ArrayList idsFriends) {
-    ArrayList frdHob = new ArrayList();
-    System.out.println("-------------- USER HOBBIES SEGUIDOS -------------");
-    try {
-      for (Map.Entry<Long, User> usr : usrHobb.entrySet()) {
-        if (idsFriends.contains(usr.getKey())) {
-          frdHob.add(usr);
-          System.out.println("User hobbie seguido: " + usr.getValue().getScreenName());
-        }
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-    System.out.println("Nº de user hobbies seguidos: " + frdHob.size());
-    return frdHob;
-  }
-
-  //La estructura que contiene los IDs y el recuento de lugares de tweets y favoritos tiene que estar ordenada en forma decreciente por el valor
-  public LinkedHashMap<String, String> getLugarDomicilio(HashMap<String, Integer> idsPlacesOrden, HashMap<String, Place> placesTwYFv, List<Place> userLocations, User usr, int xMatch) {
-    LinkedHashMap<String, String> posiblesDomicilios = new LinkedHashMap();
-    try {
-      //Para todos los lugares obtenidos de la consulta sobre la localización libre que establece el usuario
-      //se comprueba si coinciden con alguno de los lugares geolocalizados desde donde twitea
-      for (Map.Entry<String, Integer> idPlc : idsPlacesOrden.entrySet()) {
-        for (Place plc : userLocations) {
-          if (!(idPlc.getKey() == null ? plc.getId() == null : idPlc.getKey().equals(plc.getId()))) {
-          } else {
-            if (posiblesDomicilios.size() <= xMatch) {
-              posiblesDomicilios.put(plc.getId(), plc.getFullName());
-            } else {
-              break;
-            }
-          }
-        }
-      }
-      //Si no se encuentra coincidencia entre los lugares desde donde twitea y la localización que ha dado para su perfil,
-      //en ese caso nos fijamos en los lugares desde donde más twitea y extraemos hasta los X primeros
-      if (posiblesDomicilios.size() < xMatch) {
-        for (Map.Entry<String, Integer> idPlc : idsPlacesOrden.entrySet()) {
-          if (posiblesDomicilios.size() <= xMatch) {
-            posiblesDomicilios.put(idPlc.getKey(), placesTwYFv.get(idPlc.getKey()).getFullName());
-          } else {
-            break;
-          }
-        }
-      }
-      //Si aun no hemos podido determinar un lugar de domicilio, ahora tenemos en cuenta sólo los X resultados de userLocations
-      if (posiblesDomicilios.size() < xMatch) {
-        if (userLocations != null) {
-          for (Place plc : userLocations) {
-            if (posiblesDomicilios.size() <= xMatch) {
-              posiblesDomicilios.put(plc.getId(), plc.getFullName());
-            } else {
-              break;
-            }
-          }
-        }
-      }
-      //Si después de las comprobaciones anteriores no se identifica el domicilio se utiliza de forma textual el location del perfil
-      if (posiblesDomicilios.size() < xMatch && !"".equals(usr.getLocation())) {
-        posiblesDomicilios.put("LOCATION", usr.getLocation());
-      }
-    } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
-              .getName()).log(Level.SEVERE, null, ex);
-      System.out.println("ERROR: " + ex.getMessage());
-    }
-
-    return posiblesDomicilios;
   }
 
 }

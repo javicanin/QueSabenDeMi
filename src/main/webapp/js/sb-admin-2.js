@@ -53,14 +53,11 @@
     $('#btnFetch').on('click', function () {
       // disable button
       $(this).prop('disabled', true);
-      // add spinner to button
-//      $(this).html(
-//        '<span class="spinner-border spinner-border-sm p-2" role="status" aria-hidden="true"></span> Cargando...'
-      //     );
       $('#form-search').submit();
     });
 
-    //Funcion para hacer un scroll más dentro de la página al pulsar href
+    
+    //Funcion para hacer un scroll más lento de la página al pulsar href
     $("a.scrollLink").click(function (event) {
       event.preventDefault();
       $("html, body").animate({scrollTop: $($(this).attr("href")).offset().top}, 500);

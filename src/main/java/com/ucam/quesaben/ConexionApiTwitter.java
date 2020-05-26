@@ -34,7 +34,7 @@ public class ConexionApiTwitter {
       TwitterFactory tf = new TwitterFactory(cb.build());
       twitter = tf.getInstance();
     } catch (Exception ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class.getName()).log(Level.SEVERE, null, ex);
+      java.util.logging.Logger.getLogger(ConexionApiTwitter.class.getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }
     return twitter;
@@ -55,7 +55,7 @@ public class ConexionApiTwitter {
         }
       }
     } catch (TwitterException ex) {
-      java.util.logging.Logger.getLogger(ConexionTwitter.class
+      java.util.logging.Logger.getLogger(ConexionApiTwitter.class
               .getName()).log(Level.SEVERE, null, ex);
       System.out.println("ERROR: " + ex.getMessage());
     }

@@ -18,7 +18,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
     <meta http-equiv="Pragma" content="no-cache">
 
-    <title>Qué saben de mí</title>
+    <title>QueSabenDeDí</title>
 
     <link href="css/estilos.css" rel="stylesheet">
     <!-- Custom fonts for this template-->
@@ -55,121 +55,6 @@
 
     <!-- Page Wrapper -->
     <div id="wrapper">
-      <%-- 
-          <!-- Sidebar -->
-          <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="utilities-border.html">Borders</a>
-            <a class="collapse-item" href="utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="charts.html">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Charts</span></a>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Tables</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
-    </ul>
-    <!-- End of Sidebar -->
-      --%>
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
 
@@ -179,18 +64,18 @@
           <!-- Topbar -->
           <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-            <!-- Sidebar Toggle (Topbar) -->
+            <!-- Sidebar Toggle (Topbar) 
             <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
               <i class="fa fa-bars"></i>
-            </button>
+            </button>-->
 
             <!-- Topbar Search -->
             <form id="form-search" name="formulario" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
               <div class="input-group">
                 <span class="text-primary input-txt-fixed font-weight-bolder">@</span>
-                <input type="text" name="userTwitter" style="padding-left: 29px" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
+                <input type="text" maxlength="20" name="userTwitter" style="padding-left: 29px" class="form-control bg-light border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
                 <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" onclick="modalSpinner();" id="btnFetch___________">
+                  <button class="btn btn-primary" type="submit" onclick="modalSpinner();" id="btnFetch">
                     <i class="fas fa-search fa-sm" id="lupa"></i>
                   </button>
                 </div>
@@ -220,111 +105,6 @@
                 </div>
               </li>
 
-              <!-- Nav Item - Alerts -->
-              <%--<li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-bell fa-fw"></i>
-                  <!-- Counter - Alerts -->
-                  <span class="badge badge-danger badge-counter">3+</span>
-                </a>
-                <!-- Dropdown - Alerts -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                  <h6 class="dropdown-header">
-                    Alerts Center
-                  </h6>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-primary">
-                        <i class="fas fa-file-alt text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">December 12, 2019</div>
-                      <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-success">
-                        <i class="fas fa-donate text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">December 7, 2019</div>
-                      $290.29 has been deposited into your account!
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="mr-3">
-                      <div class="icon-circle bg-warning">
-                        <i class="fas fa-exclamation-triangle text-white"></i>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="small text-gray-500">December 2, 2019</div>
-                      Spending Alert: We've noticed unusually high spending for your account.
-                    </div>
-                  </a>
-                  <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                </div>
-              </li>
-
-              <!-- Nav Item - Messages -->
-              <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-envelope fa-fw"></i>
-                  <!-- Counter - Messages -->
-                  <span class="badge badge-danger badge-counter">7</span>
-                </a>
-                <!-- Dropdown - Messages -->
-                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                  <h6 class="dropdown-header">
-                    Message Center
-                  </h6>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                      <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-                      <div class="status-indicator bg-success"></div>
-                    </div>
-                    <div class="font-weight-bold">
-                      <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-                      <div class="small text-gray-500">Emily Fowler · 58m</div>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                      <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-                      <div class="status-indicator"></div>
-                    </div>
-                    <div>
-                      <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-                      <div class="small text-gray-500">Jae Chun · 1d</div>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                      <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-                      <div class="status-indicator bg-warning"></div>
-                    </div>
-                    <div>
-                      <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-                      <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center" href="#">
-                    <div class="dropdown-list-image mr-3">
-                      <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                      <div class="status-indicator bg-success"></div>
-                    </div>
-                    <div>
-                      <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-                      <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                    </div>
-                  </a>
-                  <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                </div>
-              </li>
-              --%>
 
               <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -332,34 +112,41 @@
               <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="mr-2 d-none d-lg-inline text-gray-600 small">${usrBean.name} - ${usrBean.screenName}</span>
-                  <img class="img-profile rounded-circle" src="${usrBean.urlImgProfile}" >
+                  <img class="img-profile rounded-circle" src="${usrBean.urlImgProfile}">
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" style="z-index: 1100;" aria-labelledby="userDropdown">
-                  <img class="img-fluid rounded py-2 px-3"  src="${usrBean.urlImgProfileBig}" >
+                  <img class="rounded py-2 px-3" src="${usrBean.urlImgProfileBig}" style="width: 13rem">
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="https://twitter.com/${usrBean.screenName}" target="_blank">
-                    <i class="fas fa-external-link fa-sm fa-fw mr-2 text-gray-400"></i>
-                    URL usuario: <span class="text-primary">${usrBean.screenName}</span>
+                  <a class="dropdown-item pl-4" href="https://twitter.com/${usrBean.screenName}" target="_blank">
+                    <%--<i class="fas fa-external-link fa-sm fa-fw mr-2 text-gray-400"></i>--%>
+                    <i class="text-gray-400"></i>
+                    <img class="img-fluid mr-1" src="images/link-40.png" style="width: 1rem" >
+                    URL: <span class="text-primary">${usrBean.screenName}</span>
                   </a>
-                  <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  <a class="dropdown-item pl-4" href="#" target="">
+                    <i class="text-gray-400"></i>
+                    <img class="img-fluid mr-1" src="images/amigos-50.png" style="width: 1rem" >
                     Amigos: <span class="text-primary">${usrBean.numFriends}</span>
                   </a>
-                  <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  <a class="dropdown-item pl-4" href="#" target="">
+                    <i class="text-gray-400"></i>
+                    <img class="img-fluid mr-1" src="images/followers-40.png" style="width: 1rem" >
                     Seguidores: <span class="text-primary">${usrBean.numFollowers}</span>
                   </a>
-                  <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-twitter fa-sm fa-fw mr-2 text-gray-400"></i>
+                  <a class="dropdown-item pl-4" href="#" target="">
+                    <i class="text-gray-400"></i>
+                    <img class="img-fluid mr-1" src="images/twitter-40.png" style="width: 1rem" >
                     Tweets: <span class="text-primary">${usrBean.numTweets}</span>
                   </a>
-                  <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-heart-o fa-sm fa-fw mr-2 text-gray-400"></i>
+                  <a class="dropdown-item pl-4" href="#" target="">
+                    <i class="text-gray-400"></i>
+                    <img class="img-fluid mr-1" src="images/corazon-40.png" style="width: 1rem" >
                     Me gustas: <span class="text-primary">${usrBean.numFavoritos}</span>
                   </a>
-                  <a class="dropdown-item" href="#" target="">
-                    <i class="fas fa-lis fa-sm fa-fw mr-2 text-gray-400"></i>
+                  <a class="dropdown-item pl-4" href="#" target="">
+                    <i class="text-gray-400"></i>
+                    <img class="img-fluid mr-1" src="images/listas-50.png" style="width: 1rem" >
                     Listas: <span class="text-primary">${usrBean.numListas}</span>
                   </a>
 
@@ -388,62 +175,50 @@
                           <c:if test="${not usrBean.verified}">Perfil NO verificado</c:if>
                           </div>
                           <div class="text-xs font-weight-bold text-uppercase text-gray-900">
-<%--                          <c:if test="${usrBean.verified}">${frases['VERIFICADO']}</c:if>
-                          <c:if test="${not usrBean.verified}">${frases['NO-VERIFICADO']}</c:if>--%>
-                            ${frases['VERIFICADO']}
-                          </div>
+                          <!--                          <c:if test="${usrBean.verified}">${frases['VERIFICADO']}</c:if>
+                                                    <c:if test="${not usrBean.verified}">${frases['NO-VERIFICADO']}</c:if>-->
+                          ${frases['VERIFICADO']}
                         </div>
-                        <!--<div class="col-auto">
-                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>-->
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
-                  <div class="card border-left-success">
-                    <div class="card-body p-2">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="h6 font-weight-bold text-success mb-1">
-                          <c:if test="${usrBean.protegido}">Perfil protegido</c:if>
-                          <c:if test="${not usrBean.protegido}">Perfil NO protegido</c:if>
-                          </div>
-                          <div class="text-xs font-weight-bold text-uppercase text-gray-900">
-<%--                          <c:if test="${usrBean.protegido}">${frases['PROTEGIDO']}</c:if>
-                          <c:if test="${not usrBean.protegido}">${frases['NO-PROTEGIDO']}</c:if>--%>
-                            ${frases['PROTEGIDO']}
-                          </div>
-                        </div>
-                        <!--<div class="col-auto">
-                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>-->
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <!-- Earnings (Monthly) Card Example -->
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
-                  <div class="card border-left-info">
-                    <div class="card-body p-2">
-                      <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                          <div class="h6 font-weight-bold text-info mb-1">Cuándo Twiteas más:</div>
-                          <div class="text-xs font-weight-bold text-uppercase text-gray-900"><a class="scrollLink text-xs font-weight-bold text-uppercase text-gray-900" href="#cuandoUsas">${fraseUsoGeneral}</a></div>
-                      </div>
-                      <!--<div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                      </div>-->
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Earnings (Monthly) Card Example -->
+
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
+                <div class="card border-left-success">
+                  <div class="card-body p-2">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="h6 font-weight-bold text-success mb-1">
+                          <c:if test="${usrBean.protegido}">Perfil protegido</c:if>
+                          <c:if test="${not usrBean.protegido}">Perfil NO protegido</c:if>
+                          </div>
+                          <div class="text-xs font-weight-bold text-uppercase text-gray-900">
+                          <!--                          <c:if test="${usrBean.protegido}">${frases['PROTEGIDO']}</c:if>
+                                                    <c:if test="${not usrBean.protegido}">${frases['NO-PROTEGIDO']}</c:if>-->
+                          ${frases['PROTEGIDO']}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
+                <div class="card border-left-info">
+                  <div class="card-body p-2">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="h6 font-weight-bold text-info mb-1">Cuándo Twiteas más:</div>
+                        <div class="text-xs font-weight-bold text-uppercase text-gray-900"><a class="scrollLink text-xs font-weight-bold text-uppercase text-gray-900" href="#cuandoUsas">${fraseUsoGeneral}</a></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-warning">
                   <div class="card-body p-2">
@@ -452,15 +227,11 @@
                         <div class="h6 font-weight-bold text-warning mb-1">Tweets: ${usrBean.numTweets} / Me gustas: ${usrBean.numFavoritos}</div>
                         <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['VOLUMEN-USO']}</div>
                       </div>
-                      <!--<div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                      </div>-->
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Earnings (Monthly) Card Example -->
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-primary">
                   <div class="card-body p-2">
@@ -471,22 +242,13 @@
                           <div class="col-auto">
                             <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['NUM-AMIGOS']}</div>
                           </div>
-                          <!--<div class="col">
-                            <div class="progress progress-sm mr-2">
-                              <div class="progress-bar bg-info" role="progressbar" style="width: 38.8%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                          </div>-->
                         </div>
                       </div>
-                      <!--<div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                      </div>-->
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Pending Requests Card Example -->
               <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
                 <div class="card border-left-success">
                   <div class="card-body p-2">
@@ -495,33 +257,11 @@
                         <div class="h6 font-weight-bold text-success mb-1">Followers: ${usrBean.numFollowers}</div>
                         <div class="text-xs font-weight-bold text-uppercase text-gray-900">${frases['NUM-SEGUIDORES']}</div>
                       </div>
-                      <!--<div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                      </div>-->
                     </div>
                   </div>
                 </div>
               </div>
-<%--
-              <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 mb-3 px-2">
-                <div class="card border-left-info">
-                  <div class="card-body p-2">
-                    <div class="row no-gutters align-items-center">
-                      <div class="col mr-2">
-                        <div class="h6 font-weight-bold text-info mb-1">Listas</div>
-                        <div class="text-xs font-weight-bold text-uppercase text-gray-900">${usrBean.numListas}</div>
-                      </div>
-                      <!--<div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                      </div>-->
-                    </div>
-                  </div>
-                </div>
-              </div>
---%>
-
             </div>
-
 
 
             <!-- Content Row -->
@@ -542,15 +282,15 @@
                             <th style="text-align: center">Imagen</th>
                             <th>Nombre</th>
                             <th>Usuario</th>
-                            <th style="text-align: center">Interacciones</th>
-<%--
-                            <th>Nombre</th>
-                            <th style="text-align: center">Peso</th>
-                            <th style="text-align: center">Interacciones</th>
-                            <th style="text-align: center">tw(${fn:length(idRtw)})</th>
-                            <th style="text-align: center">fv(${fn:length(idFv)})</th>
-                            <th style="text-align: center">rtwMe(${fn:length(idRtwMe)})</th>
---%>
+                            <!--<th style="text-align: center">Interacciones</th>-->
+                              <!--
+                                                          <th>Nombre</th>
+                                                          <th style="text-align: center">Peso</th>
+                                                          <th style="text-align: center">Interacciones</th>
+                                                          <th style="text-align: center">tw(${fn:length(idRtw)})</th>
+                                                          <th style="text-align: center">fv(${fn:length(idFv)})</th>
+                                                          <th style="text-align: center">rtwMe(${fn:length(idRtwMe)})</th>
+                              -->
                           </tr>
                         </thead>
                         <tfoot>
@@ -576,44 +316,45 @@
                                 <a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.screenName}</a>
                                 <!--<a class="table-sm" href="https://twitter.com/${amg.value.screenName}" target="_blank">@${amg.value.id}</a>-->
                               </td>
+                              <!--
                               <td style="text-align: center; vertical-align: middle">
                                 <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
                                 <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
-                              </td>
+                                </td>-->
 
-<%--                              
-                              <td style="text-align: center; vertical-align: middle">
-                                ${posFriend[amg.value.id]}
-                              </td>
-                              <td style="text-align: center; vertical-align: middle">
-                                ${usrInterac[amg.value.id]}
-                              </td>
-                              <td style="text-align: center; vertical-align: middle">
-                                <c:forEach items="<%=request.getAttribute("idRtw")%>" var="rtw" varStatus="st">
-                                  <c:if test="${rtw.key==amg.value.id}" >
-                                ${idRtw[amg.value.id]} (${st.index})
-                                </c:if>
-                                </c:forEach>
-                              </td>
-                              <td style="text-align: center; vertical-align: middle">
-                                <c:forEach items="<%=request.getAttribute("idFv")%>" var="fv" varStatus="st">
-                                  <c:if test="${fv.key==amg.value.id}" >
-                                ${idFv[amg.value.id]} (${st.index})
-                                </c:if>
-                                </c:forEach>
-                              </td>
-                              <td style="text-align: center; vertical-align: middle">
-                                <c:forEach items="<%=request.getAttribute("idRtwMe")%>" var="rtwm" varStatus="st">
-                                  <c:if test="${rtwm.key==amg.value.id}" >
-                                ${idRtwMe[amg.value.id]} (${st.index})
-                                </c:if>
-                                </c:forEach>
-                              </td>
-                              <td style="text-align: center; vertical-align: middle">
-                                <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
-                                <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
-                              </td>
---%>
+                              <!--                              
+                                                            <td style="text-align: center; vertical-align: middle">
+                                                              ${posFriend[amg.value.id]}
+                                                            </td>
+                                                            <td style="text-align: center; vertical-align: middle">
+                                                              ${usrInterac[amg.value.id]}
+                                                            </td>
+                                                            <td style="text-align: center; vertical-align: middle">
+                                                              <c:forEach items="<%=request.getAttribute("idRtw")%>" var="rtw" varStatus="st">
+                                                                <c:if test="${rtw.key==amg.value.id}" >
+                                                              ${idRtw[amg.value.id]} (${st.index})
+                                                              </c:if>
+                                                              </c:forEach>
+                                                            </td>
+                                                            <td style="text-align: center; vertical-align: middle">
+                                                              <c:forEach items="<%=request.getAttribute("idFv")%>" var="fv" varStatus="st">
+                                                                <c:if test="${fv.key==amg.value.id}" >
+                                                              ${idFv[amg.value.id]} (${st.index})
+                                                              </c:if>
+                                                              </c:forEach>
+                                                            </td>
+                                                            <td style="text-align: center; vertical-align: middle">
+                                                              <c:forEach items="<%=request.getAttribute("idRtwMe")%>" var="rtwm" varStatus="st">
+                                                                <c:if test="${rtwm.key==amg.value.id}" >
+                                                              ${idRtwMe[amg.value.id]} (${st.index})
+                                                              </c:if>
+                                                              </c:forEach>
+                                                            </td>
+                                                            <td style="text-align: center; vertical-align: middle">
+                                                              <c:if test="${usrInterac[amg.value.id] != null}">${usrInterac[amg.value.id]}->${posFriend[amg.value.id]}</c:if>
+                                                              <c:if test="${usrInterac[amg.value.id] == null}">Seguidor mútuo</c:if>
+                                                            </td>
+                              -->
                             </tr>
                           </c:forEach>
                         </tbody>
@@ -641,7 +382,6 @@
             </div>
 
 
-
             <!-- Content Row -->
 
             <div class="row">
@@ -658,23 +398,6 @@
                       <li class="nav-item"><a id="time-meses" class="nav-link px-2" onclick="selectTime(3);return false;" href="#">Meses</a></li>
                       <li class="nav-item"><a id="time-annios" class="nav-link px-2" onclick="selectTime(4);return false;" href="#">Años</a></li>
                     </ul>
-
-
-                    <!--                  <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                          <div class="dropdown-header">Tipo de uso:</div>
-                                          <a class="dropdown-item" onclick="selectTime(1);return false;" href="#">Horas</a>
-                                          <a class="dropdown-item" onclick="selectTime(2);return false;" href="#">Días</a>
-                                          <a class="dropdown-item" onclick="selectTime(3);return false;" href="#">Meses</a>
-                                          <a class="dropdown-item" onclick="selectTime(4);return false;" href="#">Años</a>
-                                          <div class="dropdown-divider"></div>
-                                          <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                      </div>
-                    -->
 
                   </div>
                   <!-- Card Body -->
@@ -711,7 +434,7 @@
                     <c:if test="${datosDispositivos=='[]'}">
                       <p>${frases['INFO-NO-DISPONIBLE']}</p>
                     </c:if>
-  
+
 
 
                     <!--                  <div class="mt-4 text-center small">
@@ -724,34 +447,11 @@
                       
                     </div>
                     -->                  
-                    <%--                  <div class="mt-4 text-center small">
-                                      <c:forEach items="${labelsDispositivos}" var="lbl" varStatus="it">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-" style="color: "></i>${lbl}
-                                        </span>
-                                      </c:forEach>
-                                      </div>
 
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Direct
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Social
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
-                    </span>
-                  </div>
-                    --%>
                   </div>
                 </div>
               </div>
             </div>
-
-
-
-
 
 
             <!-- Content Row -->
@@ -800,8 +500,8 @@
               </div>
 
 
-              
-              
+
+
               <div class="col-xl-6 col-lg-6 col-md-6 px-2">
                 <div class="card shadow mb-3">
                   <div class="card-header p-0 d-flex flex-row align-items-center justify-content-between">
@@ -809,24 +509,23 @@
                   </div>
                   <div class="card-body">
                     <p class="m-0 p-0">
-                      <img id="" class="img-fluid" style="width: 2.5rem;" src="images/games.png" title="Videojuegos" alt="">
+                      <img id="" class="img-fluid p-1" style="width: 2.5rem;" src="images/games.png" title="Videojuegos" alt="">
                       ${frases['GUSTOS-GAMERS']}
                     </p>
                     <p class="m-0 p-0">
-                      <img id="" class="img-fluid" style="width: 2.5rem;" src="images/parlamento.png" title="Política" alt="">
+                      <img id="" class="img-fluid p-1" style="width: 2.5rem;" src="images/parlamento.png" title="Política" alt="">
                       ${frases['GUSTOS-POLITICA']}
                     </p>
                     <p class="m-0 p-0">
-                      <img id="" class="img-fluid" style="width: 2.5rem;" src="images/ball-football.png" title="Deportes" alt="">
+                      <img id="" class="img-fluid p-1" style="width: 2.5rem;" src="images/ball-football.png" title="Deportes" alt="">
                       ${frases['GUSTOS-DEPORTES']}
                     </p>
                   </div>
                 </div>
               </div>
-              
+
 
             </div>
-
 
           </div>
           <!-- /.container-fluid -->
@@ -834,10 +533,13 @@
         </div>
         <!-- End of Main Content -->
         <!-- Footer -->
-        <footer class="sticky-footer bg-white">
+        <footer class="sticky-footer bg-white py-4">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; QueSabenDeMi 2020</span>
+              <span>UCAM - QueSabenDeMi 2020</span>
+                <p class="mb-0 mt-2">
+                  Ver la <a href="politica-privacidad.jsp" target="_blank">política de privacidad</a>
+                </p>
             </div>
           </div>
         </footer>
@@ -905,14 +607,14 @@
         myLineChart.update();
       }
 
-  /////////////// GRAFICA DISPOSITIVOS ///////////////     
-  var labelsDisp = <%=request.getAttribute("labelsDispositivos")%>;
+      /////////////// GRAFICA DISPOSITIVOS ///////////////     
+      var labelsDisp = <%=request.getAttribute("labelsDispositivos")%>;
       var datosDisp = <%=request.getAttribute("datosDispositivos")%>;
 
-  ////////////////////// MAPA ///////////////////////
+      ////////////////////// MAPA ///////////////////////
       var tweets = <%=request.getAttribute("geoJsonPlaces")%>;
 
-  /////////////// TIPO DE FICHERO MULTIMEDIA ///////////////     
+      /////////////// TIPO DE FICHERO MULTIMEDIA ///////////////     
       var urlFileMultimedia = "${multimediaBean["photo"].urlArchivo}";
       var urlTweetMultimedia = "${multimediaBean["photo"].urlTweet}";
       var numMultimTw = "${multimediaBean["photo"].numRetweets}";
@@ -941,7 +643,7 @@
         }
       }
 
-  /////////////////// SPINNER MODAL ///////////////////
+      /////////////////// SPINNER MODAL ///////////////////
       function modalSpinner() {
         $('.modal').modal('show');
         /*       setTimeout(function () {
@@ -972,7 +674,7 @@
     <c:if test="${datosDispositivos!='[]'}">
       <script src="js/chart-pie-demo.js"></script>
     </c:if>
-    
+
 
     <!-- Page level plugins -->
     <script src="vendor/datatables/jquery.dataTables.min.js"></script>

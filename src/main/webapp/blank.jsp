@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -16,7 +17,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Qué saben de mí</title>
+    <title>QueSabenDeMi</title>
 
     <link href="css/inicio.css" rel="stylesheet">
     <link href="css/estilos.css" rel="stylesheet">    
@@ -33,8 +34,6 @@
 
     <!-- Page Wrapper -->
     <div id="wrapper">
-
-
 
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
@@ -56,23 +55,35 @@
             <div class="row d-flex flex-column">
               <div class="col-12">
                 <form id="form-search" name="formulario" title="Debe aceptar la política de privacidad" class="col-xl-4 offset-xl-4 col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-8 offset-xs-2 col-10 offset-1" action="<%= response.encodeURL("ConexionTwitter")%>" method="post">
+
+                <c:if test="${msgError != null}">
+                <div class="card mb-2" id="div-error">
+                  <div class="card-body p-2">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <div class="text-xs" style="color:red"> * ${msgError}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </c:if>
+
                   <div class="input-group">
                     <span class="text-primary input-txt-fixed font-weight-bolder">@</span>
-                    <input type="text" name="userTwitter" id="userInput" disabled="true" style="padding-left: 29px" class="form-control border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
+                    <input type="text" maxlength="20" name="userTwitter" id="userInput" disabled="true" style="padding-left: 29px" class="form-control border-0 small" placeholder="Introduce usuario Twitter..." aria-label="Search" aria-describedby="basic-addon2">
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit" id="botonConsulta" disabled="true" onclick="modalSpinner();">
                         <i class="fas fa-search fa-sm" id="lupa"></i>
                       </button>
                     </div>
                   </div>
-
                 </form>
-              <div class="form-check text-center col-12 my-3">
-                <input type="checkbox" class="form-check-input" name="check" id="check" onChange="aceptPrivacity(this);"/>
-                <label class="form-check-label" for="defaultCheck1">
-                  He leído y acepto la <a href="politica-privacidad.jsp" target="_blank">política de privacidad</a>
-                </label>
-              </div>                    
+                <div class="form-check text-center col-12 my-3">
+                  <input type="checkbox" class="form-check-input" name="check" id="check" onChange="aceptPrivacity(this);"/>
+                  <label class="form-check-label" for="defaultCheck1">
+                    He leído y acepto la <a href="politica-privacidad.jsp" target="_blank">política de privacidad</a>
+                  </label>
+                </div>                    
               </div>
             </div>
 
@@ -80,12 +91,11 @@
         </div>
         <!-- End of Main Content -->
 
-
         <!-- Footer -->
         <footer id="footer" class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; QueSabenDeMi 2020</span>
+              <span>UCAM - QueSabenDeMi 2020</span>
             </div>
           </div>
         </footer>
@@ -97,14 +107,12 @@
     </div>
     <!-- End of Page Wrapper -->
 
-
-
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>
 
-    <div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div id="modalspinner" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
       <div class="modal-dialog modal-sm">
         <div class="modal-content text-center text-white">
           <span class="fa fa-spinner fa-spin fa-3x"></span>
@@ -113,27 +121,25 @@
       </div>
     </div>
 
-    <script type="text/javascript">
-      function aceptPrivacity(obj) {
-        if (obj.checked) {
-          document.getElementById('userInput').disabled = false;
-          document.getElementById('form-search').title = "";
-          document.getElementById('botonConsulta').disabled = false;
-        } else {
-          document.getElementById('userInput').disabled = true;
-          document.getElementById('userInput').value = "";
-          document.getElementById('form-search').title = "Debe aceptar la política de privacidad";
-          document.getElementById('botonConsulta').disabled = true;
-        }
-      }
+<script type="text/javascript">
+  //Control sobre el checkbox obligatorio de privacidad y el campo de texto
+  function aceptPrivacity(obj) {
+    if (obj.checked) {
+      document.getElementById('userInput').disabled = false;
+      document.getElementById('form-search').title = "";
+      document.getElementById('botonConsulta').disabled = false;
+    } else {
+      document.getElementById('userInput').disabled = true;
+      document.getElementById('userInput').value = "";
+      document.getElementById('form-search').title = "Debe aceptar la política de privacidad";
+      document.getElementById('botonConsulta').disabled = true;
+    }
+  }
 
-      function modalSpinner() {
-        $('.modal').modal('show');
-        /*       setTimeout(function () {
-         console.log('hejsan');
-         $('.modal').modal('hide');
-         }, 300000);*/
-      }
+  //Muestra una ventana modal con indicador de carga al pulsar el boton de buscar
+  function modalSpinner() {
+    $('#modalspinner').modal('show');
+  }
 
     </script>    
 
